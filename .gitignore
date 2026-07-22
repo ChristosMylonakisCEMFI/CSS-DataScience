@@ -1,0 +1,17 @@
+# Local Python environment
+.venv/
+
+# Python-generated cache directories
+__pycache__/
+
+# LaTeX auxiliary build files (the compiled PDFs remain tracked)
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.vrb
+
+# Local reference material: review publishing rights before tracking it
+/OtherMaterial/
