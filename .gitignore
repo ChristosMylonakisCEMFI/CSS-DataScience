@@ -12,6 +12,9 @@ __pycache__/
 *.snm
 *.toc
 *.vrb
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 
 # Local reference material: review publishing rights before tracking it
 /OtherMaterial/

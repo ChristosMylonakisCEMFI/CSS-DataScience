@@ -1,0 +1,472 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+\graphicspath{{figures/}}
+
+% -----------------------------------------------------------------------------
+% Visual design
+% -----------------------------------------------------------------------------
+\definecolor{Navy}{HTML}{172A3A}
+\definecolor{Ink}{HTML}{24292F}
+\definecolor{Muted}{HTML}{57606A}
+\definecolor{Rule}{HTML}{D0D7DE}
+\definecolor{PaleGray}{HTML}{F2F2F2}
+
+% Colours shared with the figures, so diagrams and plots agree
+\definecolor{FigBlue}{HTML}{1F4E79}
+\definecolor{FigRed}{HTML}{8B1A1A}
+\definecolor{FigGray}{HTML}{595959}
+
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{structure}{fg=Navy}
+\setbeamercolor{frametitle}{fg=white,bg=Navy}
+\setbeamercolor{title}{fg=white}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{Navy}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{Muted}--}
+\setbeamertemplate{enumerate item}{\color{Navy}\insertenumlabel.}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.78cm,dp=0.25cm,leftskip=0.45cm]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
+      \color{Muted}\scriptsize Prediction for Economists
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
+      \color{Muted}\scriptsize\hfill\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}}}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+
+% All prose on a slide goes in this environment, one line per item.
+\newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{9pt}}{\enditemize}
+
+\newcommand{\simfig}[2]{\begin{center}\includegraphics[width=#1]{#2}\end{center}}
+
+\title{Prediction for Economists}
+\author{}
+\date{}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[Navy] (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\usebeamerfont{title}\color{white}Prediction for Economists};
+  \end{tikzpicture}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Prediction as an objective}
+\begin{wideitemize}
+  \item A prediction rule maps observed characteristics into an unobserved outcome.
+  \item It is estimated on a sample and judged on observations not used to estimate it.
+  \item The criterion is accuracy out of sample, not the value of any coefficient.
+  \item A model may describe the data poorly and still predict well.
+  \item Bias in the coefficients is acceptable if it lowers prediction error.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Overfitting}
+\simfig{0.72\textwidth}{fig_overfit_reg}
+\begin{wideitemize}
+  \item Fit in the estimation sample improves monotonically with the degree.
+  \item With 20 observations, degree 19 passes through every point exactly.
+  \item Error in an independent sample is minimized at a low degree.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Overfitting with a binary outcome}
+\simfig{0.66\textwidth}{fig_overfit_clf}
+\begin{wideitemize}
+  \item The same arises when the outcome is a category, not a quantity.
+  \item The unrestricted tree isolates individual observations.
+  \item Its boundary reflects this sample, not a lasting regularity.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Bias and variance}
+\simfig{0.72\textwidth}{fig_bias_variance}
+\begin{wideitemize}
+  \item Each grey line is a fit to an independent sample of 25 observations.
+  \item The restrictive fit varies little, but its mean is far from the truth.
+  \item The flexible fit is right on average; any one estimate may be far off.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The bias--variance trade-off}
+\begin{columns}[T,onlytextwidth]
+  \column{0.44\textwidth}
+  \vspace{0.6em}
+  \includegraphics[width=\linewidth]{fig_tradeoff}
+
+  \column{0.52\textwidth}
+  \vspace{0.4em}
+  \begin{wideitemize}
+    \item Squared bias, variance, and noise.
+    \item Restrictive fits: bias dominates.
+    \item Flexible fits: variance dominates.
+    \item The noise cannot be reduced.
+    \item Choose a point on this curve.
+  \end{wideitemize}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Training, validation, and test samples}
+\begin{center}
+\begin{tikzpicture}[font=\small]
+  \draw[fill=white,draw=black] (0,0) rectangle (6.0,0.8);
+  \node at (3.0,0.4) {Training};
+  \draw[fill=PaleGray,draw=black] (6.0,0) rectangle (8.6,0.8);
+  \node at (7.3,0.4) {Validation};
+  \draw[fill=FigGray,draw=black] (8.6,0) rectangle (11.2,0.8);
+  \node[white] at (9.9,0.4) {Test};
+\end{tikzpicture}
+\end{center}
+\vspace{0.3em}
+\begin{wideitemize}
+  \item Training: estimate the parameters of a given specification.
+  \item Validation: choose among specifications, and how much flexibility.
+  \item Test: used once, after every choice is final.
+  \item Error in a sample used to choose is a downward-biased estimate.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Cross-validation}
+\begin{center}
+\begin{tikzpicture}[font=\scriptsize,y=0.50cm]
+  \foreach \r in {0,1,2,3,4} {
+    \foreach \c in {0,1,2,3,4} {
+      \pgfmathparse{\c==\r ? "FigRed" : "FigBlue"}\edef\col{\pgfmathresult}
+      \draw[fill=\col,draw=black,line width=0.3pt]
+        (\c*1.0,-\r) rectangle (\c*1.0+0.9,-\r+0.46);
+    }
+    \node[anchor=west] at (5*1.0+0.1,-\r+0.23) {fold \the\numexpr\r+1\relax};
+  }
+  \draw[fill=FigRed,draw=black,line width=0.3pt] (7.4,-0.9) rectangle (7.8,-0.5);
+  \node[anchor=west] at (7.85,-0.7) {validation};
+  \draw[fill=FigBlue,draw=black,line width=0.3pt] (7.4,-2.1) rectangle (7.8,-1.7);
+  \node[anchor=west] at (7.85,-1.9) {estimation};
+\end{tikzpicture}
+\end{center}
+\vspace{0.2em}
+\begin{wideitemize}
+  \item Partition the sample into $k$ subsets of equal size.
+  \item Estimate on $k-1$ subsets and evaluate on the one left out.
+  \item Repeat so each subset serves once, then average the $k$ estimates.
+  \item With a binary outcome, folds preserve the proportion of ones.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Data leakage}
+\begin{columns}[T,onlytextwidth]
+  \column{0.44\textwidth}
+  \vspace{0.6em}
+  \includegraphics[width=\linewidth]{fig_leakage}
+
+  \column{0.52\textwidth}
+  \vspace{0.6em}
+  \begin{wideitemize}
+    \item One regressor encodes the outcome.
+    \item Its cross-validated fit is perfect.
+    \item Without it, no better than honest.
+  \end{wideitemize}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Where leakage enters}
+\begin{wideitemize}
+  \item Transformations computed on the full sample before it is split.
+  \item Regressors dated after the outcome is realized.
+  \item Any variable constructed from the outcome, including category means.
+  \item A fit far better than expected is more often leakage than a good model.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Obtaining an honest estimate of performance}
+\begin{wideitemize}
+  \item Split the sample before computing any transformation.
+  \item Estimate standardization and imputation on training observations only.
+  \item Use the test sample once, after every choice has been made.
+  \item Include a regressor only if it is known before the outcome is realized.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Measuring accuracy: continuous outcomes}
+\simfig{0.66\textwidth}{fig_rmse_mae}
+\begin{wideitemize}
+  \item Root mean squared error weights large errors more heavily.
+  \item Mean absolute error weights every unit of error equally.
+  \item A few extreme observations move the first much more than the second.
+  \item Fix the measure in advance, to reflect the cost of an error.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Measuring accuracy: binary outcomes}
+\simfig{0.64\textwidth}{fig_accuracy_trap}
+\begin{wideitemize}
+  \item When ones are rare, the share of correct classifications is uninformative.
+  \item Predicting zero everywhere is 96\% accurate and identifies nothing.
+  \item The table of predicted against actual outcomes is the useful summary.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Thresholds, precision, and recall}
+\begin{wideitemize}
+  \item Most estimators return a predicted probability, not a classification.
+  \item Turning it into a classification requires a threshold.
+  \item Precision: the share of predicted ones that are actual ones.
+  \item Recall: the share of actual ones that are predicted.
+  \item Raising the threshold raises precision and lowers recall.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The ROC curve}
+\begin{columns}[T,onlytextwidth]
+  \column{0.42\textwidth}
+  \vspace{0.4em}
+  \includegraphics[width=\linewidth]{fig_roc}
+
+  \column{0.54\textwidth}
+  \vspace{1.0em}
+  \begin{wideitemize}
+    \item Traces both rates over all thresholds.
+    \item Its area summarizes the ordering.
+    \item No single threshold is involved.
+    \item A diagonal means no information.
+  \end{wideitemize}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The choice of regressors}
+\simfig{0.66\textwidth}{fig_features}
+\begin{wideitemize}
+  \item Both panels report least squares on a single regressor.
+  \item The outcome is generated by $y = 2\log x + \varepsilon$.
+  \item Replacing $x$ by $\log x$ lowers out-of-sample error by an order of magnitude.
+  \item How the regressors are built often matters more than the estimator.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Constructing regressors in practice}
+\begin{wideitemize}
+  \item Indicators for categorical variables.
+  \item Interactions and ratios.
+  \item Logarithms and powers, for skewness and curvature.
+  \item Discretization of continuous variables.
+  \item Components of dates.
+  \item An explicit indicator for missing values.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Two cautions}
+\begin{wideitemize}
+  \item Replacing a category by its mean outcome is a common source of leakage.
+  \item It has to be computed separately within each training fold.
+  \item Regressors with no predictive content raise the variance of the rule.
+  \item Adding them is not free, even when their coefficients are near zero.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{A menu of estimators}
+\begin{wideitemize}
+  \item Least squares: transparent, and often competitive with good regressors.
+  \item Ridge and LASSO: a penalty on the coefficients; LASSO sets some to zero.
+  \item Regression tree: a recursive partition; a single tree is unstable.
+  \item Random forest: averages trees on resampled data; much lower variance.
+  \item Boosting: small trees in sequence, each fitted to the residuals.
+  \item Each has a counterpart when the outcome is binary.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Penalized regression}
+\simfig{0.66\textwidth}{fig_lasso_path}
+\begin{wideitemize}
+  \item 70 observations, 40 regressors, 3 with nonzero coefficients.
+  \item The penalty shrinks coefficients and sets irrelevant ones to zero.
+  \item Test error is minimized at a strictly positive penalty.
+  \item The penalty is chosen by cross-validation, not by the fit.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Trees and random forests}
+\simfig{0.62\textwidth}{fig_tree_rf}
+\begin{wideitemize}
+  \item A single tree's boundary depends heavily on the particular sample.
+  \item A forest averages many trees, each estimated on resampled data.
+  \item Flexibility is retained while the variance is substantially reduced.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Boosting}
+\begin{wideitemize}
+  \item Trees are added in sequence rather than averaged in parallel.
+  \item Each is fitted to the residuals of the current model.
+  \item Each enters with a small weight, so progress is gradual.
+  \item It is typically the most accurate of the estimators considered here.
+  \item It has more parameters, and overfits if they are chosen carelessly.
+  \item A random forest needs fewer choices and is a good starting point.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Comparing estimators}
+\simfig{0.66\textwidth}{fig_compare}
+\begin{wideitemize}
+  \item The same regressors and the same folds for every estimator.
+  \item The flexible estimators win here: the data have curvature and interaction.
+  \item On data close to linear the ordering is frequently reversed.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The workflow}
+\begin{center}
+\begin{tikzpicture}[
+  >=Latex,node distance=0.28cm,
+  every node/.style={font=\small},
+  wfbox/.style={draw=black,minimum width=1.8cm,minimum height=0.9cm,align=center,fill=white}
+]
+  \node[wfbox] (a) {1. Split};
+  \node[wfbox,right=of a] (b) {2. Construct\\regressors};
+  \node[wfbox,right=of b] (c) {3. Estimate};
+  \node[wfbox,right=of c] (d) {4. Cross-\\validate};
+  \node[wfbox,right=of d] (e) {5. Select};
+  \node[wfbox,right=of e] (f) {6. Evaluate};
+  \foreach \x/\y in {a/b,b/c,c/d,d/e,e/f} \draw[->] (\x) -- (\y);
+\end{tikzpicture}
+\end{center}
+\vspace{0.4em}
+\begin{wideitemize}
+  \item Was every transformation estimated on training observations only?
+  \item Could any regressor incorporate the outcome?
+  \item Are the regressors and the folds identical across specifications?
+  \item Prefer the simplest specification within sampling error of the best.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Summary}
+\begin{wideitemize}
+  \item Predictive accuracy concerns observations not used in estimation.
+  \item Fit in the estimation sample does not establish it.
+  \item The relevant trade-off is between bias and variance.
+  \item Cross-validation is the standard way of estimating that accuracy.
+  \item Fix the measure of accuracy in advance, by the cost of an error.
+  \item The construction of regressors often matters more than the estimator.
+\end{wideitemize}
+\end{frame}
+
+% =============================================================================
+\appendix
+
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[Navy] (current page.south west) rectangle (current page.north east);
+    \node at (current page.center) {\usebeamerfont{title}\color{white}Appendix};
+  \end{tikzpicture}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The decomposition of expected prediction error}
+For a new observation at $x_0$, with $y = f(x_0) + \varepsilon$ and $\hat f$ estimated on a
+random sample,
+\[
+  \mathbb{E}\!\left[(y - \hat f(x_0))^2\right]
+  = \big(\mathbb{E}[\hat f(x_0)] - f(x_0)\big)^2
+  + \operatorname{Var}\!\big(\hat f(x_0)\big)
+  + \operatorname{Var}(\varepsilon).
+\]
+\begin{wideitemize}
+  \item The expectation is taken over samples, not over observations.
+  \item The first two terms can be traded against one another.
+  \item The third cannot be reduced by any estimator.
+  \item Penalization and averaging lower the second at some cost in the first.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Sampling variability of a single split}
+\begin{columns}[T,onlytextwidth]
+  \column{0.46\textwidth}
+  \vspace{0.6em}
+  \includegraphics[width=\linewidth]{fig_cv_stability}
+
+  \column{0.50\textwidth}
+  \vspace{0.8em}
+  \begin{wideitemize}
+    \item Each point uses a new partition.
+    \item One split varies a great deal.
+    \item The average over folds is stable.
+    \item It matters most in small samples.
+  \end{wideitemize}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Boosting: successive fits}
+\simfig{0.70\textwidth}{fig_boosting}
+\begin{wideitemize}
+  \item A single tree of depth two is a coarse step function.
+  \item Successive trees fitted to the residuals accumulate into an accurate fit.
+  \item Continued far enough, the procedure begins to fit the noise.
+  \item The number of trees is itself chosen by cross-validation.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Further measures for binary outcomes}
+\begin{wideitemize}
+  \item When ones are rare, the precision--recall curve is more informative.
+  \item ROC can look favourable when few of the predicted ones are correct.
+  \item The $F_1$ measure combines precision and recall in one number.
+  \item Log-loss penalizes confident predictions that turn out to be wrong.
+  \item Calibration: of those given probability $0.7$, about 70\% should be ones.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{References}
+\small
+\begin{wideitemize}
+  \item Mullainathan and Spiess (2017), \emph{Journal of Economic Perspectives} 31(2).
+  \item Athey and Imbens (2019), \emph{Annual Review of Economics} 11, 685--725.
+  \item James, Witten, Hastie and Tibshirani, \emph{Introduction to Statistical Learning}.
+  \item Hastie, Tibshirani and Friedman, \emph{The Elements of Statistical Learning}.
+\end{wideitemize}
+\end{frame}
+
+\end{document}
