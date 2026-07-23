@@ -1,60 +1,38 @@
 technology,category,premium_pct,se_pct,n_postings
-Redis,Data base management system software,15.969752424525163,3.1500964711454067,34
-TensorFlow,Analytical or scientific software,14.989149818966062,3.1860241501609745,32
-PostgreSQL,Object oriented data base management software,14.808185880933134,1.970722565982091,27
-Ruby,Development environment software,11.447340964049047,3.3216542957887145,55
-Google Android,Operating system software,8.603713764272758,3.2731026174958378,36
-Apache Kafka,Development environment software,8.42103862281709,2.9023630946409855,79
-Kubernetes,Application server software,8.094576357290073,1.7799720988667778,201
-Microsoft ASP.NET,Web platform development software,8.062799308490609,10.938099756531882,117
-MongoDB,Data base management system software,6.968768054986629,2.119033881416329,77
-Microsoft .NET Framework,Development environment software,6.8940609377417195,10.988579835802412,114
-Linux,Operating system software,6.380763112061749,4.156849178904768,51
-C++,Object or component oriented development software,6.30849837224623,3.574477804703652,139
-Apple iOS,Operating system software,6.2165046522456135,3.600644876489848,34
-NoSQL,Data base management system software,5.909174673719164,3.5082396482077574,27
-Python,Object or component oriented development software,5.8611307337722796,2.114102922344572,632
-Amazon Web Services AWS CloudFormation,Cloud-based management software,5.653884895512262,2.1361452474681855,422
-Amazon Web Services AWS software,Data base user interface and query software,5.653884895512262,2.1361452474681855,422
-IBM Terraform,Configuration management software,5.549354433839593,2.7207917484952637,91
-Apache Spark,Business intelligence and data analysis software,4.883197805472217,0.7805522290305449,329
-React,Web platform development software,4.811265370969919,2.436787917098248,98
-TypeScript,Object or component oriented development software,4.76475013985711,2.681374666646126,138
-Oracle Java,Object or component oriented development software,4.594124862171789,2.9897423980289473,216
-Jenkins CI,Enterprise application integration software,4.062798927184796,2.361210333155116,208
-Node.js,Web platform development software,3.8684058629953277,3.6608825297036622,34
-Facebook,Web page creation and editing software,3.817924092619873,0.5171435398242923,327
-Apache Hadoop,Data base management system software,3.5947835321972654,5.295678559209201,44
-Docker,Application server software,3.4294210810163372,4.379674293655984,64
-Go,Development environment software,2.753039732826834,1.2114916381896959,509
-Microsoft Dynamics,Enterprise resource planning ERP software,2.4350495316087795,4.220998358378638,68
-Microsoft Azure software,Development environment software,2.184268406020262,2.4857838683763434,258
-Figma,Graphical user interface development software,0.8429933809493528,2.3805209469388218,96
-C#,Object or component oriented development software,0.4481634724348815,2.0874473232655615,32
-Google Analytics,Data mining software,0.4410884407945126,1.3826023807469952,640
-Bootstrap,Web platform development software,-0.17437783282645558,0.5150958227811357,59
-JavaScript,Web platform development software,-1.1289426065001829,1.8319607057904623,135
-Scala,Object or component oriented development software,-1.3887387831538867,1.7139098068897234,172
-Bash,Operating system software,-1.7819266679857004,8.25653198575524,27
-GitLab,Application server software,-1.9363143131538751,1.7502324136622944,59
-GitHub,Application server software,-2.4722528486047834,3.9763680445522533,46
-Microsoft SQL Server,Data base user interface and query software,-4.720321920256321,1.5554024941216655,376
-Microsoft SQL Server Integration Services SSIS,Enterprise application integration software,-4.720321920256321,1.5554024941216655,376
-Microsoft SQL Server Reporting Services SSRS,Data base reporting software,-4.720321920256321,1.5554024941216655,376
-Oracle PL/SQL,Data base management system software,-4.720321920256321,1.5554024941216655,376
-Oracle SQL Developer,Development environment software,-4.720321920256321,1.5554024941216655,376
-Structured query language SQL,Data base user interface and query software,-4.720321920256321,1.5554024941216655,376
-Transact-SQL,Data base user interface and query software,-4.720321920256321,1.5554024941216655,376
-Microsoft Project,Project management software,-6.67370573488083,1.9088724475159573,372
-Atlassian JIRA,Content workflow software,-7.261894209672414,2.9816572610548757,41
-Microsoft Office software,Office suite software,-8.010328867344473,2.2156035524127144,329
-Git,File versioning software,-8.278664773389233,3.9406251598530257,29
-Google Docs,Word processing software,-8.855253975727084,4.3698091208051455,47
-Microsoft Power BI,Business intelligence and data analysis software,-9.391280766316212,4.812816922892249,64
-Workday software,Enterprise resource planning ERP software,-10.034477732580683,4.998028179040297,50
-Tableau,Business intelligence and data analysis software,-10.497085776536574,4.169190040072071,88
-Slack,Cloud-based data access and sharing software,-12.669893635798768,8.672276907898782,44
-Google Workspace software,Office suite software,-12.865926117197745,5.64878830385436,39
-Salesforce software,Customer relationship management CRM software,-17.183937555556504,5.532926865514056,192
-SAP ERP,Enterprise resource planning ERP software,-17.533655136091074,6.734329035698251,52
-Google Sheets,Spreadsheet software,-19.378078598796776,4.271328158271559,39
+Microsoft ASP.NET,Web platform development software,8.592093686813751,10.962173198901262,116
+Apache Kafka,Development environment software,8.354150701362295,2.8680787721092047,79
+Kubernetes,Application server software,8.158136012404228,1.7821473088172068,202
+Microsoft .NET Framework,Development environment software,7.420911952215259,11.020187560287113,113
+MongoDB,Data base management system software,6.9355746879554925,2.1047629236514944,77
+C++,Object or component oriented development software,6.230651575240276,3.553765997127545,139
+Python,Object or component oriented development software,5.821578010319328,2.11718447517515,634
+IBM Terraform,Configuration management software,5.754063505168894,2.7544844685031333,92
+Amazon Web Services AWS CloudFormation,Cloud-based management software,5.605922078415748,2.1498492249982255,423
+Amazon Web Services AWS software,Data base user interface and query software,5.605922078415748,2.1498492249982255,423
+Apache Spark,Business intelligence and data analysis software,4.8508801285548575,0.7828371209206311,330
+React,Web platform development software,4.807834459688687,2.434168428185208,98
+TypeScript,Object or component oriented development software,4.754664280389842,2.780887999874734,140
+Oracle Java,Object or component oriented development software,4.556657030374089,2.9511369122633386,216
+Jenkins CI,Enterprise application integration software,4.066863631557216,2.4353276136565385,210
+Facebook,Web page creation and editing software,3.7344056008151716,0.525180897502477,328
+Docker,Application server software,3.375906078368418,4.34059118901193,64
+Go,Development environment software,2.75377133076975,1.2050418828312646,509
+Microsoft Dynamics,Enterprise resource planning ERP software,2.4374157343051372,4.221365789100385,68
+Microsoft Azure software,Development environment software,2.101496913370826,2.4821832238477377,259
+Figma,Graphical user interface development software,0.8352561715549767,2.3829186531598117,96
+Google Analytics,Data mining software,0.43149159472957166,1.3798559423251298,642
+Bootstrap,Web platform development software,-0.46273044720840373,0.5308500612604089,60
+JavaScript,Web platform development software,-1.072783045390302,1.7799092737432618,137
+Scala,Object or component oriented development software,-1.568709371932775,1.6212891810569736,173
+Microsoft SQL Server,Data base user interface and query software,-4.7379214443095785,1.5434078772266133,376
+Microsoft SQL Server Integration Services SSIS,Enterprise application integration software,-4.7379214443095785,1.5434078772266133,376
+Microsoft SQL Server Reporting Services SSRS,Data base reporting software,-4.7379214443095785,1.5434078772266133,376
+Oracle PL/SQL,Data base management system software,-4.7379214443095785,1.5434078772266133,376
+Oracle SQL Developer,Development environment software,-4.7379214443095785,1.5434078772266133,376
+Structured query language SQL,Data base user interface and query software,-4.7379214443095785,1.5434078772266133,376
+Transact-SQL,Data base user interface and query software,-4.7379214443095785,1.5434078772266133,376
+Microsoft Project,Project management software,-6.761565987392915,1.9002499231175252,373
+Microsoft Office software,Office suite software,-7.9780930298885,2.2230771011968273,328
+Microsoft Power BI,Business intelligence and data analysis software,-9.296517489998868,4.815330355266117,64
+Tableau,Business intelligence and data analysis software,-10.562840156377307,4.147072097693096,88
+Salesforce software,Customer relationship management CRM software,-17.166924773726645,5.524330097902887,192
