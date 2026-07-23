@@ -1,0 +1,1107 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+% -----------------------------------------------------------------------------
+% Visual design (shared with the Git/GitHub deck)
+% -----------------------------------------------------------------------------
+\definecolor{Navy}{HTML}{172A3A}
+\definecolor{Blue}{HTML}{0969DA}
+\definecolor{LightBlue}{HTML}{EAF3FF}
+\definecolor{Green}{HTML}{1A7F37}
+\definecolor{LightGreen}{HTML}{EAF7ED}
+\definecolor{Orange}{HTML}{BC4C00}
+\definecolor{LightOrange}{HTML}{FFF1E5}
+\definecolor{Red}{HTML}{CF222E}
+\definecolor{LightRed}{HTML}{FFEBE9}
+\definecolor{Ink}{HTML}{24292F}
+\definecolor{Muted}{HTML}{57606A}
+\definecolor{Rule}{HTML}{D0D7DE}
+\definecolor{CodeBG}{HTML}{F6F8FA}
+
+\setbeamercolor{normal text}{fg=Ink,bg=white}
+\setbeamercolor{structure}{fg=Blue}
+\setbeamercolor{frametitle}{fg=white,bg=Navy}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=LightBlue}
+\setbeamercolor{block title}{fg=white,bg=Blue}
+\setbeamercolor{block body}{fg=Ink,bg=LightBlue}
+\setbeamercolor{block title alerted}{fg=white,bg=Orange}
+\setbeamercolor{block body alerted}{fg=Ink,bg=LightOrange}
+\setbeamercolor{block title example}{fg=white,bg=Green}
+\setbeamercolor{block body example}{fg=Ink,bg=LightGreen}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\color{Blue}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{Blue}$\bullet$}
+\setbeamertemplate{enumerate item}{\color{Blue}\insertenumlabel.}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0.78cm,dp=0.25cm,leftskip=0.45cm]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
+      \color{Muted}\scriptsize Web scraping for applied research
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
+      \color{Muted}\scriptsize\hfill\insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}}}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamerfont{title}{series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{block title}{series=\bfseries}
+
+% -----------------------------------------------------------------------------
+% Listings and reusable elements
+% -----------------------------------------------------------------------------
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{CodeBG},
+  frame=single,
+  rulecolor=\color{Rule},
+  framerule=0.4pt,
+  xleftmargin=0.25em,
+  xrightmargin=0.25em,
+  aboveskip=0.45em,
+  belowskip=0.35em,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  keywordstyle=\color{Blue}\bfseries,
+  commentstyle=\color{Green},
+  stringstyle=\color{Orange}
+}
+
+\lstdefinestyle{terminal}{
+  style=code,
+  backgroundcolor=\color{Navy!96},
+  basicstyle=\ttfamily\scriptsize\color{white},
+  rulecolor=\color{Navy},
+  keywordstyle=\color{white},
+  commentstyle=\color{white},
+  stringstyle=\color{white}
+}
+
+\lstdefinestyle{py}{style=code,language=Python}
+
+\newcommand{\button}[1]{%
+  \tikz[baseline=(b.base)]\node[draw=Rule,fill=CodeBG,rounded corners=2pt,
+  inner xsep=5pt,inner ysep=2.2pt,font=\bfseries\scriptsize] (b) {#1};}
+
+\newcommand{\statebadge}[2]{%
+  \tikz[baseline=(b.base)]\node[fill=#1,rounded corners=2pt,
+  inner xsep=5pt,inner ysep=2pt,font=\bfseries\scriptsize,text=Ink] (b) {#2};}
+
+\newcommand{\takeaway}[1]{%
+  \begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body example}
+    \textbf{What this means:} #1
+  \end{beamercolorbox}}
+
+\title{Web Scraping for Applied Research}
+\subtitle{Collecting and using data from web pages}
+\author{CSS Data Science}
+\date{}
+
+\begin{document}
+
+% =============================================================================
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[Navy] (current page.south west) rectangle (current page.north east);
+    \fill[Blue] (current page.south west) rectangle ([xshift=0.18cm]current page.north west);
+    \node[anchor=west,text width=12.8cm] at ([xshift=1.05cm,yshift=0.55cm]current page.west) {
+      {\usebeamerfont{title}\color{white}\inserttitle\par}
+      \vspace{0.25cm}
+      {\usebeamerfont{subtitle}\color{LightBlue}\insertsubtitle\par}
+      \vspace{0.75cm}
+      {\large\color{white}Three approaches, compared, with a worked empirical example}
+    };
+    \node[anchor=south west] at ([xshift=1.05cm,yshift=0.55cm]current page.south west)
+      {\color{LightBlue}\small Example: salary ranges in online job postings};
+  \end{tikzpicture}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{A motivating example}
+\begin{columns}[T,onlytextwidth]
+  \column{0.52\textwidth}
+  Many US job postings now list a salary range, and some list a different
+  range for each city the role is based in.
+
+  \vspace{0.5em}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
+    Same employer, same posting, different cities.\\
+    \textbf{How much does the advertised range vary by location?}
+  \end{beamercolorbox}
+
+  \vspace{0.6em}
+  Administrative and survey data rarely record advertised pay at this level
+  of detail, so the postings themselves are a useful complementary source.
+
+  \column{0.44\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body example}
+    \textbf{What we find (this sample)}
+    \vspace{0.35em}
+    \begin{itemize}
+      \item mean gap across cities: about \textbf{21\%}
+      \item roughly \textbf{a quarter} of pay variation between otherwise
+            comparable postings
+    \end{itemize}
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.5em}
+\takeaway{Scraping is a practical option when relevant information is publicly
+available on web pages but not distributed as a ready-made dataset.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Where we are going}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{Part 1 --- Look first}\\
+  \small Open the page. Find the numbers. Only then write code.
+
+  \vspace{0.6em}
+  \textbf{Part 2 --- How the web works}\\
+  \small Requests, replies, HTML and JSON.
+
+  \vspace{0.6em}
+  \textbf{Part 3 --- Three ways to the same numbers}\\
+  \small A hidden data address; parsing HTML; driving a browser.
+
+  \column{0.48\textwidth}
+  \textbf{Part 4 --- From 3 jobs to 9{,}000}\\
+  \small Loops, threads, caching, failures.
+
+  \vspace{0.6em}
+  \textbf{Part 5 --- What the data says}\\
+  \small An old question in labour economics.
+
+  \vspace{0.6em}
+  \textbf{Part 6 --- Doing this responsibly}
+\end{columns}
+
+\vspace{0.8em}
+\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body}
+  \small Everything runs from \texttt{slides/web-scraping/}. Start with
+  \button{python check\_setup.py}
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\section{Look first}
+\begin{frame}[fragile]{Rule number one}
+\begin{beamercolorbox}[rounded=true,sep=0.9em,wd=\linewidth]{block body alerted}
+  \centering\large
+  \textbf{Never write a scraper for a page you have not read.}
+\end{beamercolorbox}
+
+\vspace{0.9em}
+Before any code, answer three questions by looking:
+\begin{enumerate}
+  \item \textbf{What exactly do I want?} Point at it on the screen.
+  \item \textbf{Where does it sit} in the page?
+  \item \textbf{How does the page get it?} Is it already in the page, or
+        fetched separately?
+\end{enumerate}
+
+\vspace{0.6em}
+\takeaway{Ten minutes of looking saves an afternoon of guessing.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{1. The board: every job at one company}
+\centering
+\includegraphics[width=0.80\textwidth,height=0.58\textheight,keepaspectratio]{figs/01_board_page.png}
+
+\vspace{0.3em}
+{\small\color{Muted}\texttt{job-boards.greenhouse.io/anthropic}}
+
+\vspace{0.3em}
+\begin{beamercolorbox}[rounded=true,sep=0.5em,wd=\linewidth]{block body alerted}
+  \scriptsize \textbf{Note.} Postings shown here were live when the slides
+  were prepared. Companies open and close positions continually, so the
+  specific jobs and numbers may differ when you run the code.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{2. One job advert}
+\centering
+\includegraphics[width=0.80\textwidth,height=0.66\textheight,keepaspectratio]{figs/02_job_page_top.png}
+
+\vspace{0.3em}
+{\small\color{Muted}\texttt{.../anthropic/jobs/4981828008}}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{3. Scroll down: there they are}
+\centering
+\includegraphics[width=0.74\textwidth,height=0.60\textheight,keepaspectratio]{figs/03_job_page_pay_highlighted.png}
+
+\vspace{0.35em}
+\takeaway{Three things we want per job: the title, the location, and the two
+numbers.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Right-click $\rightarrow$ Inspect: where do the numbers live?}
+\begin{columns}[T,onlytextwidth]
+  \column{0.50\textwidth}
+  The browser shows you the page's structure. The salary sits inside a
+  \texttt{<bdi>} tag:
+
+  \vspace{0.4em}
+\begin{lstlisting}[style=code]
+<div class="pay-input">
+  <bdi>$300,000</bdi>
+  <span>-</span>
+  <bdi>$405,000</bdi>
+  <bdi>USD</bdi>
+</div>
+\end{lstlisting}
+
+  \vspace{0.3em}
+  \small That tag name is all we need to find them later.
+
+  \column{0.46\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
+    \textbf{Try it}
+    \vspace{0.3em}
+    \begin{enumerate}\small
+      \item Open a job advert
+      \item Right-click on the salary
+      \item Choose \button{Inspect}
+      \item Read the tag it highlights
+    \end{enumerate}
+  \end{beamercolorbox}
+
+  \vspace{0.5em}
+  \small \texttt{<bdi>} is a real HTML tag (``bidirectional isolate''). It has
+  nothing to do with money---the site just happens to use it here.
+\end{columns}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{A useful habit: watch the page's own requests}
+\begin{columns}[T,onlytextwidth]
+  \column{0.47\textwidth}
+  A web page is not one download. It loads, then asks the server for more
+  things: images, styles, and often \textbf{the actual data}.
+
+  \vspace{0.5em}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
+    \textbf{See it happen}
+    \vspace{0.3em}
+    \begin{enumerate}\small
+      \item Press \button{F12}
+      \item Tab \button{Network}
+      \item Filter \button{Fetch/XHR}
+      \item Reload the page
+    \end{enumerate}
+  \end{beamercolorbox}
+
+  \column{0.49\textwidth}
+  One of the requests that appears:
+
+  \vspace{0.4em}
+\begin{lstlisting}[style=terminal]
+boards-api.greenhouse.io/v1/boards/
+  anthropic/jobs/4981828008
+  ?pay_transparency=true
+\end{lstlisting}
+
+  \vspace{0.4em}
+  Open that address yourself and you get the same job---as \textbf{data},
+  not as a page.
+\end{columns}
+
+\vspace{0.6em}
+\takeaway{The browser already retrieves this data to build the page. We can
+request it directly instead of parsing the rendered HTML.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{The same job, as data}
+\begin{lstlisting}[style=code]
+{
+  "id": 4981828008,
+  "title": "Senior+ Software Engineer, Research Tools",
+  "location": { "name": "San Francisco, CA | New York City, NY" },
+  "company_name": "Anthropic",
+  "first_published": "2025-11-07T19:13:30-05:00",
+  "pay_input_ranges": [
+    {
+      "min_cents": 30000000,
+      "max_cents": 40500000,
+      "currency_type": "USD",
+      "title": "Annual Salary:"
+    }
+  ]
+}
+\end{lstlisting}
+
+\vspace{0.2em}
+\takeaway{No parsing, no guessing. The salary is already a number---and it
+even tells us the currency.}
+\end{frame}
+
+% =============================================================================
+\section{How the web works}
+\begin{frame}[fragile]{Every scrape is the same two steps}
+\begin{columns}[T,onlytextwidth]
+  \column{0.46\textwidth}
+  \begin{block}{1. Request}
+    You ask a server for an address (URL). You may attach headers saying who
+    you are.
+  \end{block}
+  \begin{block}{2. Reply}
+    The server sends back a status code and some content.
+  \end{block}
+
+  \column{0.50\textwidth}
+  \textbf{Status codes worth knowing}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item \statebadge{LightGreen}{200} fine, here it is
+    \item \statebadge{LightOrange}{403} I know who you are, and no
+    \item \statebadge{LightOrange}{404} no such thing
+    \item \statebadge{LightRed}{429} you are asking too fast
+    \item \statebadge{LightRed}{500} the server broke
+  \end{itemize}
+
+  \vspace{0.5em}
+  \small Always check the code. A 404 page still ``downloads'' perfectly
+  happily, and will silently produce nonsense.
+\end{columns}
+
+\vspace{0.6em}
+\takeaway{Scraping is just doing by hand what your browser does automatically.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Two kinds of reply}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{HTML} --- built for eyes
+\begin{lstlisting}[style=code]
+<div class="pay-input">
+  <bdi>$300,000</bdi>
+  <span>-</span>
+  <bdi>$405,000</bdi>
+</div>
+\end{lstlisting}
+  \small Layout and content mixed together. You must dig the values out, and
+  the digging breaks when the design changes.
+
+  \column{0.48\textwidth}
+  \textbf{JSON} --- built for programs
+\begin{lstlisting}[style=code]
+{
+  "min_cents": 30000000,
+  "max_cents": 40500000,
+  "currency_type": "USD"
+}
+\end{lstlisting}
+  \small Names and values, nothing else. It becomes a Python dictionary in
+  one line.
+\end{columns}
+
+\vspace{0.7em}
+\takeaway{If a JSON version exists, use it. It is faster, cleaner, and far
+more stable.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{The decision tree}
+\begin{enumerate}
+  \item \textbf{Is there a bulk download?} Take it and stop. (Statistical
+        agencies, World Bank, Eurostat.)
+  \item \textbf{Is there an official API?} Use it. Documented and stable.
+  \item \textbf{Is there a hidden JSON address?} \statebadge{LightGreen}{we are here}
+        Check the Network tab. Very often yes.
+  \item \textbf{Is the content in the HTML?} Then \texttt{requests} +
+        \texttt{BeautifulSoup}.
+  \item \textbf{Does the page need a real browser?} Then Selenium. Slow, but
+        it always works.
+  \item \textbf{Is the site actively blocking you?} Reconsider the question,
+        not the tooling.
+\end{enumerate}
+
+\vspace{0.7em}
+\takeaway{Work down the list. Most people start at step 4 and never discover
+that step 3 would have done.}
+\end{frame}
+
+% =============================================================================
+\section{Three ways}
+\begin{frame}[fragile]{Method 1: request the data directly}
+\begin{columns}[T,onlytextwidth]
+  \column{0.60\textwidth}
+\begin{lstlisting}[style=py]
+import requests
+
+url = ("https://boards-api.greenhouse.io/v1"
+       "/boards/anthropic/jobs/4981828008"
+       "?pay_transparency=true")
+
+r = requests.get(url, timeout=60)
+r.raise_for_status()        # stop if not 200
+
+job = r.json()              # -> a Python dict
+pay = job["pay_input_ranges"][0]
+\end{lstlisting}
+
+  \column{0.38\textwidth}
+  \textbf{Output}
+\begin{lstlisting}[style=terminal]
+job["title"]
+  Senior+ Software
+  Engineer, ...
+
+pay["min_cents"]/100
+  300000.0
+pay["max_cents"]/100
+  405000.0
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.2em}
+\takeaway{No parsing: \texttt{.json()} returns a dictionary and we read
+fields from it.}
+
+\vspace{0.2em}
+{\scriptsize\color{Muted} Inspect live:
+\texttt{boards-api.greenhouse.io/v1/boards/anthropic/jobs/4981828008?pay\_transparency=true}}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Method 2: download the page, parse the HTML}
+\begin{columns}[T,onlytextwidth]
+  \column{0.60\textwidth}
+\begin{lstlisting}[style=py]
+import requests
+from bs4 import BeautifulSoup
+
+html = requests.get(url_web, timeout=60).text
+soup = BeautifulSoup(html, "html.parser")
+
+title = soup.find("h1").get_text(strip=True)
+
+# each <bdi> tag holds a value
+texts = [t.get_text(strip=True)
+         for t in soup.find_all("bdi")]
+
+amounts = [float(t.replace("$","")
+           .replace(",",""))
+           for t in texts if t.startswith("$")]
+\end{lstlisting}
+
+  \column{0.38\textwidth}
+  \textbf{Output}
+\begin{lstlisting}[style=terminal]
+texts
+  ['$300,000',
+   '$405,000',
+   'USD']
+
+amounts
+  [300000.0,
+   405000.0]
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.2em}
+\takeaway{Works, but relies on the salary sitting in a \texttt{<bdi>} tag. If
+the page design changes, this can break without warning.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Method 3: drive a real browser}
+\begin{lstlisting}[style=py]
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+options = Options()
+options.add_argument("--headless=new")     # run with no visible window
+driver = webdriver.Chrome(options=options)
+
+driver.get("https://job-boards.greenhouse.io/anthropic/jobs/4981828008")
+
+WebDriverWait(driver, 20).until(            # <- do not skip this
+    EC.presence_of_element_located((By.TAG_NAME, "bdi")))
+
+texts = [e.text for e in driver.find_elements(By.TAG_NAME, "bdi")]
+driver.quit()                               # always close it
+\end{lstlisting}
+
+\vspace{0.2em}
+\takeaway{Selenium is the tool that always works, and the one to reach for
+last.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{When you actually need Selenium}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \begin{block}{Use it when}
+    \begin{itemize}\small
+      \item the page is empty until JavaScript fills it
+      \item you must click, scroll, or log in
+      \item content appears only after interaction
+    \end{itemize}
+  \end{block}
+
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{The cost}
+    \begin{itemize}\small
+      \item a whole browser per run
+      \item slow, and heavy on memory
+      \item breaks in new ways (see next slide)
+      \item needs a matching driver
+    \end{itemize}
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.7em}
+\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body}
+  \small \textbf{Good news:} Selenium 4 downloads the right driver for you.
+  Older guides tell you to install \texttt{chromedriver} by hand---you do not
+  have to, provided you are on \texttt{selenium>=4.25}.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{The error you will meet in your first ten minutes}
+\begin{lstlisting}[style=terminal]
+selenium.common.exceptions.StaleElementReferenceException:
+Message: stale element reference: stale element not found
+\end{lstlisting}
+
+\vspace{0.5em}
+\begin{columns}[T,onlytextwidth]
+  \column{0.47\textwidth}
+  \textbf{What happened}\\
+  \small You found an element. The page then rebuilt itself and threw that
+  element away. Your variable now points at something that no longer exists.
+
+  \column{0.49\textwidth}
+  \textbf{The fix}\\
+  \small Wait for the page to settle, then look the element up \emph{again}.
+\begin{lstlisting}[style=py]
+for attempt in range(3):
+    try:
+        title = driver.find_element(
+            By.TAG_NAME, "h1").text
+        break
+    except StaleElementReferenceException:
+        time.sleep(1)
+\end{lstlisting}
+\end{columns}
+
+\vspace{0.5em}
+\takeaway{This is not your bug. It is what browsers do. Write for it from the
+start.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{The three methods return the same values}
+\begin{table}
+\centering\small
+\begin{tabular}{lccc}
+\toprule
+Posting (software engineering) & Lower & Upper & Range width \\
+\midrule
+Senior+, Research Tools   & \$300{,}000 & \$405{,}000 & 29.8\% \\
+Staff, Labs: Applied AI   & \$320{,}000 & \$405{,}000 & 23.4\% \\
+Staff+, Platform          & \$405{,}000 & \$485{,}000 & 18.0\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+{\footnotesize Identical across all three methods (JSON, BeautifulSoup,
+Selenium). Range width $=$ (upper $-$ lower) / midpoint.}
+\end{table}
+
+\vspace{0.3em}
+\takeaway{The choice of method affects cost and robustness, not the result.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Cost per method (three postings)}
+\begin{table}
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Method & Total (3) & Per posting & Relative \\
+\midrule
+JSON endpoint            & 1.4 s & 0.45 s & 1.0$\times$ \\
+requests + BeautifulSoup & 1.9 s & 0.64 s & 1.4$\times$ \\
+Selenium (browser)       & 2.1 s & 0.71 s & 1.6$\times$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+{\footnotesize Median of three runs; timings vary with network conditions.}
+\end{table}
+
+\vspace{0.4em}
+Differences are small at this scale. They matter much more once we collect
+thousands of postings (next slide).
+\end{frame}
+
+% =============================================================================
+\begin{frame}{The larger gain: request many records at once}
+The board endpoint returns \emph{every open job at the company} in one
+request. Page-by-page methods cannot: one page is one job.
+
+\vspace{0.4em}
+\begin{table}
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Approach & Time for one company & Relative \\
+& (about 400 postings) & \\
+\midrule
+Board endpoint (one request) & \textbf{$\sim$1 s}   & 1$\times$ \\
+JSON, one posting at a time   & $\sim$3 min          & $\sim$170$\times$ \\
+BeautifulSoup, per page       & $\sim$4--5 min       & $\sim$235$\times$ \\
+Selenium, per page            & $\sim$5 min          & $\sim$260$\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.3em}
+\takeaway{Most of the running time is network round-trips, not parsing.
+Fewer requests is the main lever.}
+\end{frame}
+
+% =============================================================================
+\section{Scaling up}
+\begin{frame}[fragile]{From 3 jobs to 9{,}000: four new problems}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \begin{block}{1. Things fail}
+    \small Boards close, names change, connections drop. One failure must not
+    kill the run: catch the error, return empty, carry on.
+  \end{block}
+  \begin{block}{2. Waiting dominates}
+    \small Your program is idle almost all the time. Run several requests at
+    once with a thread pool.
+  \end{block}
+
+  \column{0.48\textwidth}
+  \begin{block}{3. Re-running wastes everything}
+    \small Save every raw reply to disk. The second run costs nothing and
+    makes no new requests.
+  \end{block}
+  \begin{block}{4. You are a guest}
+    \small Identify yourself. Keep the number of workers modest. Take the
+    bulk endpoint when it exists.
+  \end{block}
+\end{columns}
+
+\vspace{0.6em}
+\takeaway{Caching raw replies is also what makes your results reproducible
+six months later.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{All four, in twenty lines}
+\begin{lstlisting}[style=py]
+def fetch_board(company, use_cache=True):
+    path = f"data/cache/{company}.json"
+
+    if use_cache and os.path.exists(path):      # 3. cache
+        return json.load(open(path))
+
+    try:                                        # 1. never crash the run
+        r = SESSION.get(BOARD_API.format(company=company), timeout=45)
+        if r.status_code != 200:
+            return []
+        jobs = r.json().get("jobs", [])
+    except Exception:
+        return []
+
+    json.dump(jobs, open(path, "w"))
+    return jobs
+
+with ThreadPoolExecutor(max_workers=8) as pool:  # 2. several at once
+    results = pool.map(fetch_board, companies)
+\end{lstlisting}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{What came back}
+\begin{table}
+\centering\small
+\begin{tabular}{lr}
+\toprule
+Company boards requested        & 109 \\
+\quad of which returned data    & 63 \\
+Postings collected              & 8{,}852 \\
+\quad with a salary range       & 4{,}022 \ (45\%) \\
+\quad listing $>1$ pay zone     & 583 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+{\footnotesize Collected in about 10 seconds. Figures depend on which
+postings are live at run time.}
+\end{table}
+
+\vspace{0.3em}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \small Many boards returned nothing---companies close boards and change
+  names. Handling this is why error handling matters.
+  \column{0.48\textwidth}
+  \small Under half disclose a salary. Disclosure is shaped by state pay-
+  transparency laws, which could itself be studied.
+\end{columns}
+\end{frame}
+
+% =============================================================================
+\section{What the data says}
+\begin{frame}{Background: compensating differentials}
+Compensating differential theory (Smith; Rosen, 1986): in equilibrium,
+undesirable job attributes should be associated with higher pay, desirable
+ones with lower pay.
+
+\vspace{0.6em}
+Estimating this from wage data is difficult. A common concern: more
+productive workers tend to obtain both higher pay \emph{and} better working
+conditions, and worker productivity is not fully observed. Estimated
+differentials can therefore come out with an unexpected sign.
+
+\vspace{0.6em}
+\begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
+  \small \textbf{Why postings are a useful complement.} A posted range is
+  attached to a vacancy, not to a hired worker, so worker selection does not
+  enter the observation in the same way.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Result 1: variation by location, within a posting}
+Some postings list several pay zones---one posting, several salary bands by
+city. Only location differs.
+
+\vspace{0.4em}
+\begin{table}
+\centering\small
+\begin{tabular}{lr}
+\toprule
+Postings with $>1$ pay zone                     & 574 \\
+\midrule
+Top-to-bottom gap, mean                         & 20.7\% \\
+\qquad median                                   & 14.2\% \\
+\qquad 90th percentile                          & 28.5\% \\
+\midrule
+Var.\ of log pay within a posting (location)    & 0.013 \\
+Var.\ within company $\times$ family $\times$ level & 0.050 \\
+\quad share attributable to location            & $\approx 25\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\vspace{0.2em}
+\takeaway{About a quarter of pay variation between otherwise comparable
+postings is associated with location alone.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Result 2: the remote-work pay differential}
+Regression of log posted pay on a remote indicator, under two sets of
+controls.
+
+\vspace{0.4em}
+\begin{table}
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+ & (1) & (2) \\
+\midrule
+Remote (\% difference) & $+9.3$ & $+1.2$ \\
+                       & (2.6)  & (0.5)  \\
+\midrule
+Comparison within & firm $\times$ family & firm $\times$ \\
+                  & $\times$ seniority   & exact title \\
+Observations      & 4{,}450 & 129 \\
+Cells             & 413     & 22 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+{\footnotesize Cluster-robust SEs (by company) in parentheses.}
+\end{table}
+
+\vspace{0.2em}
+\takeaway{The estimate shrinks toward zero under a tighter comparison: much
+of column (1) reflects which roles are offered remotely, not a pay premium.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{A caution before you believe any of this}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{What this sample is}
+    \begin{itemize}\small
+      \item firms using one hiring platform
+      \item mostly technology, mostly high-paying
+      \item only those disclosing a salary
+      \item \emph{advertised} pay, not paid pay
+    \end{itemize}
+  \end{beamercolorbox}
+
+  \column{0.48\textwidth}
+  \textbf{What follows}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item this is not ``the labour market''
+    \item disclosure is a choice, and choices select
+    \item the second estimate rests on 22 comparisons
+  \end{itemize}
+\end{columns}
+
+\vspace{0.8em}
+\takeaway{Scraped data is real data with real limits. Say what your sample is
+before you say what you found.}
+\end{frame}
+
+% =============================================================================
+\section{Responsibly}
+\begin{frame}[fragile]{Scraping responsibly}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{Practical}
+  \begin{itemize}\small
+    \item prefer a bulk download or an API
+    \item send a \texttt{User-Agent} saying who you are
+    \item ask for many records per request
+    \item keep concurrency modest; back off on \statebadge{LightRed}{429}
+    \item cache raw replies
+  \end{itemize}
+
+  \column{0.48\textwidth}
+  \textbf{Legal and ethical}
+  \begin{itemize}\small
+    \item read \texttt{robots.txt} and the terms
+    \item public $\neq$ free of obligations
+    \item do not collect personal data you do not need
+    \item GDPR applies to people, not to job adverts
+    \item never scrape behind a login you agreed not to
+  \end{itemize}
+\end{columns}
+
+\vspace{0.8em}
+\takeaway{Keeping raw responses reduces load on the server and makes your
+results reproducible.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Your turn}
+\begin{beamercolorbox}[rounded=true,sep=0.8em,wd=\linewidth]{block body}
+  \textbf{Exercise}
+  \vspace{0.35em}
+  \begin{enumerate}
+    \item Add ten companies of your choice to \texttt{COMPANIES} in
+          \texttt{05\_scale\_up.py} and re-run it.
+    \item Pick a job feature the adverts mention---seniority, department,
+          number of locations, how long the advert has been open.
+    \item Ask whether posted pay differs along that feature, comparing
+          \emph{within} the same company.
+    \item Write one paragraph: what you found, and one reason it might be
+          wrong.
+  \end{enumerate}
+\end{beamercolorbox}
+
+\vspace{0.7em}
+\takeaway{Step 4 is the one that matters.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{What to remember}
+\begin{enumerate}
+  \item \textbf{Look at the page before writing code.} Always.
+  \item \textbf{Check for a hidden JSON address} before parsing any HTML.
+  \item \textbf{Fewer requests}, not faster parsing.
+  \item \textbf{Expect failure} and write so one failure costs you nothing.
+  \item \textbf{Cache the raw replies.}
+  \item \textbf{Collecting data is often the easy part}---the comparison you
+        choose is the substantive work.
+\end{enumerate}
+
+\vspace{0.9em}
+\begin{beamercolorbox}[rounded=true,sep=0.7em,wd=\linewidth]{block body example}
+  \centering All code, data and this deck:\\
+  \texttt{github.com/ChristosMylonakisCEMFI/CSS-DataScience}
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+% APPENDIX
+% =============================================================================
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[Navy] (current page.south west) rectangle (current page.north east);
+    \fill[Blue] (current page.south west) rectangle ([xshift=0.18cm]current page.north west);
+    \node[anchor=west] at ([xshift=1.05cm]current page.west)
+      {{\usebeamerfont{title}\color{white}Appendix}};
+  \end{tikzpicture}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: the false start (this really happened)}
+First attempt: find the salary with a regular expression in the page text.
+
+\vspace{0.4em}
+\begin{lstlisting}[style=py]
+pat = re.compile(r"\$\s?(\d{1,3}(?:,\d{3})+)\s*-\s*\$\s?(\d{1,3}(?:,\d{3})+)")
+\end{lstlisting}
+
+\vspace{0.4em}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{Regex on the text}\\
+    salary found for \textbf{13\%} of postings\\
+    \small hourly vs yearly confusion, currencies, ranges written five ways
+  \end{beamercolorbox}
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body example}
+    \textbf{After adding \texttt{?pay\_transparency=true}}\\
+    salary found for \textbf{45\%} of postings\\
+    \small typed integers, explicit currency, one entry per pay zone
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.6em}
+\takeaway{Look for structure before you write a regular expression. The
+missing 32 points were not in the text---they were in a field we had not
+asked for.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: politeness in code}
+\begin{lstlisting}[style=py]
+import time, requests
+
+SESSION = requests.Session()                 # reuse the connection
+SESSION.headers.update({"User-Agent": "CEMFI research (you@email.com)"})
+
+def get(url, tries=4):
+    for attempt in range(tries):
+        r = SESSION.get(url, timeout=45)
+        if r.status_code == 429:             # too fast: wait longer each time
+            time.sleep(2 ** attempt)
+            continue
+        if r.status_code >= 500:             # server problem: try again
+            time.sleep(1 + attempt)
+            continue
+        return r
+    return None
+\end{lstlisting}
+
+\vspace{0.3em}
+\takeaway{Exponential backoff: wait 1s, then 2s, then 4s. Hammering a
+struggling server is how you get blocked.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: a session is faster than repeated \texttt{get}}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+\begin{lstlisting}[style=py]
+# new connection every time
+for url in urls:
+    requests.get(url)
+\end{lstlisting}
+  \small Each call re-negotiates encryption with the server. On this site that
+  roughly \textbf{doubled} the time per page.
+
+  \column{0.48\textwidth}
+\begin{lstlisting}[style=py]
+# one connection, reused
+s = requests.Session()
+for url in urls:
+    s.get(url)
+\end{lstlisting}
+  \small Also remembers headers and cookies, so you set them once.
+\end{columns}
+
+\vspace{0.8em}
+\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body}
+  \small We hit this while preparing the session: BeautifulSoup looked
+  \emph{slower than Selenium} until we used a \texttt{Session}. Selenium was
+  reusing its connection; our \texttt{requests} code was not.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: common errors and what they mean}
+\begin{center}\small
+\begin{tabular}{lp{7.4cm}}
+\toprule
+\textbf{Error} & \textbf{Usually means} \\
+\midrule
+\texttt{ModuleNotFoundError} & installed for a different Python; run \texttt{check\_setup.py --fix} \\
+\texttt{ConnectionError} / timeout & network, proxy, or the server is slow---retry with backoff \\
+\texttt{JSONDecodeError} & the reply was not JSON (often an error page); print \texttt{r.text} \\
+\texttt{AttributeError: 'NoneType'} & \texttt{soup.find()} found nothing; the tag changed \\
+\texttt{StaleElementReference} & the page rebuilt itself; wait and look again \\
+\texttt{SessionNotCreated} & Selenium older than 4.25, or Chrome not installed \\
+\texttt{HTTP 403} & the server refused you; check the terms before working around it \\
+\texttt{HTTP 429} & you are going too fast; slow down \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: where to go next}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{Tools}
+  \begin{itemize}\small
+    \item \texttt{playwright} --- a faster, more modern Selenium
+    \item \texttt{scrapy} --- a framework for large crawls
+    \item \texttt{lxml} --- a much faster HTML parser
+    \item \texttt{polars} --- pandas, but quick on big files
+  \end{itemize}
+
+  \column{0.48\textwidth}
+  \textbf{Data worth knowing about}
+  \begin{itemize}\small
+    \item other hiring platforms expose boards the same way
+    \item government portals: procurement, courts, transparency registers
+    \item the Internet Archive turns any static site into a historical panel
+  \end{itemize}
+\end{columns}
+
+\vspace{0.9em}
+\begin{beamercolorbox}[rounded=true,sep=0.7em,wd=\linewidth]{block body example}
+  \small \textbf{The habit that generalises:} open the page, press F12, watch
+  the Network tab. You will be surprised how often the clean data is already
+  there.
+\end{beamercolorbox}
+\end{frame}
+
+\end{document}

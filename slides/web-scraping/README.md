@@ -1,0 +1,178 @@
+# Web scraping for applied research
+
+A hands-on session. We collect salary ranges from online job postings three
+different ways, compare the approaches, and then use about 9,000 postings to
+look at a standard question in labour economics (compensating differentials).
+
+Everything here runs on any laptop. Total setup time: about five minutes.
+
+> **Note on the data.** The example targets live job postings, which companies
+> add and remove continually. By the time you run this, the specific postings
+> and numbers will differ from those in the slides. The code is written to
+> handle that; the method is what matters, not the exact figures.
+
+---
+
+## 1. Get the files
+
+If you already cloned the course repository, you have them. Otherwise:
+
+```bash
+git clone https://github.com/ChristosMylonakisCEMFI/CSS-DataScience.git
+cd CSS-DataScience/slides/web-scraping
+```
+
+## 2. Install what you need
+
+You need **Python 3.9 or newer** and **Google Chrome** (or Microsoft Edge).
+
+Install the Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+If `pip` is not found, try `python -m pip install -r requirements.txt`
+(on macOS/Linux, `python3 -m pip ...`).
+
+## 3. Check that it works
+
+```bash
+python check_setup.py
+```
+
+You will get a line per requirement. If anything fails, the script prints the
+exact command or download link that fixes it. To install missing Python
+packages automatically:
+
+```bash
+python check_setup.py --fix
+```
+
+A passing run looks like this:
+
+```
+  [PASS] Python 3.11.7
+  [PASS] package: requests  2.32.5
+  [PASS] package: bs4  4.12.3
+  [PASS] package: pandas  2.2.1
+  [PASS] package: selenium  4.36.0
+  [PASS] browser (Chrome/Edge)  chrome.exe
+  [PASS] selenium driver cache  ok
+  [PASS] chromedriver (auto-managed by Selenium 4)  launched ok
+  [PASS] network: reach the Greenhouse API  HTTP 200
+
+All checks passed. You are ready.
+```
+
+**You do not need to download a browser driver.** Selenium 4 fetches the right
+one by itself the first time you run it. This only works on Selenium 4.25 or
+newer, which is why `requirements.txt` pins it.
+
+---
+
+## 4. Before writing any code, look at the page
+
+Open these three links in your browser, in order. This is the habit worth
+taking away from the whole session: **never write a scraper for a page you
+have not read.**
+
+1. The board — every open job at one company
+   <https://job-boards.greenhouse.io/anthropic>
+
+2. One job advert. Scroll down to **Annual Salary**. Those are the numbers we
+   want.
+   <https://job-boards.greenhouse.io/anthropic/jobs/4981828008>
+
+3. The same job, as *data* instead of as a page
+   <https://boards-api.greenhouse.io/v1/boards/anthropic/jobs/4981828008?pay_transparency=true>
+
+The third link is the one that matters. Your browser was already fetching it
+behind the scenes; we are just asking for it directly.
+
+**Try it yourself:** open link 2, press `F12` to open developer tools, click
+the **Network** tab, filter to **Fetch/XHR**, and reload the page. You will
+see the request to `boards-api.greenhouse.io` appear in the list.
+
+---
+
+## 5. Run the scripts, in order
+
+```bash
+cd code
+
+python 01_json.py            # method 1: ask for the data directly
+python 02_beautifulsoup.py   # method 2: download the page, dig out the numbers
+python 03_selenium.py        # method 3: drive a real browser
+python 04_compare.py         # all three side by side: do they agree, what do they cost?
+
+python 05_scale_up.py        # the same idea over ~100 companies -> data/postings.csv
+python 06_analysis.py        # what the data says
+```
+
+The first three each print the same three salaries. That is the point: three
+very different techniques, one answer.
+
+`05_scale_up.py` caches every reply in `data/cache/`, so running it a second
+time takes no time at all and makes no new requests. Use `--fresh` to force a
+re-download.
+
+---
+
+## 6. What each file is
+
+| File | What it does |
+| --- | --- |
+| `check_setup.py` | Verifies your machine; `--fix` installs what is missing |
+| `code/config.py` | Shared settings: which jobs, which URLs, one shared session |
+| `code/01_json.py` | Method 1 — the hidden data address |
+| `code/02_beautifulsoup.py` | Method 2 — parse the HTML page |
+| `code/03_selenium.py` | Method 3 — drive a real browser |
+| `code/04_compare.py` | Timing and agreement across the three |
+| `code/05_scale_up.py` | Threads, caching, error handling, ~100 boards |
+| `code/06_analysis.py` | The economics |
+| `data/postings.csv` | The collected dataset |
+
+---
+
+## 7. Troubleshooting
+
+**`ModuleNotFoundError: No module named 'bs4'`**
+The packages are not installed, or installed for a different Python. Run
+`python check_setup.py --fix`.
+
+**Selenium: `SessionNotCreatedException` or a driver error**
+Almost always an old Selenium. `pip install --upgrade "selenium>=4.25"`.
+Check Chrome is actually installed: <https://www.google.com/chrome/>.
+
+**Selenium: `Cache folder ... cannot be created`**
+Something on your machine created `~/.cache` as a *file*, so Selenium cannot
+make its folder. Point it elsewhere:
+
+```bash
+# Windows
+set SE_CACHE_PATH=%USERPROFILE%\selenium_cache
+# macOS / Linux
+export SE_CACHE_PATH=$HOME/selenium_cache
+```
+
+`code/config.py` already does this for you.
+
+**`StaleElementReferenceException`**
+Not a bug in your code — the page rebuilt itself while you were reading it.
+Wait for the element and look it up again; see `03_selenium.py`.
+
+**A company board returns nothing**
+Normal. Companies close boards and change names. `05_scale_up.py` is written
+so one failure never stops the run.
+
+---
+
+## 8. A note on scraping responsibly
+
+- Prefer a bulk download or an official API when one exists.
+- Identify yourself with a `User-Agent` header, as the code here does.
+- Ask for many records in one request rather than many requests.
+- Do not collect personal data you do not need, and check the site's terms.
+- Cache raw responses. It is faster, kinder to the server, and it is what
+  makes your results reproducible later.
