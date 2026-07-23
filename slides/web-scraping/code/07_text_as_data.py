@@ -218,29 +218,41 @@ def within(df, y, x, groups):
 
 
 def build_frame():
-    """Collect postings WITH their text, reusing the cache from 05."""
+    """Collect postings WITH their text, reusing the cache from 05.
+
+    One row per (posting, pay zone). A posting that quotes a different band
+    per city contributes several rows sharing a job_id - that is what lets us
+    compare the same posting across locations.
+    """
     scale = _load("05_scale_up.py")
     rows = []
     for company in sorted(set(scale.COMPANIES)):
         for j in scale.fetch_board(company):
-            pays = j.get("pay_input_ranges") or []
-            if not pays or pays[0].get("currency_type") != "USD":
-                continue
-            lo, hi = pays[0]["min_cents"] / 100, pays[0]["max_cents"] / 100
-            if not (25_000 <= lo < hi <= 2_000_000):
+            pays = [p for p in (j.get("pay_input_ranges") or [])
+                    if p.get("currency_type") == "USD"]
+            if not pays:
                 continue
             content = html.unescape(j.get("content") or "")
-            loc = (j.get("location") or {}).get("name", "") or ""
-            rows.append(dict(
+            base = dict(
                 company=str(j.get("company_name") or company),
+                job_id=j.get("id"),
                 title=str(j.get("title") or ""),
-                location=str(loc),
-                lo=lo, hi=hi,
+                location=str((j.get("location") or {}).get("name", "") or ""),
+                n_zones=len(pays),
                 req_text=requirement_text(content),
                 full_text=strip_tags(content),
-            ))
+            )
+            for p in pays:
+                lo, hi = p["min_cents"] / 100, p["max_cents"] / 100
+                if not (25_000 <= lo < hi <= 2_000_000):
+                    continue
+                rows.append({**base, "lo": lo, "hi": hi,
+                             "zone": (p.get("title") or "").strip()})
     d = pd.DataFrame(rows).reset_index(drop=True)
-    d["lmid"] = np.log((d.lo + d.hi) / 2)
+    d["mid"] = (d.lo + d.hi) / 2
+    d["lmid"] = np.log(d["mid"])
+    d["width"] = (d.hi - d.lo) / d["mid"]      # reserved room, as a share
+    d["ratio"] = d.hi / d.lo                    # top of band / bottom of band
     d["level"] = d.title.map(level)
     d["family"] = d.title.map(family)
     d["ctitle"] = (d.title.str.lower()
@@ -255,19 +267,45 @@ def build_frame():
 def main(min_count=25, make_figure=True):
     onet = load_onet()
     pats = build_patterns(onet)
-    d = build_frame()
-    print(f"postings with a US salary range : {len(d):,}")
-    print(f"companies                       : {d.company.nunique()}")
-    print(f"O*NET hot technologies searched : {len(pats)}\n")
+    rows = build_frame()
+    # one row per posting, for everything except the location comparison
+    d = rows.drop_duplicates("job_id").reset_index(drop=True)
+    print(f"pay quotes (posting x zone)      : {len(rows):,}")
+    print(f"postings                         : {len(d):,}")
+    print(f"companies                        : {d.company.nunique()}")
+    print(f"O*NET hot technologies searched  : {len(pats)}")
 
-    # ---- skill indicators, from the requirements sections only -------------
+    # =======================================================================
+    # RESULT 1 - the same posting, priced in different cities
+    # =======================================================================
+    multi = rows[rows.n_zones > 1]
+    spread = multi.groupby("job_id")["lmid"].agg(["max", "min"])
+    gap = np.exp(spread["max"] - spread["min"]) - 1
+    within_posting = multi.lmid - multi.groupby("job_id").lmid.transform("mean")
+    cell = d.groupby(["company", "family", "level"]).lmid.transform("mean")
+    within_cell = d.lmid - cell
+    print("\n" + "=" * 78)
+    print("RESULT 1  Same posting, different city")
+    print("=" * 78)
+    print(f"  postings quoting >1 city band : {multi.job_id.nunique():,}")
+    print(f"  top-to-bottom gap, mean       : {gap.mean():.1%}")
+    print(f"                       median   : {gap.median():.1%}")
+    print(f"                       p90      : {gap.quantile(.9):.1%}")
+    print(f"  var(log pay) within a posting : {within_posting.var():.4f}")
+    print(f"  var within firm x family x lvl: {within_cell.var():.4f}")
+    print(f"  -> location share             : "
+          f"{within_posting.var()/within_cell.var():.0%}")
+
+    # =======================================================================
+    # RESULT 2 - what the text is associated with
+    # =======================================================================
     hits = {}
     for name, pat in pats.items():
         col = d.req_text.map(lambda t, p=pat: float(mentions(t, p)))
         if col.sum() >= min_count:
             hits[name] = col
     S = pd.DataFrame(hits)
-    print(f"technologies mentioned in >= {min_count} postings: {S.shape[1]}")
+    print(f"\ntechnologies mentioned in >= {min_count} postings: {S.shape[1]}")
 
     est = []
     for name in S.columns:
@@ -279,7 +317,7 @@ def main(min_count=25, make_figure=True):
     est.sort(key=lambda r: -r[2])
 
     print("\n" + "=" * 78)
-    print("SKILL PREMIA  (within company x seniority)")
+    print("RESULT 2  Skills and posted pay (within company x seniority)")
     print("=" * 78)
     print(f"  {'technology':28s} {'premium':>9s} {'(se)':>7s} {'postings':>9s}")
     for name, _, b, se, n in est[:10]:
@@ -292,9 +330,30 @@ def main(min_count=25, make_figure=True):
                                "se_pct", "n_postings"]).to_csv(
         os.path.join(DATA, "skill_premia.csv"), index=False)
 
+    # =======================================================================
+    # RESULT 3 - how wide are the bands, and do the widths look chosen?
+    # =======================================================================
+    print("\n" + "=" * 78)
+    print("RESULT 3  The width of the band")
+    print("=" * 78)
+    r = d.ratio.round(3)
+    top = r.value_counts().head(6)
+    print(f"  median width  : {d.width.median():.1%} of the midpoint")
+    print(f"  IQR           : [{d.width.quantile(.25):.1%}, "
+          f"{d.width.quantile(.75):.1%}]")
+    print(f"\n  most common top/bottom ratios:")
+    for val, cnt in top.items():
+        print(f"     {val:.3f}   {cnt:5d} postings ({cnt/len(d):5.1%})")
+    print(f"  the six most common ratios cover {top.sum()/len(d):.0%} "
+          f"of all postings")
+    print("\n  median width by seniority:")
+    for lv, g in d.groupby("level"):
+        if len(g) >= 20:
+            print(f"     level {lv}  n={len(g):5d}   {g.width.median():.1%}")
+
     # ---- compensating differential: remote ---------------------------------
     print("\n" + "=" * 78)
-    print("REMOTE WORK AND POSTED PAY  (tightening the comparison)")
+    print("APPENDIX  Remote work and posted pay (tightening the comparison)")
     print("=" * 78)
     rows = []
     b1, s1, n1 = within(d, "lmid", "remote", ["company"])
@@ -318,6 +377,7 @@ def main(min_count=25, make_figure=True):
 
     if make_figure:
         save_figure(est)
+        save_width_figure(d)
 
 
 def save_figure(est, k=10):
@@ -356,6 +416,56 @@ def save_figure(est, k=10):
     out = os.path.join(FIGS, "skill_premia.png")
     fig.savefig(out, dpi=200)
     print(f"\nfigure -> {os.path.relpath(out, HERE)}")
+
+
+def save_width_figure(d, lo=1.0, hi=2.2):
+    """Histogram of the top/bottom ratio of each posted band.
+
+    If widths were tailored to each vacancy the distribution would be smooth.
+    Spikes at round values say the width is largely conventional.
+    """
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except ImportError:
+        return
+    r = d.ratio[(d.ratio >= lo) & (d.ratio <= hi)]
+    edges = np.arange(lo, hi + 0.005, 0.005)
+    counts, _ = np.histogram(r, bins=edges)
+    fig, ax = plt.subplots(figsize=(11.2, 5.2))
+    ax.hist(r, bins=edges, color="#0969DA")
+    ax.set_xlabel("Top of the posted band / bottom of the posted band",
+                  fontsize=10)
+    ax.set_ylabel("Postings", fontsize=10)
+    ax.set_ylim(0, counts.max() * 1.16)          # headroom for the labels
+    ax.set_title("Posted pay bands cluster on a few round widths",
+                 fontsize=12, fontweight="bold", loc="left", pad=26)
+    ax.text(0.0, 1.012,
+            f"{len(r):,} postings. Each bar is a 0.5-percentage-point bin.",
+            transform=ax.transAxes, fontsize=8, color="#57606A")
+    # label the tallest bars, at the height they actually reach,
+    # skipping any that would sit on top of a label already placed
+    placed = []
+    for i in np.argsort(counts)[::-1]:
+        if len(placed) == 5:
+            break
+        centre = (edges[i] + edges[i + 1]) / 2
+        if any(abs(centre - p) < 0.03 for p in placed):
+            continue
+        placed.append(centre)
+        ax.annotate(f"{centre:.3g}", xy=(centre, counts[i]), xytext=(0, 6),
+                    textcoords="offset points", ha="center",
+                    fontsize=8.5, color="#24292F", fontweight="bold")
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    ax.grid(axis="y", color="#D0D7DE", lw=0.6, alpha=0.8)
+    ax.set_axisbelow(True)
+    fig.tight_layout()
+    os.makedirs(FIGS, exist_ok=True)
+    out = os.path.join(FIGS, "range_width.png")
+    fig.savefig(out, dpi=200)
+    print(f"figure -> {os.path.relpath(out, HERE)}")
 
 
 if __name__ == "__main__":

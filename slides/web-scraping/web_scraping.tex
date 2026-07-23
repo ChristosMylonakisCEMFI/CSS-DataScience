@@ -154,9 +154,9 @@
     \textbf{What we find (this sample)}
     \vspace{0.35em}
     \begin{itemize}
-      \item mean gap across cities: about \textbf{21\%}
-      \item roughly \textbf{a quarter} of pay variation between otherwise
-            comparable postings
+      \item gap between the top and bottom city, on average: about
+            \textbf{22\%}
+      \item and about \textbf{15\%} for the typical posting
     \end{itemize}
   \end{beamercolorbox}
 \end{columns}
@@ -186,15 +186,15 @@ available on web pages but not distributed as a ready-made dataset.}
   \small Loops, threads, caching, failures.
 
   \vspace{0.6em}
-  \textbf{Part 5 --- What the data says}\\
-  \small An old question in labour economics.
+  \textbf{Part 5 --- What the postings show}\\
+  \small Three descriptive patterns, including one from the text itself.
 
   \vspace{0.6em}
-  \textbf{Part 6 --- The text is data too}\\
-  \small Turning the posting itself into variables.
+  \textbf{Part 6 --- Doing this responsibly}
 
   \vspace{0.6em}
-  \textbf{Part 7 --- Doing this responsibly}
+  {\color{Muted}\small Appendix: extraction method, further results, and the
+  caveats behind each pattern.}
 \end{columns}
 
 \vspace{0.8em}
@@ -782,196 +782,84 @@ postings are live at run time.}
 \end{frame}
 
 % =============================================================================
-\section{What the data says}
-\begin{frame}{Background: compensating differentials}
-Compensating differential theory (Smith; Rosen, 1986): in equilibrium,
-undesirable job attributes should be associated with higher pay, desirable
-ones with lower pay.
+\section{What the postings show}
+\begin{frame}{A posting gives us three things}
+\begin{columns}[T,onlytextwidth]
+  \column{0.31\textwidth}
+  \begin{block}{A midpoint}
+    What the job pays.
+  \end{block}
+  \small Where does pay vary?
+
+  \column{0.31\textwidth}
+  \begin{block}{A text}
+    What the job is.
+  \end{block}
+  \small What is it that gets paid for?
+
+  \column{0.31\textwidth}
+  \begin{block}{A width}
+    How much room is left.
+  \end{block}
+  \small How is the number set?
+\end{columns}
+
+\vspace{1.0em}
+Three descriptive patterns follow, one for each. None of them is a causal
+estimate---they are the kind of thing you can find in an afternoon, and the
+kind of thing that suggests a question worth pursuing.
 
 \vspace{0.6em}
-Estimating this from wage data is difficult. A common concern: more
-productive workers tend to obtain both higher pay \emph{and} better working
-conditions, and worker productivity is not fully observed. Estimated
-differentials can therefore come out with an unexpected sign.
-
-\vspace{0.6em}
-\begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
-  \small \textbf{Why postings are a useful complement.} A posted range is
-  attached to a vacancy, not to a hired worker, so worker selection does not
-  enter the observation in the same way.
-\end{beamercolorbox}
+{\scriptsize\color{Muted} All three come from one run of
+\texttt{07\_text\_as\_data.py}: 3{,}323 postings, 30 companies.}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{Result 1: variation by location, within a posting}
-Some postings list several pay zones---one posting, several salary bands by
-city. Only location differs.
+\begin{frame}{1. The same posting, priced by city}
+Some postings quote a separate band for each city. Same employer, same
+requisition, same text---only the location differs.
 
-\vspace{0.4em}
+\vspace{0.5em}
 \begin{table}
 \centering\small
 \begin{tabular}{lr}
 \toprule
-Postings with $>1$ pay zone                     & 574 \\
+Postings quoting more than one city band & 525 \\
 \midrule
-Top-to-bottom gap, mean                         & 20.7\% \\
-\qquad median                                   & 14.2\% \\
-\qquad 90th percentile                          & 28.5\% \\
-\midrule
-Var.\ of log pay within a posting (location)    & 0.013 \\
-Var.\ within company $\times$ family $\times$ level & 0.050 \\
-\quad share attributable to location            & $\approx 25\%$ \\
+Gap between the top and bottom city, mean & 22.4\% \\
+\qquad median                             & 15.4\% \\
+\qquad 90th percentile                    & 28.7\% \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\vspace{0.2em}
-\takeaway{About a quarter of pay variation between otherwise comparable
-postings is associated with location alone.}
-\end{frame}
-
-% =============================================================================
-\begin{frame}{Result 2: the remote-work pay differential}
-Regression of log posted pay on a remote indicator, under two sets of
-controls.
-
-\vspace{0.4em}
-\begin{table}
-\centering\small
-\begin{tabular}{lcc}
-\toprule
- & (1) & (2) \\
-\midrule
-Remote (\% difference) & $+9.3$ & $+1.2$ \\
-                       & (2.6)  & (0.5)  \\
-\midrule
-Comparison within & firm $\times$ family & firm $\times$ \\
-                  & $\times$ seniority   & exact title \\
-Observations      & 4{,}450 & 129 \\
-Cells             & 413     & 22 \\
-\bottomrule
-\end{tabular}
 
 \vspace{0.3em}
-{\footnotesize Cluster-robust SEs (by company) in parentheses.}
-\end{table}
-
-\vspace{0.2em}
-\takeaway{The estimate shrinks toward zero under a tighter comparison: much
-of column (1) reflects which roles are offered remotely, not a pay premium.}
+\takeaway{Within a single requisition, the advertised band can differ by a
+fifth across cities. Geography is priced explicitly, and it is written down.}
 \end{frame}
 
 % =============================================================================
-\section{The text is data too}
-\begin{frame}{So far we used one number per posting}
-A posting is mostly \emph{text}: what the job requires, what it offers, which
-tools it uses. That text can be turned into variables.
-
-\vspace{0.7em}
-\begin{beamercolorbox}[rounded=true,sep=0.7em,wd=\linewidth]{block body}
-  \textbf{Question.} Which technical skills are associated with higher posted
-  pay, holding the employer and seniority fixed?
-\end{beamercolorbox}
-
-\vspace{0.7em}
-The difficulty is not extracting words. It is doing so in a way you could
-defend in a seminar---because if you choose the terms after seeing which ones
-correlate with pay, the exercise is circular.
-\end{frame}
-
-% =============================================================================
-\begin{frame}[fragile]{Three rules for turning text into variables}
-\begin{enumerate}
-  \item \textbf{Do not invent the list.} Take an external, published
-        taxonomy. We use the \textbf{O*NET Hot Technologies} list
-        (170 technologies), so the attribute set is not ours to choose.
-  \item \textbf{Read the right section.} A tool named under
-        \emph{Requirements} is a requirement; the same word in the company
-        blurb is not. We split the posting on its headers.
-  \item \textbf{Handle negation.} Consider this real sentence:
-\begin{lstlisting}[style=terminal]
-"No ML or Research experience is required"
-\end{lstlisting}
-        A naive keyword search records this as an ML requirement---with the
-        sign exactly backwards.
-\end{enumerate}
-
-\vspace{0.4em}
-\takeaway{Also beware short names that are ordinary words: matching
-\texttt{access}, \texttt{cloud} or \texttt{team} tags most of the sample. For
-those we require the full product name.}
-\end{frame}
-
-% =============================================================================
-\begin{frame}{What is a skill associated with?}
+\begin{frame}{2. What the text is associated with}
 \centering
-\includegraphics[width=0.93\textwidth,height=0.74\textheight,keepaspectratio]{figs/skill_premia.png}
+\includegraphics[width=0.93\textwidth,height=0.72\textheight,keepaspectratio]{figs/skill_premia.png}
 
-\vspace{0.2em}
-{\scriptsize\color{Muted} 3{,}325 postings, 30 companies, 59 technologies with
-$\geq$25 mentions.}
+\vspace{0.1em}
+{\scriptsize\color{Muted} Technologies taken from the O*NET Hot Technologies
+list, not chosen by us. Associations, not causal returns---Excel and SAP mark
+administrative roles.}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{Reading that figure honestly}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  \textbf{What it shows}
-  \vspace{0.3em}
-  \begin{itemize}\small
-    \item data and infrastructure tools sit at the top
-    \item office, BI and ERP tools sit at the bottom
-    \item holding employer and seniority fixed
-  \end{itemize}
+\begin{frame}{3. The widths are not tailored to the job}
+\centering
+\includegraphics[width=0.95\textwidth,height=0.68\textheight,keepaspectratio]{figs/range_width.png}
 
-  \column{0.48\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
-    \textbf{What it does not show}
-    \vspace{0.3em}
-    \small Learning Excel will not cut your pay by 19\%. These tools
-    \emph{mark} the kind of role---Excel and SAP appear in administrative and
-    operations postings. This is selection, not a return to the skill.
-  \end{beamercolorbox}
-\end{columns}
-
-\vspace{0.7em}
-\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body example}
-  \small \textbf{Where this could go.} Re-run the same scrape each month and
-  the coefficients become a \emph{time series}: how the posted price of a
-  given skill moves. That is a research question, not a class exercise.
-\end{beamercolorbox}
+\vspace{0.1em}
+{\scriptsize\color{Muted} Six ratios account for a third of all postings.
+Median width 31\% of the midpoint, and essentially flat across seniority
+(level 2: 31.5\%, level 5: 31.6\%).}
 \end{frame}
 
-% =============================================================================
-\begin{frame}[fragile]{A caution before you believe any of this}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
-    \textbf{What this sample is}
-    \begin{itemize}\small
-      \item firms using one hiring platform
-      \item mostly technology, mostly high-paying
-      \item only those disclosing a salary
-      \item \emph{advertised} pay, not paid pay
-    \end{itemize}
-  \end{beamercolorbox}
-
-  \column{0.48\textwidth}
-  \textbf{What follows}
-  \vspace{0.3em}
-  \begin{itemize}\small
-    \item this is not ``the labour market''
-    \item disclosure is a choice, and choices select
-    \item the second estimate rests on 22 comparisons
-  \end{itemize}
-\end{columns}
-
-\vspace{0.8em}
-\takeaway{Scraped data is real data with real limits. Say what your sample is
-before you say what you found.}
-\end{frame}
-
-% =============================================================================
 \section{Responsibly}
 \begin{frame}[fragile]{Scraping responsibly}
 \begin{columns}[T,onlytextwidth]
@@ -1051,6 +939,172 @@ results reproducible.}
     \node[anchor=west] at ([xshift=1.05cm]current page.west)
       {{\usebeamerfont{title}\color{white}Appendix}};
   \end{tikzpicture}
+\end{frame}
+
+% =============================================================================
+% =============================================================================
+\begin{frame}{Appendix: reading the width result}
+A posted band could reflect several things: room to negotiate, a role that
+spans levels, or simply a convention that satisfies a disclosure rule.
+
+\vspace{0.6em}
+\begin{columns}[T,onlytextwidth]
+  \column{0.47\textwidth}
+  \textbf{What the pattern suggests}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item spikes at round ratios (1.25, 1.375, 1.5)
+    \item width barely moves with seniority
+    \item so widths look conventional rather than calculated per vacancy
+  \end{itemize}
+
+  \column{0.49\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{What it does not show}
+    \vspace{0.3em}
+    \small A flat \emph{percentage} is not a flat \emph{amount}: 31\% of
+    \$400k is \$124k, of \$130k is \$40k. So this is not evidence that nobody
+    negotiates---only that the posted band itself is a coarse object.
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.6em}
+\takeaway{The natural next question needs data we do not have here: where
+does realised pay fall inside the posted band?}
+\end{frame}
+
+
+% =============================================================================
+\begin{frame}{Appendix: compensating differentials}
+Compensating differential theory (Smith; Rosen, 1986): in equilibrium,
+undesirable job attributes should be associated with higher pay, desirable
+ones with lower pay.
+
+\vspace{0.6em}
+Estimating this from wage data is difficult. A common concern: more
+productive workers tend to obtain both higher pay \emph{and} better working
+conditions, and worker productivity is not fully observed. Estimated
+differentials can therefore come out with an unexpected sign.
+
+\vspace{0.6em}
+\begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
+  \small \textbf{Why postings are a useful complement.} A posted range is
+  attached to a vacancy, not to a hired worker, so worker selection does not
+  enter the observation in the same way.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Appendix: remote work and posted pay}
+Regression of log posted pay on a remote indicator, under two sets of
+controls.
+
+\vspace{0.4em}
+\begin{table}
+\centering\small
+\begin{tabular}{lcc}
+\toprule
+ & (1) & (2) \\
+\midrule
+Remote (\% difference) & $+9.3$ & $+1.2$ \\
+                       & (2.6)  & (0.5)  \\
+\midrule
+Comparison within & firm $\times$ family & firm $\times$ \\
+                  & $\times$ seniority   & exact title \\
+Observations      & 4{,}450 & 129 \\
+Cells             & 413     & 22 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.3em}
+{\footnotesize Cluster-robust SEs (by company) in parentheses.}
+\end{table}
+
+\vspace{0.2em}
+\takeaway{The estimate shrinks toward zero under a tighter comparison: much
+of column (1) reflects which roles are offered remotely, not a pay premium.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: how the skills were extracted}
+\begin{enumerate}
+  \item \textbf{Do not invent the list.} Take an external, published
+        taxonomy. We use the \textbf{O*NET Hot Technologies} list
+        (170 technologies), so the attribute set is not ours to choose.
+  \item \textbf{Read the right section.} A tool named under
+        \emph{Requirements} is a requirement; the same word in the company
+        blurb is not. We split the posting on its headers.
+  \item \textbf{Handle negation.} Consider this real sentence:
+\begin{lstlisting}[style=terminal]
+"No ML or Research experience is required"
+\end{lstlisting}
+        A naive keyword search records this as an ML requirement---with the
+        sign exactly backwards.
+\end{enumerate}
+
+\vspace{0.4em}
+\takeaway{Also beware short names that are ordinary words: matching
+\texttt{access}, \texttt{cloud} or \texttt{team} tags most of the sample. For
+those we require the full product name.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Appendix: reading the skill figure}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{What it shows}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item data and infrastructure tools sit at the top
+    \item office, BI and ERP tools sit at the bottom
+    \item holding employer and seniority fixed
+  \end{itemize}
+
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{What it does not show}
+    \vspace{0.3em}
+    \small Learning Excel will not cut your pay by 19\%. These tools
+    \emph{mark} the kind of role---Excel and SAP appear in administrative and
+    operations postings. This is selection, not a return to the skill.
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.7em}
+\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body example}
+  \small \textbf{Where this could go.} Re-run the same scrape each month and
+  the coefficients become a \emph{time series}: how the posted price of a
+  given skill moves. That is a research question, not a class exercise.
+\end{beamercolorbox}
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Appendix: what this sample is}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{What this sample is}
+    \begin{itemize}\small
+      \item firms using one hiring platform
+      \item mostly technology, mostly high-paying
+      \item only those disclosing a salary
+      \item \emph{advertised} pay, not paid pay
+    \end{itemize}
+  \end{beamercolorbox}
+
+  \column{0.48\textwidth}
+  \textbf{What follows}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item this is not ``the labour market''
+    \item disclosure is a choice, and choices select
+    \item the second estimate rests on 22 comparisons
+  \end{itemize}
+\end{columns}
+
+\vspace{0.8em}
+\takeaway{Scraped data is real data with real limits. Say what your sample is
+before you say what you found.}
 \end{frame}
 
 % =============================================================================
