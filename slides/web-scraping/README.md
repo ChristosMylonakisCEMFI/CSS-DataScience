@@ -109,6 +109,7 @@ python 04_compare.py         # all three side by side: do they agree, what do th
 python 05_scale_up.py        # the same idea over ~100 companies -> data/postings.csv
 python 06_analysis.py        # what the data says
 python 07_text_as_data.py    # turn the posting TEXT into variables
+python 08_compensating.py    # is the remote option paid for?
 ```
 
 The first three each print the same three salaries. That is the point: three
@@ -133,6 +134,7 @@ re-download.
 | `code/05_scale_up.py` | Threads, caching, error handling, ~100 boards |
 | `code/06_analysis.py` | The economics |
 | `code/07_text_as_data.py` | Skills from the posting text, using the O\*NET taxonomy |
+| `code/08_compensating.py` | The remote pay gap as more of the job is held fixed |
 | `data/postings.csv` | The collected dataset |
 | `data/onet_hot_technologies.csv` | The external skill taxonomy (see below) |
 
