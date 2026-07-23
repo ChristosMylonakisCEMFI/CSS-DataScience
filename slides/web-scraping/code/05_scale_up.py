@@ -71,6 +71,7 @@ def fetch_board(company, use_cache=True):
     except Exception:
         return []                          # timeout, bad JSON, connection reset
 
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(jobs, fh)
     return jobs

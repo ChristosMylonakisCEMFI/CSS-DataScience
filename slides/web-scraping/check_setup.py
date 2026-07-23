@@ -29,6 +29,7 @@ PKGS = [
     ("bs4", "beautifulsoup4>=4.12", None),
     ("pandas", "pandas>=1.4", None),
     ("selenium", "selenium>=4.25", (4, 25)),
+    ("matplotlib", "matplotlib>=3.5", None),
 ]
 
 CHROME_DOWNLOAD = "https://www.google.com/chrome/"

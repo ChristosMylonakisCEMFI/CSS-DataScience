@@ -108,6 +108,7 @@ python 04_compare.py         # all three side by side: do they agree, what do th
 
 python 05_scale_up.py        # the same idea over ~100 companies -> data/postings.csv
 python 06_analysis.py        # what the data says
+python 07_text_as_data.py    # turn the posting TEXT into variables
 ```
 
 The first three each print the same three salaries. That is the point: three
@@ -131,7 +132,32 @@ re-download.
 | `code/04_compare.py` | Timing and agreement across the three |
 | `code/05_scale_up.py` | Threads, caching, error handling, ~100 boards |
 | `code/06_analysis.py` | The economics |
+| `code/07_text_as_data.py` | Skills from the posting text, using the O\*NET taxonomy |
 | `data/postings.csv` | The collected dataset |
+| `data/onet_hot_technologies.csv` | The external skill taxonomy (see below) |
+
+### Turning text into variables
+
+`07_text_as_data.py` extracts technical skills from the posting text and asks
+which ones are associated with higher posted pay. Three rules keep it
+defensible:
+
+1. **The skill list comes from outside.** We use the O\*NET *Hot Technologies*
+   list (170 technologies), not terms we chose. Picking terms after seeing
+   which correlate with pay would make the exercise circular.
+2. **Only the relevant sections are read.** A tool named under *Requirements*
+   is a requirement; the same word in the company blurb is not.
+3. **Negation is handled.** "No ML experience is required" is not an ML
+   requirement.
+
+The results are **associations, not causal returns**: Excel and SAP appear in
+lower-paid administrative roles, which is selection, not an effect of the
+tool.
+
+> **Data source.** `data/onet_hot_technologies.csv` is derived from O\*NET 29.1
+> Technology Skills by the National Center for O\*NET Development, used under
+> [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Refresh it with
+> `python 07_text_as_data.py --refresh-onet`.
 
 ---
 

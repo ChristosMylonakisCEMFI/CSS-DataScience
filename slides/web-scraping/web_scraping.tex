@@ -190,7 +190,11 @@ available on web pages but not distributed as a ready-made dataset.}
   \small An old question in labour economics.
 
   \vspace{0.6em}
-  \textbf{Part 6 --- Doing this responsibly}
+  \textbf{Part 6 --- The text is data too}\\
+  \small Turning the posting itself into variables.
+
+  \vspace{0.6em}
+  \textbf{Part 7 --- Doing this responsibly}
 \end{columns}
 
 \vspace{0.8em}
@@ -855,6 +859,87 @@ Cells             & 413     & 22 \\
 \vspace{0.2em}
 \takeaway{The estimate shrinks toward zero under a tighter comparison: much
 of column (1) reflects which roles are offered remotely, not a pay premium.}
+\end{frame}
+
+% =============================================================================
+\section{The text is data too}
+\begin{frame}{So far we used one number per posting}
+A posting is mostly \emph{text}: what the job requires, what it offers, which
+tools it uses. That text can be turned into variables.
+
+\vspace{0.7em}
+\begin{beamercolorbox}[rounded=true,sep=0.7em,wd=\linewidth]{block body}
+  \textbf{Question.} Which technical skills are associated with higher posted
+  pay, holding the employer and seniority fixed?
+\end{beamercolorbox}
+
+\vspace{0.7em}
+The difficulty is not extracting words. It is doing so in a way you could
+defend in a seminar---because if you choose the terms after seeing which ones
+correlate with pay, the exercise is circular.
+\end{frame}
+
+% =============================================================================
+\begin{frame}[fragile]{Three rules for turning text into variables}
+\begin{enumerate}
+  \item \textbf{Do not invent the list.} Take an external, published
+        taxonomy. We use the \textbf{O*NET Hot Technologies} list
+        (170 technologies), so the attribute set is not ours to choose.
+  \item \textbf{Read the right section.} A tool named under
+        \emph{Requirements} is a requirement; the same word in the company
+        blurb is not. We split the posting on its headers.
+  \item \textbf{Handle negation.} Consider this real sentence:
+\begin{lstlisting}[style=terminal]
+"No ML or Research experience is required"
+\end{lstlisting}
+        A naive keyword search records this as an ML requirement---with the
+        sign exactly backwards.
+\end{enumerate}
+
+\vspace{0.4em}
+\takeaway{Also beware short names that are ordinary words: matching
+\texttt{access}, \texttt{cloud} or \texttt{team} tags most of the sample. For
+those we require the full product name.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{What is a skill associated with?}
+\centering
+\includegraphics[width=0.93\textwidth,height=0.74\textheight,keepaspectratio]{figs/skill_premia.png}
+
+\vspace{0.2em}
+{\scriptsize\color{Muted} 3{,}325 postings, 30 companies, 59 technologies with
+$\geq$25 mentions.}
+\end{frame}
+
+% =============================================================================
+\begin{frame}{Reading that figure honestly}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \textbf{What it shows}
+  \vspace{0.3em}
+  \begin{itemize}\small
+    \item data and infrastructure tools sit at the top
+    \item office, BI and ERP tools sit at the bottom
+    \item holding employer and seniority fixed
+  \end{itemize}
+
+  \column{0.48\textwidth}
+  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body alerted}
+    \textbf{What it does not show}
+    \vspace{0.3em}
+    \small Learning Excel will not cut your pay by 19\%. These tools
+    \emph{mark} the kind of role---Excel and SAP appear in administrative and
+    operations postings. This is selection, not a return to the skill.
+  \end{beamercolorbox}
+\end{columns}
+
+\vspace{0.7em}
+\begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body example}
+  \small \textbf{Where this could go.} Re-run the same scrape each month and
+  the coefficients become a \emph{time series}: how the posted price of a
+  given skill moves. That is a research question, not a class exercise.
+\end{beamercolorbox}
 \end{frame}
 
 % =============================================================================
