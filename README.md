@@ -1,6 +1,6 @@
 # Data Science for Economics: Mastering Unstructured Data
 
-Slides, exercises, and code for the Computational Social Science data science course.
+Slides, exercises, and code for the course "Data Science for Economics".
 
 ## Materials
 
