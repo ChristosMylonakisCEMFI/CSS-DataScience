@@ -27,14 +27,7 @@
 \setbeamercolor{normal text}{fg=Ink,bg=white}
 \setbeamercolor{structure}{fg=Blue}
 \setbeamercolor{frametitle}{fg=white,bg=Navy}
-\setbeamercolor{title}{fg=white}
-\setbeamercolor{subtitle}{fg=LightBlue}
-\setbeamercolor{block title}{fg=white,bg=Blue}
-\setbeamercolor{block body}{fg=Ink,bg=LightBlue}
-\setbeamercolor{block title alerted}{fg=white,bg=Orange}
-\setbeamercolor{block body alerted}{fg=Ink,bg=LightOrange}
-\setbeamercolor{block title example}{fg=white,bg=Green}
-\setbeamercolor{block body example}{fg=Ink,bg=LightGreen}
+\setbeamercolor{title}{fg=Navy}
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{itemize item}{\color{Blue}$\blacktriangleright$}
@@ -57,8 +50,6 @@
 
 \setbeamerfont{frametitle}{series=\bfseries,size=\large}
 \setbeamerfont{title}{series=\bfseries,size=\LARGE}
-\setbeamerfont{subtitle}{size=\large}
-\setbeamerfont{block title}{series=\bfseries}
 
 % -----------------------------------------------------------------------------
 % Listings and reusable elements
@@ -97,56 +88,37 @@
   \tikz[baseline=(b.base)]\node[draw=Rule,fill=CodeBG,rounded corners=2pt,
   inner xsep=5pt,inner ysep=2.2pt,font=\bfseries\scriptsize] (b) {#1};}
 
-\newcommand{\statebadge}[2]{%
-  \tikz[baseline=(b.base)]\node[fill=#1,rounded corners=2pt,
-  inner xsep=5pt,inner ysep=2pt,font=\bfseries\scriptsize,text=Ink] (b) {#2};}
-
-\newcommand{\takeaway}[1]{%
-  \begin{beamercolorbox}[rounded=true,sep=0.6em,wd=\linewidth]{block body example}
-    \textbf{What this means:} #1
-  \end{beamercolorbox}}
-
 \title{Git, GitHub, and Codespaces}
-\subtitle{A hands-on tutorial: build a Python project from scratch}
-\author{CSS Data Science}
 \date{}
 
 \begin{document}
 
 % -----------------------------------------------------------------------------
 \begin{frame}[plain]
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[Navy] (current page.south west) rectangle (current page.north east);
-    \fill[Blue] (current page.south west) rectangle ([xshift=0.18cm]current page.north west);
-    \node[anchor=west,text width=12.8cm] at ([xshift=1.05cm,yshift=0.55cm]current page.west) {
-      {\usebeamerfont{title}\color{white}\inserttitle\par}
-      \vspace{0.25cm}
-      {\usebeamerfont{subtitle}\color{LightBlue}\insertsubtitle\par}
-      \vspace{0.75cm}
-      {\large\color{white}From an empty repository to a tested, synchronized project}
-    };
-    \node[anchor=south west] at ([xshift=1.05cm,yshift=0.55cm]current page.south west)
-      {\color{LightBlue}\small No installations. No third-party Python packages.};
-  \end{tikzpicture}
+  \vfill
+  \begin{center}
+    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}
+  \end{center}
+  \vfill
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{What we will build---and what you will be able to do}
 \begin{columns}[T,onlytextwidth]
   \column{0.46\textwidth}
-  \textbf{Our finished repository}
-  \vspace{0.35em}
-  \begin{beamercolorbox}[rounded=true,sep=0.7em]{block body}
-    \ttfamily
-    growth-calculator/\\
-    \quad README.md\\
-    \quad growth.py\\
-    \quad test\_growth.py\\
-    \quad .gitignore
-  \end{beamercolorbox}
+  The finished repository:
+  \vspace{0.5em}
+
+  \ttfamily
+  growth-calculator/\\
+  \quad README.md\\
+  \quad growth.py\\
+  \quad test\_growth.py\\
+  \quad .gitignore
+  \rmfamily
 
   \column{0.50\textwidth}
-  \textbf{By the end, you can}
+  By the end, you can
   \begin{itemize}
     \item create a repository and a Codespace;
     \item edit, run, and test Python code;
@@ -156,22 +128,21 @@
   \end{itemize}
 \end{columns}
 
-\vspace{0.5em}
-\takeaway{We will learn Git by repeatedly using it on one small project.}
+\vspace{0.9em}
+We will learn Git by repeatedly using it on one small project.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Why not save a new file every time?}
 \begin{columns}[T,onlytextwidth]
   \column{0.43\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.75em]{block body alerted}
-    \ttfamily
-    growth.py\\
-    growth\_final.py\\
-    growth\_final\_v2.py\\
-    growth\_final\_v2\_fixed.py\\
-    growth\_REALLY\_FINAL.py
-  \end{beamercolorbox}
+  \ttfamily
+  growth.py\\
+  growth\_final.py\\
+  growth\_final\_v2.py\\
+  growth\_final\_v2\_fixed.py\\
+  growth\_REALLY\_FINAL.py
+  \rmfamily
 
   \column{0.53\textwidth}
   This does not tell us:
@@ -183,28 +154,19 @@
   \end{itemize}
 \end{columns}
 
-\vspace{0.65em}
-\takeaway{Git stores named snapshots of the project and a history connecting them.}
+\vspace{0.9em}
+Git stores named snapshots of the project and a history connecting them.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Three tools, three different jobs}
-\begin{columns}[T,onlytextwidth]
-  \column{0.31\textwidth}
-  \begin{block}{Git}
-    Records versions of files and connects them in a history.
-  \end{block}
-  \column{0.31\textwidth}
-  \begin{block}{GitHub}
-    Hosts a repository online so it can be shared and synchronized.
-  \end{block}
-  \column{0.31\textwidth}
-  \begin{block}{Codespaces}
-    Provides a cloud computer and VS Code editor in the browser.
-  \end{block}
-\end{columns}
+\begin{itemize}
+  \item Git records versions of files and connects them in a history.
+  \item GitHub hosts a repository online so it can be shared and synchronized.
+  \item Codespaces provides a cloud computer and VS Code editor in the browser.
+\end{itemize}
 
-\vspace{0.7em}
+\vspace{0.9em}
 \begin{center}
 \begin{tikzpicture}[node distance=0.55cm,>=Latex]
   \node[draw=Rule,fill=CodeBG,rounded corners,minimum width=3.15cm,minimum height=0.9cm,font=\small] (c) {Codespace: where we work};
@@ -234,17 +196,16 @@
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.75em}
-\begin{alertblock}{The distinction that prevents most confusion}
-Saving a file, committing it, and pushing it are three separate actions.
-\end{alertblock}
+\vspace{1em}
+Saving a file, committing it, and pushing it are three separate actions. Keeping
+them apart prevents most of the confusion that follows.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Step 1: open GitHub's repository form}
 \begin{columns}[T,onlytextwidth]
   \column{0.50\textwidth}
-  \textbf{In the GitHub website}
+  In the GitHub website:
   \begin{enumerate}
     \item Sign in at \texttt{github.com}.
     \item In the upper-right corner, click \button{+}.
@@ -252,72 +213,69 @@ Saving a file, committing it, and pushing it are three separate actions.
   \end{enumerate}
 
   \column{0.46\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.55em]{block body}
-    \textbf{GitHub}\hfill \button{+}\quad\button{Profile}\\[0.5em]
-    \hrule
-    \vspace{0.5em}
-    \hfill\begin{minipage}{0.62\linewidth}
-      New repository\\
-      Import repository\\
-      New codespace\\
-      New gist
-    \end{minipage}
-  \end{beamercolorbox}
+  The menu that opens lists:
+  \vspace{0.5em}
+
+  \ttfamily
+  New repository\\
+  Import repository\\
+  New codespace\\
+  New gist
+  \rmfamily
 \end{columns}
 
-\vspace{0.8em}
-\takeaway{A repository is the project folder plus the Git history attached to it.}
+\vspace{1em}
+A repository is the project folder plus the Git history attached to it.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Step 2: configure and create the repository}
 \begin{columns}[T,onlytextwidth]
   \column{0.56\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.65em]{block body}
-    \textbf{Create a new repository}\\[0.45em]
-    Owner \hfill \button{your-username}\\[0.3em]
-    Repository name \hfill \button{growth-calculator}\\[0.3em]
-    Description \hfill \texttt{A simple Python growth calculator}\\[0.3em]
-    Visibility \hfill \(circ\) Public \quad \(\bullet\) Private\\[0.3em]
-    Add a README file \hfill \(\checkmark\)\\[0.55em]
-    \hfill\button{Create repository}
-  \end{beamercolorbox}
+  Fill in the form as follows.
+  \vspace{0.5em}
+
+  \begin{tabular}{@{}ll@{}}
+    Owner & \texttt{your-username}\\
+    Repository name & \texttt{growth-calculator}\\
+    Description & \texttt{A Python growth calculator}\\
+    Visibility & Private\\
+    Add a README file & yes\\
+  \end{tabular}
+
+  \vspace{0.6em}
+  Then click \button{Create repository}.
 
   \column{0.40\textwidth}
-  \textbf{Why add a README?}
+  We add a README because
   \begin{itemize}
-    \item It explains the project to a visitor.
-    \item It gives the repository a first file.
+    \item it explains the project to a visitor;
+    \item it gives the repository a first file;
     \item GitHub creates the first commit for us.
   \end{itemize}
 \end{columns}
 
-\vspace{0.45em}
-\statebadge{LightGreen}{Checkpoint: the repository exists on GitHub}
+\vspace{0.9em}
+Checkpoint: the repository exists on GitHub.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Step 3: start a Codespace}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
-  \textbf{From the repository page}
+  From the repository page:
   \begin{enumerate}
     \item Click the green \button{Code} button.
     \item Select the \button{Codespaces} tab.
     \item Click \button{Create codespace on main}.
   \end{enumerate}
-  GitHub opens a new browser tab. Starting the cloud computer can take a minute.
 
   \column{0.48\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.65em]{block body example}
-    \textbf{growth-calculator}\hfill\button{Code}\\[0.6em]
-    \button{Local}\quad\button{Codespaces}\\[0.7em]
-    \centering\button{Create codespace on main}
-  \end{beamercolorbox}
+  GitHub opens a new browser tab. Starting the cloud computer can take a minute.
 \end{columns}
 
-\vspace{0.7em}
-\takeaway{The Codespace contains a working copy of the GitHub repository.}
+\vspace{1em}
+The Codespace contains a working copy of the GitHub repository.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -340,16 +298,13 @@ Saving a file, committing it, and pushing it are three separate actions.
   \end{tikzpicture}
 
   \column{0.34\textwidth}
-  \textbf{The areas we will use}
+  We will use three areas:
   \begin{itemize}
-    \item \textbf{Explorer:} create and open files.
-    \item \textbf{Editor:} write code.
-    \item \textbf{Terminal:} run commands.
+    \item the Explorer, to create and open files;
+    \item the editor, to write code;
+    \item the terminal, to run commands.
   \end{itemize}
-  Open the terminal with:
-  \begin{center}
-    \button{Terminal} \(\rightarrow\) \button{New Terminal}
-  \end{center}
+  Open the terminal with \button{Terminal} \(\rightarrow\) \button{New Terminal}.
 \end{columns}
 \end{frame}
 
@@ -357,7 +312,7 @@ Saving a file, committing it, and pushing it are three separate actions.
 \begin{frame}[fragile]{Inspect the starting repository}
 \begin{columns}[T,onlytextwidth]
   \column{0.54\textwidth}
-  \textbf{Type in the terminal}
+  Type in the terminal:
 \begin{lstlisting}[style=terminal]
 $ pwd
 /workspaces/growth-calculator
@@ -370,7 +325,7 @@ nothing to commit, working tree clean
 \end{lstlisting}
 
   \column{0.42\textwidth}
-  \textbf{How to read this}
+  Read the output as follows:
   \begin{itemize}
     \item \texttt{pwd}: show the current folder.
     \item \texttt{ls}: list the files in it.
@@ -380,14 +335,14 @@ nothing to commit, working tree clean
   \end{itemize}
 \end{columns}
 
-\vspace{0.65em}\begin{center}\statebadge{LightGreen}{Checkpoint: both copies are synchronized}\end{center}
+\vspace{0.9em}
+Checkpoint: both copies are synchronized.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Read the existing history}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
-  \textbf{Type}
 \begin{lstlisting}[style=terminal]
 $ git log --oneline
 a1b2c3d (HEAD -> main, origin/main)
@@ -395,24 +350,24 @@ a1b2c3d (HEAD -> main, origin/main)
 \end{lstlisting}
 
   \column{0.48\textwidth}
-  \textbf{Interpret the output}
+  The output says that
   \begin{itemize}
-    \item \texttt{a1b2c3d}: shortened commit identifier.
-    \item \texttt{HEAD -> main}: where our Codespace currently points.
-    \item \texttt{origin/main}: where GitHub currently points.
-    \item \texttt{Initial commit}: the saved description.
+    \item \texttt{a1b2c3d} is the shortened commit identifier;
+    \item \texttt{HEAD -> main} is where our Codespace currently points;
+    \item \texttt{origin/main} is where GitHub currently points;
+    \item \texttt{Initial commit} is the saved description.
   \end{itemize}
 \end{columns}
 
-\vspace{0.8em}
-\takeaway{Both labels point to the same commit, so the two copies are synchronized.}
+\vspace{1em}
+Both labels point to the same commit, so the two copies are synchronized.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Create the program: \texttt{growth.py}}
 \begin{columns}[T,onlytextwidth]
   \column{0.38\textwidth}
-  \textbf{In the Explorer}
+  In the Explorer:
   \begin{enumerate}
     \item Click the \button{New File} icon.
     \item Name the file \texttt{growth.py}.
@@ -442,7 +397,6 @@ if __name__ == "__main__":
 \begin{frame}[fragile]{Run the program before saving a Git version}
 \begin{columns}[T,onlytextwidth]
   \column{0.54\textwidth}
-  \textbf{Type}
 \begin{lstlisting}[style=terminal]
 $ python growth.py
 Percentage change: 5.0%
@@ -454,17 +408,12 @@ result = percentage_change(100, 105)
 \end{lstlisting}
 
   \column{0.42\textwidth}
-  \textbf{What just happened?}
-  \begin{itemize}
-    \item Python executed the file.
-    \item The program produced the expected result.
-    \item Git has not saved a new version.
-    \item GitHub has not received anything.
-  \end{itemize}
+  Python executed the file and the program produced the expected result. Git has
+  not saved a new version, and GitHub has not received anything.
 \end{columns}
 
-\vspace{0.55em}
-\takeaway{Running code and recording its version are separate actions.}
+\vspace{0.9em}
+Running code and recording its version are separate actions.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -483,15 +432,12 @@ nothing added to commit
 \end{lstlisting}
 
   \column{0.42\textwidth}
-  \textbf{``Untracked'' means}
-  \begin{itemize}
-    \item the file exists in the Codespace;
-    \item Git sees it;
-    \item it has never been included in a commit.
-  \end{itemize}
-  \begin{alertblock}{A useful subtlety}
-    \texttt{git diff} shows changes to tracked files. It will not display the contents of this new, untracked file.
-  \end{alertblock}
+  ``Untracked'' means that the file exists in the Codespace, that Git sees it,
+  and that it has never been included in a commit.
+
+  \vspace{0.6em}
+  Note that \texttt{git diff} shows changes to tracked files. It will not display
+  the contents of this new, untracked file.
 \end{columns}
 \end{frame}
 
@@ -515,13 +461,11 @@ new file mode 100644
 \end{lstlisting}
 
   \column{0.42\textwidth}
-  \textbf{What changed in Git?}
-  \begin{itemize}
-    \item \texttt{git add} selected \texttt{growth.py} for the next commit.
-    \item It did not create the commit.
-    \item \texttt{git diff --staged} previews the exact snapshot.
-  \end{itemize}
-  \statebadge{LightOrange}{State: staged, not committed}
+  \texttt{git add} selected \texttt{growth.py} for the next commit, but it did
+  not create the commit. \texttt{git diff --staged} previews the exact snapshot.
+
+  \vspace{0.6em}
+  State: staged, not committed.
 \end{columns}
 \end{frame}
 
@@ -541,14 +485,12 @@ a1b2c3d (origin/main) Initial commit
 \end{lstlisting}
 
   \column{0.42\textwidth}
-  \textbf{How to read this}
-  \begin{itemize}
-    \item The commit identifier is \texttt{d4e5f6a}.
-    \item \texttt{HEAD -> main} moved to the new commit.
-    \item \texttt{origin/main} did not move.
-    \item The commit exists locally, not yet on GitHub.
-  \end{itemize}
-  \statebadge{LightBlue}{State: committed locally}
+  The commit identifier is \texttt{d4e5f6a}. \texttt{HEAD -> main} moved to the
+  new commit; \texttt{origin/main} did not move. The commit therefore exists
+  locally, but not yet on GitHub.
+
+  \vspace{0.6em}
+  State: committed locally.
 \end{columns}
 \end{frame}
 
@@ -567,18 +509,17 @@ growth-calculator.git
   Then return to the GitHub tab and refresh the repository page.
 
   \column{0.44\textwidth}
-  \textbf{Verify on GitHub}
+  Verify on GitHub that
   \begin{enumerate}
-    \item Is \texttt{growth.py} visible?
-    \item Is the commit message visible?
-    \item Does the commit history show two commits?
+    \item \texttt{growth.py} is visible;
+    \item the commit message is visible;
+    \item the history shows two commits.
   \end{enumerate}
-  \begin{exampleblock}{Why verification matters}
-    A successful local commit does not imply a successful push.
-  \end{exampleblock}
+  A successful local commit does not imply a successful push.
 \end{columns}
 
-\statebadge{LightGreen}{Checkpoint: Codespace and GitHub contain the new commit}
+\vspace{0.9em}
+Checkpoint: Codespace and GitHub contain the new commit.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -587,11 +528,13 @@ growth-calculator.git
   \column{0.38\textwidth}
   Create a new file named \texttt{test\_growth.py}.
 
-  Each \texttt{assert} states a result that must be true. If one is false, Python stops with an error.
+  \vspace{0.5em}
+  Each \texttt{assert} states a result that must be true. If one is false, Python
+  stops with an error.
 
-  \begin{block}{No installed packages}
-    \texttt{growth} refers to our own \texttt{growth.py} file. The tests use only Python itself.
-  \end{block}
+  \vspace{0.5em}
+  \texttt{growth} refers to our own \texttt{growth.py} file. The tests use only
+  Python itself.
 
   \column{0.58\textwidth}
 \begin{lstlisting}[style=code,language=Python]
@@ -611,7 +554,7 @@ print("All tests passed.")
 \begin{frame}[fragile]{Run the tests---and see what failure looks like}
 \begin{columns}[T,onlytextwidth]
   \column{0.49\textwidth}
-  \textbf{When all expectations are correct}
+  When all expectations are correct:
 \begin{lstlisting}[style=terminal]
 $ python test_growth.py
 All tests passed.
@@ -620,7 +563,7 @@ All tests passed.
   Temporarily change the first expected result from \texttt{5} to \texttt{6} and rerun.
 
   \column{0.47\textwidth}
-  \textbf{A failing test}
+  A failing test:
 \begin{lstlisting}[style=terminal]
 $ python test_growth.py
 Traceback (most recent call last):
@@ -631,8 +574,8 @@ AssertionError
   Restore \texttt{5} and rerun until all tests pass.
 \end{columns}
 
-\vspace{0.45em}
-\takeaway{A test converts an expected result into a check the computer can repeat.}
+\vspace{0.7em}
+A test converts an expected result into a check the computer can repeat.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -651,25 +594,25 @@ $ git push
 \end{lstlisting}
 
   \column{0.41\textwidth}
-  \textbf{Why this order?}
+  The order matters:
   \begin{enumerate}
-    \item Identify changed files.
-    \item Inspect their contents.
-    \item Verify the code works.
-    \item Select the intended change.
-    \item Review, commit, and share it.
+    \item identify changed files;
+    \item inspect their contents;
+    \item verify the code works;
+    \item select the intended change;
+    \item review, commit, and share it.
   \end{enumerate}
 \end{columns}
 
-\vspace{0.45em}
-\takeaway{A good commit is small, coherent, reviewed, and tested.}
+\vspace{0.7em}
+A good commit is small, coherent, reviewed, and tested.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Simulate a collaborator by editing on GitHub}
 \begin{columns}[T,onlytextwidth]
   \column{0.52\textwidth}
-  \textbf{On the GitHub repository page}
+  On the GitHub repository page:
   \begin{enumerate}
     \item Click \texttt{README.md}.
     \item Click the pencil icon \button{Edit this file}.
@@ -679,16 +622,17 @@ $ git push
   \end{enumerate}
 
   \column{0.44\textwidth}
-  \begin{beamercolorbox}[rounded=true,sep=0.65em]{block body}
-    \textbf{README.md}\hfill\button{Edit}\\[0.5em]
-    \ttfamily\small
-    \# Growth calculator\\[0.25em]
-    A small Python program that calculates percentage changes.
-  \end{beamercolorbox}
+  The new content of \texttt{README.md}:
+  \vspace{0.5em}
+
+  \ttfamily
+  \# Growth calculator\\[0.25em]
+  A small Python program that calculates percentage changes.
+  \rmfamily
 \end{columns}
 
-\vspace{0.65em}
-\statebadge{LightOrange}{Now GitHub is one commit ahead of the Codespace}
+\vspace{0.9em}
+GitHub is now one commit ahead of the Codespace.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -714,7 +658,6 @@ Fast-forward
 \end{lstlisting}
 
   \column{0.37\textwidth}
-  \textbf{What each command does}
   \begin{enumerate}
     \item \texttt{git fetch} contacts GitHub and refreshes \texttt{origin/main}; it does not change your files.
     \item \texttt{git status} now sees that GitHub is one commit ahead.
@@ -722,40 +665,37 @@ Fast-forward
   \end{enumerate}
   ``Fast-forward'' means there was no competing local commit to merge.
 \end{columns}
-
-
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{What is \texttt{.gitignore}?}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
-  \begin{block}{A plain-text instruction file}
-    We create \texttt{.gitignore} to tell Git which files or folders it should not track.
-  \end{block}
-  Each line names a path or pattern to ignore. That line is sometimes called a ``rule.''
+  \texttt{.gitignore} is a plain-text file that tells Git which files or folders
+  it should not track. Each line names a path or pattern to ignore; that line is
+  sometimes called a ``rule.''
 
   \column{0.48\textwidth}
-  For this project, the complete file is:
-\begin{beamercolorbox}[rounded=true,sep=0.8em]{block body}
-\ttfamily\large
-\_\_pycache\_\_/
-\end{beamercolorbox}
-  \vspace{0.55em}
-  This one line means: ``Git, ignore the \texttt{\_\_pycache\_\_/} directory that Python created.''
+  For this project, the complete file is one line:
+  \vspace{0.5em}
+
+  {\ttfamily\large \_\_pycache\_\_/}
+
+  \vspace{0.6em}
+  It means: ``Git, ignore the \texttt{\_\_pycache\_\_/} directory that Python
+  created.''
 \end{columns}
 
-\vspace{0.55em}
-\begin{alertblock}{Nothing is deleted}
-The directory stays on the computer. Git simply stops offering to include it in commits.
-\end{alertblock}
+\vspace{1em}
+Nothing is deleted. The directory stays on the computer; Git simply stops
+offering to include it in commits.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Create, check, and commit \texttt{.gitignore}}
 \begin{columns}[T,onlytextwidth]
   \column{0.51\textwidth}
-  \textbf{1. Create the file}
+  Create the file:
 \begin{lstlisting}[style=terminal]
 $ printf "__pycache__/\n" > .gitignore
 $ cat .gitignore
@@ -763,7 +703,8 @@ __pycache__/
 \end{lstlisting}
   \texttt{printf} writes the line into \texttt{.gitignore}; \texttt{cat} checks what was written.
 
-  \textbf{2. Check the result}
+  \vspace{0.4em}
+  Check the result:
 \begin{lstlisting}[style=terminal]
 $ git status --short
 ?? .gitignore
@@ -771,19 +712,15 @@ $ git status --short
   The cache is no longer listed because Git is ignoring it.
 
   \column{0.45\textwidth}
-  \textbf{3. Share the instruction}
+  Share the instruction:
 \begin{lstlisting}[style=terminal]
 $ git add .gitignore
 $ git commit -m "Ignore Python cache"
 $ git push
 \end{lstlisting}
-  We commit \texttt{.gitignore} so everyone using the repository gets the same instruction.
-
-  \vspace{0.55em}
-  \begin{beamercolorbox}[rounded=true,sep=0.65em]{block body example}
-    \textbf{Tracked:} \texttt{.gitignore}\\
-    \textbf{Ignored:} \texttt{\_\_pycache\_\_/}
-  \end{beamercolorbox}
+  We commit \texttt{.gitignore} so everyone using the repository gets the same
+  instruction: \texttt{.gitignore} is tracked, \texttt{\_\_pycache\_\_/} is
+  ignored.
 \end{columns}
 \end{frame}
 
@@ -799,7 +736,7 @@ error: failed to push some refs
   This means GitHub has commits that your Codespace does not have. Git refuses to overwrite them.
 
   \column{0.44\textwidth}
-  \textbf{Safe response}
+  The safe response is
 \begin{lstlisting}[style=terminal]
 $ git status
 $ git pull
@@ -810,41 +747,40 @@ $ git push
   If Git reports a conflict, stop and resolve the marked files before pushing.
 \end{columns}
 
-\vspace{0.4em}
-\begin{alertblock}{Do not solve this with force}
-For this course workflow, do not use \texttt{git push --force}: it can discard shared history.
-\end{alertblock}
+\vspace{0.7em}
+Do not solve this with force: for this course workflow, never use
+\texttt{git push --force}, which can discard shared history.
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{What is a merge conflict?}
 \begin{columns}[T,onlytextwidth]
   \column{0.50\textwidth}
-  A conflict occurs when Git cannot decide how to combine competing edits automatically.
+  A conflict occurs when Git cannot decide how to combine competing edits
+  automatically. Git marks the disputed region:
+  \vspace{0.5em}
 
-  Git marks the disputed region:
-  \begin{beamercolorbox}[rounded=true,sep=0.55em]{block body alerted}
-    \ttfamily\scriptsize
-    <<<<<<< HEAD\\
-    Percentage change calculator\\
-    =======\\
-    Growth rate calculator\\
-    >>>>>>> origin/main
-  \end{beamercolorbox}
+  \ttfamily\scriptsize
+  <<<<<<< HEAD\\
+  Percentage change calculator\\
+  =======\\
+  Growth rate calculator\\
+  >>>>>>> origin/main
+  \rmfamily\normalsize
 
   \column{0.46\textwidth}
-  \textbf{Resolution procedure}
+  To resolve it,
   \begin{enumerate}
-    \item Read both versions.
-    \item Edit the file to the intended final content.
-    \item Remove all conflict markers.
-    \item Run the program and tests.
-    \item Stage and commit the resolution.
+    \item read both versions;
+    \item edit the file to the intended final content;
+    \item remove all conflict markers;
+    \item run the program and tests;
+    \item stage and commit the resolution.
   \end{enumerate}
 \end{columns}
 
-\vspace{0.4em}
-\takeaway{A conflict is a request for human judgment, not evidence that work was lost.}
+\vspace{0.7em}
+A conflict is a request for human judgment, not evidence that work was lost.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -866,55 +802,23 @@ For this course workflow, do not use \texttt{git push --force}: it can discard s
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.7em}
+\vspace{0.9em}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
-  \textbf{Before the commit}
+  Before the commit, ask
   \begin{itemize}
-    \item Does the program run?
-    \item Do the tests pass?
-    \item Did I inspect every changed line?
+    \item does the program run?
+    \item do the tests pass?
+    \item did I inspect every changed line?
   \end{itemize}
   \column{0.48\textwidth}
-  \textbf{After the commit}
+  After the commit, ask
   \begin{itemize}
-    \item Is the message meaningful?
-    \item Did the push succeed?
-    \item Can I see the commit on GitHub?
+    \item is the message meaningful?
+    \item did the push succeed?
+    \item can I see the commit on GitHub?
   \end{itemize}
 \end{columns}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Your turn: make one complete change}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  \textbf{Choose one improvement}
-  \begin{itemize}
-    \item Add a test using values \texttt{200} and \texttt{210}.
-    \item Change the displayed example.
-    \item Improve the function's docstring.
-    \item Add instructions to \texttt{README.md}.
-  \end{itemize}
-
-  \column{0.48\textwidth}
-  \textbf{Complete the whole cycle}
-\begin{lstlisting}[style=terminal]
-$ git pull
-# Edit and save the chosen file.
-$ python growth.py
-$ python test_growth.py
-$ git status
-$ git diff
-$ git add <the-file-you-changed>
-$ git diff --staged
-$ git commit -m "Describe the improvement"
-$ git push
-\end{lstlisting}
-\end{columns}
-
-\vspace{0.3em}
-\statebadge{LightGreen}{Done means: the new commit is visible on GitHub}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -935,8 +839,9 @@ How do I send my local commits to GitHub? & \texttt{git push} \\
 \bottomrule
 \end{tabular}
 
-\vspace{0.7em}
-\takeaway{When uncertain, start with \texttt{git status}; read Git's message before acting.}
+\vspace{1em}
+\normalsize
+When uncertain, start with \texttt{git status}; read Git's message before acting.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -953,14 +858,14 @@ How do I send my local commits to GitHub? & \texttt{git push} \\
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.6em}
+\vspace{0.8em}
 \begin{center}
   \Large\bfseries
   Pull \(\rightarrow\) Edit \(\rightarrow\) Test \(\rightarrow\) Inspect
   \(\rightarrow\) Commit \(\rightarrow\) Push
 \end{center}
 
-\vspace{0.5em}
+\vspace{0.6em}
 \begin{center}
   \color{Muted}Use it on every project until the workflow becomes routine.
 \end{center}
