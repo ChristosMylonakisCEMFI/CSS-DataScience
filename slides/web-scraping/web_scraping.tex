@@ -5,6 +5,7 @@
 \usepackage{booktabs}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{appendixnumberbeamer}  % total page count excludes the appendix
 \usefonttheme{serif}
 
 % -----------------------------------------------------------------------------
@@ -24,7 +25,7 @@
 \setbeamertemplate{itemize item}{\textbullet}
 \setbeamertemplate{itemize subitem}{--}
 \setbeamertemplate{footline}{%
-  \hfill\color{Grey}\scriptsize\insertframenumber\hspace{0.6cm}\vspace{0.25cm}}
+  \hfill\color{Grey}\scriptsize\insertframenumber/\inserttotalframenumber\hspace{0.6cm}\vspace{0.25cm}}
 
 \newenvironment{wideitemize}
   {\begin{itemize}\setlength{\itemsep}{10pt}}
@@ -513,7 +514,8 @@ Gap between top and bottom city, mean & 22.4\% \\
   \item Remote work is an amenity: workers value it directly.
   \item For an amenity, the price should be negative --- you pay for it.
   \item That negative price is the compensating differential.
-  \item Mas and Pallais (2017) estimate it near $-8\%$.
+  \item Mas and Pallais (2017) estimate it near $-8\%$ on average.
+  \item But the distribution is right-skewed: many value it at zero.
 \end{wideitemize}
 \end{frame}
 
@@ -546,16 +548,6 @@ Gap between top and bottom city, mean & 22.4\% \\
 \end{frame}
 
 % =============================================================================
-\begin{frame}{Your turn}
-\begin{wideitemize}
-  \item Add ten firms of your choice and re-run the scrape.
-  \item Pick a feature the postings mention: seniority, department, location.
-  \item Ask whether posted pay differs along it, within the same firm.
-  \item Write one paragraph on what you found and why it might be wrong.
-\end{wideitemize}
-\end{frame}
-
-% =============================================================================
 \begin{frame}{What to remember}
 \begin{wideitemize}
   \item Look at the page before writing code.
@@ -570,6 +562,7 @@ Gap between top and bottom city, mean & 22.4\% \\
 % =============================================================================
 % APPENDIX
 % =============================================================================
+\appendix
 \begin{frame}[plain]
   \vfill\centering{\LARGE Appendix}\vfill
 \end{frame}
