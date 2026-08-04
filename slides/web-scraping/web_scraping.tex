@@ -97,7 +97,7 @@
   \item How the web actually works.
   \item Three ways to collect the same numbers.
   \item From three postings to nine thousand.
-  \item Four things the postings show.
+  \item The price of a job attribute: location, skills, an amenity.
   \item Doing this responsibly.
 \end{wideitemize}
 \end{frame}
@@ -453,21 +453,21 @@ Postings collected          & 8{,}852 \\
 \end{frame}
 
 % =============================================================================
-\section{What the postings show}
-\begin{frame}{A posting gives us three things}
+\section{Pricing job attributes}
+\begin{frame}{A job is a bundle of attributes}
 \begin{wideitemize}
-  \item A midpoint: what the job pays. Where does pay vary?
-  \item A text: what the job is. What gets paid for?
-  \item A width: how much room is left. How is the number set?
-  \item Then one attribute priced against pay: the remote option.
+  \item A job is a bundle: a place, some skills, an office or not.
+  \item The wage is the price of the whole bundle. (Rosen, 1974)
+  \item Regress pay on the attributes and you get the price of each.
+  \item The posting shows the attributes and the price, so we can.
 \end{wideitemize}
 
-\vspace{1.0em}
-{\footnotesize All three patterns come from one run: 3{,}323 postings, 30 firms.}
+\vspace{0.8em}
+{\footnotesize We do this for three attributes: location, skills, and one amenity.}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{1. The same posting, priced by city}
+\begin{frame}{1. The price of location}
 \begin{table}
 \centering\small
 \begin{tabular}{lr}
@@ -481,77 +481,58 @@ Gap between top and bottom city, mean & 22.4\% \\
 \end{tabular}
 \end{table}
 
-\vspace{0.5em}
+\vspace{0.6em}
 \begin{wideitemize}
-  \item Same requisition, same text, different city.
-  \item The firm writes its geographic pay policy down for us.
+  \item Same posting, same text --- only the city changes.
+  \item So the gap is the price of location, nothing else.
 \end{wideitemize}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{2. What the text is associated with}
+\begin{frame}{2. The price of skills}
 \centering
-\includegraphics[width=0.90\textwidth,height=0.70\textheight,keepaspectratio]{figs/skill_premia.png}
+\includegraphics[width=0.88\textwidth,height=0.70\textheight,keepaspectratio]{figs/skill_premia.png}
 
 \vspace{0.2em}
-{\footnotesize Technologies from the O*NET list, not chosen by us.}
+{\footnotesize A hedonic regression: each bar is one skill's price, within firm and seniority.}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{2. What the text is associated with}
+\begin{frame}{2. The price of skills}
 \begin{wideitemize}
-  \item Data and infrastructure tools sit at the top.
-  \item Office, reporting and ERP tools sit at the bottom.
-  \item Excel does not lower pay; it marks administrative roles.
-  \item These are associations between tools and job types.
+  \item This is a hedonic regression: pay on skill dummies.
+  \item Data and infrastructure skills are priced highest.
+  \item Office and reporting tools are priced lowest.
+  \item A market price, not a causal return: Excel marks admin roles.
 \end{wideitemize}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{3. The widths are not tailored to the job}
-\centering
-\includegraphics[width=0.92\textwidth,height=0.68\textheight,keepaspectratio]{figs/range_width.png}
-\end{frame}
-
-% =============================================================================
-\begin{frame}{3. The widths are not tailored to the job}
+\begin{frame}{3. The price of an amenity: remote work}
 \begin{wideitemize}
-  \item Six ratios account for a third of all postings.
-  \item The median band is 31\% of its midpoint.
-  \item Width is flat across seniority: 31.5\% junior, 31.6\% senior.
-  \item Firms appear to pick a conventional width, not a tailored one.
+  \item Remote work is an amenity: workers value it directly.
+  \item For an amenity, the price should be negative --- you pay for it.
+  \item That negative price is the compensating differential.
+  \item Mas and Pallais (2017) estimate it near $-8\%$.
 \end{wideitemize}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{4. Is the remote option paid for?}
-\begin{wideitemize}
-  \item Rosen: a desirable attribute should come with lower pay.
-  \item Mas and Pallais (2017): workers would give up about 8\% for it.
-  \item But remote roles are not the same roles, so we cannot just compare.
-  \item So hold more and more of the job fixed, and watch the estimate move.
-\end{wideitemize}
-\end{frame}
-
-% =============================================================================
-\begin{frame}{4. Is the remote option paid for?}
+\begin{frame}{3. The price of an amenity: remote work}
 \centering
 \includegraphics[width=0.92\textwidth,height=0.70\textheight,keepaspectratio]{figs/remote_differential.png}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{4. Is the remote option paid for?}
+\begin{frame}{3. The price of an amenity: remote work}
 \begin{wideitemize}
-  \item Within a firm, remote postings advertise about 16\% more.
-  \item That is which roles a firm lets you do remotely, not a premium.
-  \item Holding the exact job title fixed, the gap is roughly zero.
-  \item Skills from the text barely move it: the level does the work.
-  \item We find no discount where theory predicts about $-8\%$.
-  \item The last row rests on 42 postings, so treat it gently.
+  \item Raw, remote pays more: remote jobs are better jobs.
+  \item Hold the job fixed and the price falls to about zero.
+  \item So no compensating differential in posted pay here.
+  \item The tightest comparison rests on 42 postings.
 \end{wideitemize}
 \end{frame}
 
-% =============================================================================
 \section{Responsibly}
 \begin{frame}{Scraping responsibly}
 \begin{wideitemize}
@@ -604,29 +585,6 @@ Gap between top and bottom city, mean & 22.4\% \\
 \end{frame}
 
 % =============================================================================
-\begin{frame}{Remote work and posted pay}
-\begin{table}
-\centering\small
-\begin{tabular}{lcc}
-\toprule
-Held fixed & Remote & (s.e.) \\
-\midrule
-Firm                                  & $+15.8\%$ & 2.3 \\
-Firm $\times$ family $\times$ level    & $+8.1\%$  & 1.7 \\
-Firm $\times$ exact title              & $+1.7\%$  & 1.2 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\vspace{0.5em}
-\begin{wideitemize}
-  \item The gap nearly disappears once the job is held fixed.
-  \item Most of it was which roles are offered remotely.
-  \item Only 42 postings allow the tightest comparison.
-\end{wideitemize}
-\end{frame}
-
-% =============================================================================
 \begin{frame}[fragile]{How the skills were extracted}
 \begin{wideitemize}
   \item The list is external: O*NET Hot Technologies, 170 items.
@@ -645,6 +603,15 @@ Firm $\times$ exact title              & $+1.7\%$  & 1.2 \\
 \end{frame}
 
 % =============================================================================
+\begin{frame}{A separate question: how is the band set?}
+\centering
+\includegraphics[width=0.92\textwidth,height=0.66\textheight,keepaspectratio]{figs/range_width.png}
+
+\vspace{0.2em}
+{\footnotesize Not about attributes and pay --- about how the firm chooses the range.}
+\end{frame}
+
+% ============================================================
 \begin{frame}{Reading the width result}
 \begin{wideitemize}
   \item A band could mean room to negotiate, or a role spanning levels.
