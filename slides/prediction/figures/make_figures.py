@@ -97,6 +97,29 @@ def _clean(ax):
     ax.spines["right"].set_visible(False)
 
 
+def _legend_below(ax, ncol, pad=0.05, **kw):
+    """Place the legend under the axes rather than inside them.
+
+    Whatever the curves do, they cannot cover the legend and the legend cannot
+    cover them. The position is measured rather than guessed: get_tightbbox
+    reports where the axes really end once the tick labels and the x label are
+    drawn, and the legend goes `pad` below that, in figure coordinates.
+
+    Call this AFTER fig.tight_layout(), which is what fixes the geometry.
+    `savefig.bbox = "tight"` then grows the canvas to include the legend.
+    """
+    fig = ax.figure
+    fig.canvas.draw()
+    bb = ax.get_tightbbox(fig.canvas.get_renderer())
+    bb = bb.transformed(fig.transFigure.inverted())
+    pos = ax.get_position()
+    ax.legend(loc="upper center",
+              bbox_to_anchor=(pos.x0 + pos.width / 2, bb.y0 - pad),
+              bbox_transform=fig.transFigure, ncol=ncol,
+              frameon=False, borderaxespad=0.0, handlelength=1.9,
+              columnspacing=1.5, **kw)
+
+
 # ---------------------------------------------------------------------------
 # Overfitting in a regression problem
 # ---------------------------------------------------------------------------
@@ -132,10 +155,6 @@ def overfit_reg():
     ax1.set_xlabel("$x$")
     ax1.set_ylabel("$y$")
     ax1.set_title("Fits to 20 observations")
-    # the degree-19 curve sweeps through the lower left, so the legend needs a
-    # solid background to stay readable there
-    ax1.legend(loc="lower left", fontsize=8.0, frameon=True,
-               facecolor="white", edgecolor="none", framealpha=0.9)
     _clean(ax1)
 
     # --- right: training and test error against degree
@@ -156,10 +175,11 @@ def overfit_reg():
     ax2.set_ylabel("RMSE")
     ax2.set_title("Training and test error")
     ax2.set_xticks([1, 5, 10, 15, 19])
-    ax2.legend(loc="upper center", fontsize=9)
     _clean(ax2)
 
     fig.tight_layout(w_pad=2.0)
+    _legend_below(ax1, ncol=3, fontsize=8.5)
+    _legend_below(ax2, ncol=2, fontsize=9)
     _finish(fig, "overfit_reg")
 
 
@@ -220,11 +240,11 @@ def bias_variance():
         ax.set_ylim(-2.3, 2.3)
         ax.set_title(title)
         ax.set_xlabel("$x$")
-        ax.legend(loc="upper right", fontsize=8.5, frameon=True,
-                  facecolor="white", edgecolor="none", framealpha=0.9)
         _clean(ax)
     axes[0].set_ylabel("fitted value")
     fig.tight_layout()
+    for ax in axes:
+        _legend_below(ax, ncol=2, fontsize=8.5)
     _finish(fig, "bias_variance")
 
 
@@ -238,7 +258,7 @@ def tradeoff():
     noise = np.full_like(c, 0.35)
     total = bias2 + var + noise
 
-    fig, ax = plt.subplots(figsize=sz(6.2, 3.6))
+    fig, ax = plt.subplots(figsize=sz(5.6, 3.5))
     ax.plot(c, bias2, color=BLUE, lw=1.6, label="squared bias")
     ax.plot(c, var, color=RED, lw=1.6, label="variance")
     ax.plot(c, noise, color=GRAY, lw=1.3, ls=":", label="irreducible variance")
@@ -252,9 +272,9 @@ def tradeoff():
     ax.set_ylabel("expected squared error")
     ax.set_yticks([])
     ax.set_ylim(0, 3.6)
-    ax.legend(loc="upper center", ncol=2, fontsize=9)
     _clean(ax)
     fig.tight_layout()
+    _legend_below(ax, ncol=2, fontsize=9)
     _finish(fig, "tradeoff")
 
 
@@ -289,7 +309,7 @@ def leakage():
     leak_test = roc_auc_score(
         yte, m_l.predict_proba(np.column_stack([Xte, np.zeros_like(lte)]))[:, 1])
 
-    fig, ax = plt.subplots(figsize=sz(6.4, 3.6))
+    fig, ax = plt.subplots(figsize=sz(5.4, 3.5))
     xpos = np.arange(2)
     w = 0.34
     ax.bar(xpos - w / 2, [honest_cv, leak_cv], w, color=BLUE,
@@ -304,12 +324,12 @@ def leakage():
     ax.set_xticks(xpos)
     ax.set_xticklabels(["Without leakage", "With leakage"])
     ax.set_ylabel("AUC")
-    # headroom so the upper-left legend clears the 1.00 bar and its label
-    ax.set_ylim(0.4, 1.30)
-    ax.legend(loc="upper left", fontsize=8.8)
+    # a little headroom above the 1.00 bar and its label
+    ax.set_ylim(0.4, 1.12)
     ax.grid(axis="x")
     _clean(ax)
     fig.tight_layout()
+    _legend_below(ax, ncol=1, fontsize=8.8)
     _finish(fig, "leakage")
 
 
@@ -410,11 +430,10 @@ def roc():
     ax.plot([0, 1], [0, 1], color=GRAY, ls="--", lw=1.1, label="no information")
     ax.set_xlabel("false positive rate")
     ax.set_ylabel("true positive rate")
-    ax.legend(loc="lower right", fontsize=8.5, frameon=True,
-              facecolor="white", edgecolor="none", framealpha=0.9)
     ax.set_xlim(-0.02, 1.02); ax.set_ylim(-0.02, 1.02)
     _clean(ax)
     fig.tight_layout()
+    _legend_below(ax, ncol=1, fontsize=8.5)
     _finish(fig, "roc")
 
 
@@ -487,8 +506,6 @@ def lasso_path():
     ax1.set_xlabel("penalty $\\lambda$")
     ax1.set_ylabel("estimated coefficient")
     ax1.set_title("Coefficient paths")
-    ax1.legend(loc="upper right", fontsize=8.5, frameon=True,
-               facecolor="white", edgecolor="none", framealpha=0.9)
     _clean(ax1)
 
     ax2.plot(alphas, te_err, "-o", color=RED, lw=1.6, ms=3)
@@ -503,6 +520,7 @@ def lasso_path():
     ax2.set_title("Test error")
     _clean(ax2)
     fig.tight_layout(w_pad=2.0)
+    _legend_below(ax1, ncol=2, fontsize=8.5)
     _finish(fig, "lasso_path")
 
 
@@ -570,10 +588,13 @@ def compare():
     clf_scores = {k: cross_val_score(m, Xc, yc, cv=5, scoring="roc_auc").mean()
                   for k, m in clf_models.items()}
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=sz(9.2, 3.4))
+    # wider than the other two-panel figures: ten estimator names have to sit
+    # side by side without running into one another
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=sz(10.8, 3.4))
     ax1.bar(list(reg_scores), list(reg_scores.values()), color=BLUE, width=0.6)
     for i, v in enumerate(reg_scores.values()):
         ax1.text(i, v + .02, f"{v:.2f}", ha="center", fontsize=9)
+    ax1.set_ylim(0, max(reg_scores.values()) * 1.20)
     ax1.set_ylabel("cross-validated RMSE")
     ax1.set_title("Continuous outcome (lower better)")
     ax1.grid(axis="x")
@@ -581,7 +602,7 @@ def compare():
     _clean(ax1)
 
     ax2.bar(list(clf_scores), list(clf_scores.values()), color=BLUE, width=0.6)
-    ax2.set_ylim(0.5, 1.03)
+    ax2.set_ylim(0.5, 1.09)
     for i, v in enumerate(clf_scores.values()):
         ax2.text(i, v + .006, f"{v:.2f}", ha="center", fontsize=9)
     ax2.set_ylabel("cross-validated AUC")
@@ -636,7 +657,7 @@ def cv_stability():
         cv.append(-cross_val_score(LinearRegression(), X, y, cv=5,
                                    scoring="neg_root_mean_squared_error").mean())
 
-    fig, ax = plt.subplots(figsize=sz(6.0, 3.5))
+    fig, ax = plt.subplots(figsize=sz(5.2, 3.4))
     ax.scatter(np.zeros(40) + rng.normal(0, .03, 40), single,
                facecolor="white", edgecolor=RED, s=26, lw=1.1)
     ax.scatter(np.ones(40) + rng.normal(0, .03, 40), cv,
