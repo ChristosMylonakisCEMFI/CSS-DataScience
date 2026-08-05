@@ -1,0 +1,72 @@
+% =============================================================================
+% Shared slide style for the course.
+%
+%   \input{../beamer-style}          % from inside a deck's own folder
+%
+% Plain and typographic: serif text on a white page, dark blue frame titles set
+% as text rather than in a coloured bar, a small grey page number, and nothing
+% else. Each deck keeps its own diagram, figure and listing colours; this file
+% governs only the furniture of the frame.
+%
+% Requires: xcolor (beamer loads it), and \title set before \titleslide.
+% =============================================================================
+
+\usefonttheme{serif}
+
+\definecolor{DarkBlue}{RGB}{0,0,110}
+\definecolor{DarkRed}{RGB}{140,0,0}
+\definecolor{Grey}{RGB}{90,90,90}
+
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=DarkBlue}
+\setbeamercolor{frametitle}{fg=DarkBlue,bg=white}
+\setbeamercolor{title}{fg=black}
+
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{frametitle}{%
+  \vspace{0.35cm}\insertframetitle\par\vspace{-0.15cm}}
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{footline}{%
+  \hfill\color{Grey}\scriptsize
+  \insertframenumber/\inserttotalframenumber\hspace{0.6cm}\vspace{0.25cm}}
+
+% -----------------------------------------------------------------------------
+% Section dividers: one plain outline frame at the start of each section,
+% with the current section in dark blue and the others in grey.
+% -----------------------------------------------------------------------------
+\setbeamerfont{section in toc}{size=\normalsize}
+\setbeamercolor{section in toc}{fg=Grey}
+\setbeamercolor{section in toc shaded}{fg=Grey}
+% Beamer fades unvisited sections to 20% by default, which disappears on a
+% projector. 45% still reads as secondary but stays legible from the back.
+\setbeamertemplate{section in toc shaded}[default][45]
+\setbeamertemplate{section in toc}{%
+  \inserttocsectionnumber.\quad\inserttocsection\par\smallskip}
+
+\AtBeginSection[]{%
+  \begin{frame}{Outline}
+    \vspace{0.4em}
+    \tableofcontents[currentsection,
+                     sectionstyle=show/shaded,
+                     subsectionstyle=hide]
+  \end{frame}}
+
+% -----------------------------------------------------------------------------
+% The title slide, and the divider that opens an appendix. Identical in every
+% deck, so define them once.
+% -----------------------------------------------------------------------------
+\newcommand{\titleslide}{%
+  \begin{frame}[plain]
+    \vfill
+    \centering
+    {\LARGE\inserttitle}
+    \vfill
+  \end{frame}}
+
+\newcommand{\dividerslide}[1]{%
+  \begin{frame}[plain]
+    \vfill\centering{\LARGE #1}\vfill
+  \end{frame}}

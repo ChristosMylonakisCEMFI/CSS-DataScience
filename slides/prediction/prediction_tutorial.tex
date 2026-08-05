@@ -12,6 +12,8 @@
 % -----------------------------------------------------------------------------
 % Visual design
 % -----------------------------------------------------------------------------
+\input{../beamer-style}
+
 \definecolor{Navy}{HTML}{172A3A}
 \definecolor{Ink}{HTML}{24292F}
 \definecolor{Muted}{HTML}{57606A}
@@ -22,33 +24,6 @@
 \definecolor{FigBlue}{HTML}{1F4E79}
 \definecolor{FigRed}{HTML}{8B1A1A}
 \definecolor{FigGray}{HTML}{595959}
-
-\setbeamercolor{normal text}{fg=Ink,bg=white}
-\setbeamercolor{structure}{fg=Navy}
-\setbeamercolor{frametitle}{fg=white,bg=Navy}
-\setbeamercolor{title}{fg=white}
-
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{itemize item}{\color{Navy}\textbullet}
-\setbeamertemplate{itemize subitem}{\color{Muted}--}
-\setbeamertemplate{enumerate item}{\color{Navy}\insertenumlabel.}
-\setbeamertemplate{frametitle}{%
-  \nointerlineskip
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.78cm,dp=0.25cm,leftskip=0.45cm]{frametitle}
-    \usebeamerfont{frametitle}\insertframetitle
-  \end{beamercolorbox}}
-\setbeamertemplate{footline}{%
-  \leavevmode%
-  \hbox{%
-    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
-      \color{Muted}\scriptsize Prediction for Economists
-    \end{beamercolorbox}%
-    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
-      \color{Muted}\scriptsize\hfill\insertframenumber/\inserttotalframenumber
-    \end{beamercolorbox}}}
-
-\setbeamerfont{frametitle}{series=\bfseries,size=\large}
-\setbeamerfont{title}{series=\bfseries,size=\LARGE}
 
 % All prose on a slide goes in this environment, one line per item.
 \newenvironment{wideitemize}{\itemize\addtolength{\itemsep}{9pt}}{\enditemize}
@@ -62,12 +37,7 @@
 \begin{document}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[plain]
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[Navy] (current page.south west) rectangle (current page.north east);
-    \node at (current page.center) {\usebeamerfont{title}\color{white}Prediction for Economists};
-  \end{tikzpicture}
-\end{frame}
+\titleslide
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Prediction as an objective}
@@ -81,6 +51,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Overfitting and the trade-off}
+
 \begin{frame}{Overfitting}
 \simfig{0.82\textwidth}{fig_overfit_reg}
 \begin{wideitemize}
@@ -130,6 +102,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Estimating out-of-sample error}
+
 \begin{frame}{Training, validation, and test samples}
 \begin{center}
 \begin{tikzpicture}[font=\small]
@@ -178,6 +152,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Leakage}
+
 \begin{frame}{Data leakage}
 \begin{columns}[T,onlytextwidth]
   \column{0.44\textwidth}
@@ -215,6 +191,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Measures of accuracy}
+
 \begin{frame}{Measuring accuracy: continuous outcomes}
 \simfig{0.78\textwidth}{fig_rmse_mae}
 \begin{wideitemize}
@@ -265,6 +243,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Constructing regressors}
+
 \begin{frame}{The choice of regressors}
 \simfig{0.78\textwidth}{fig_features}
 \begin{wideitemize}
@@ -298,6 +278,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{A menu of estimators}
+
 \begin{frame}{A menu of estimators}
 \begin{wideitemize}
   \item Least squares: transparent, and often competitive with good regressors.
@@ -353,6 +335,8 @@
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Putting it together}
+
 \begin{frame}{The workflow}
 \begin{center}
 \begin{tikzpicture}[
@@ -392,13 +376,8 @@
 
 % =============================================================================
 \appendix
-
-\begin{frame}[plain]
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[Navy] (current page.south west) rectangle (current page.north east);
-    \node at (current page.center) {\usebeamerfont{title}\color{white}Appendix};
-  \end{tikzpicture}
-\end{frame}
+\AtBeginSection[]{}
+\dividerslide{Appendix}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{The decomposition of expected prediction error}

@@ -24,42 +24,7 @@
 \definecolor{Rule}{HTML}{D0D7DE}
 \definecolor{CodeBG}{HTML}{F6F8FA}
 
-\setbeamercolor{normal text}{fg=Ink,bg=white}
-\setbeamercolor{structure}{fg=Blue}
-\setbeamercolor{frametitle}{fg=white,bg=Navy}
-\setbeamercolor{title}{fg=Navy}
-
-\setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{itemize item}{\color{Blue}$\blacktriangleright$}
-\setbeamertemplate{itemize subitem}{\color{Blue}$\bullet$}
-\setbeamertemplate{enumerate item}{\color{Blue}\insertenumlabel.}
-\setbeamertemplate{frametitle}{%
-  \nointerlineskip
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.78cm,dp=0.25cm,leftskip=0.45cm]{frametitle}
-    \usebeamerfont{frametitle}\insertframetitle
-  \end{beamercolorbox}}
-\setbeamertemplate{footline}{%
-  \leavevmode%
-  \hbox{%
-    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
-      \color{Muted}\scriptsize\insertsectionhead
-    \end{beamercolorbox}%
-    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
-      \color{Muted}\scriptsize\hfill\insertframenumber/\inserttotalframenumber
-    \end{beamercolorbox}}}
-
-\setbeamerfont{frametitle}{series=\bfseries,size=\large}
-\setbeamerfont{title}{series=\bfseries,size=\LARGE}
-
-% Section dividers: show where we are in the deck
-\setbeamerfont{section in toc}{size=\large}
-\setbeamercolor{section in toc}{fg=Ink}
-\setbeamertemplate{section in toc}{%
-  \inserttocsectionnumber.\quad\inserttocsection\par\smallskip}
-\AtBeginSection[]{%
-  \begin{frame}{Outline}
-    \tableofcontents[currentsection]
-  \end{frame}}
+\input{../beamer-style}
 
 % Appendix frames keep the last main frame number, so the count in the footer
 % refers to the main deck only.
@@ -113,13 +78,7 @@
 \begin{document}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[plain]
-  \vfill
-  \begin{center}
-    {\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}
-  \end{center}
-  \vfill
-\end{frame}
+\titleslide
 
 % -----------------------------------------------------------------------------
 \begin{frame}{What we will build---and what you will be able to do}
@@ -259,22 +218,25 @@ A repository is the project folder plus the Git history attached to it.
 % -----------------------------------------------------------------------------
 \begin{frame}{Step 2: configure and create the repository}
 \begin{columns}[T,onlytextwidth]
-  \column{0.56\textwidth}
+  \column{0.60\textwidth}
   Fill in the form as follows.
   \vspace{0.5em}
 
+  % \small: at full size the Description row is wider than the column and
+  % runs into the bullets opposite
+  {\small
   \begin{tabular}{@{}ll@{}}
     Owner & \texttt{your-username}\\
     Repository name & \texttt{growth-calculator}\\
     Description & \texttt{A Python growth calculator}\\
     Visibility & Private\\
     Add a README file & yes\\
-  \end{tabular}
+  \end{tabular}}
 
   \vspace{0.6em}
   Then click \button{Create repository}.
 
-  \column{0.40\textwidth}
+  \column{0.35\textwidth}
   We add a README because
   \begin{itemize}
     \item it explains the project to a visitor;
