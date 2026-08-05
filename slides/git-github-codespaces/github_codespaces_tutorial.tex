@@ -61,6 +61,15 @@
     \tableofcontents[currentsection]
   \end{frame}}
 
+% Appendix frames keep the last main frame number, so the count in the footer
+% refers to the main deck only.
+\newcommand{\backupbegin}{%
+  \newcounter{framenumberappendix}%
+  \setcounter{framenumberappendix}{\value{framenumber}}}
+\newcommand{\backupend}{%
+  \addtocounter{framenumberappendix}{-\value{framenumber}}%
+  \addtocounter{framenumber}{\value{framenumberappendix}}}
+
 % -----------------------------------------------------------------------------
 % Listings and reusable elements
 % -----------------------------------------------------------------------------
@@ -383,6 +392,8 @@ Both labels point to the same commit, so the two copies are synchronized.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Add, commit, push}
+
 \begin{frame}[fragile]{Create the program: \texttt{growth.py}}
 \begin{columns}[T,onlytextwidth]
   \column{0.38\textwidth}
@@ -542,6 +553,8 @@ Checkpoint: Codespace and GitHub contain the new commit.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Tests}
+
 \begin{frame}[fragile]{Create package-free tests: \texttt{test\_growth.py}}
 \begin{columns}[T,onlytextwidth]
   \column{0.38\textwidth}
@@ -628,6 +641,8 @@ A good commit is small, coherent, reviewed, and tested.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Pulling}
+
 \begin{frame}{Simulate a collaborator by editing on GitHub}
 \begin{columns}[T,onlytextwidth]
   \column{0.52\textwidth}
@@ -687,6 +702,8 @@ Fast-forward
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Ignoring files}
+
 \begin{frame}{What is \texttt{.gitignore}?}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
@@ -744,65 +761,8 @@ $ git push
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[fragile]{If a push is rejected, synchronize first}
-\begin{columns}[T,onlytextwidth]
-  \column{0.52\textwidth}
-\begin{lstlisting}[style=terminal]
-$ git push
-! [rejected] main -> main (fetch first)
-error: failed to push some refs
-\end{lstlisting}
-  This means GitHub has commits that your Codespace does not have. Git refuses to overwrite them.
+\section{Summary}
 
-  \column{0.44\textwidth}
-  The safe response is
-\begin{lstlisting}[style=terminal]
-$ git status
-$ git pull
-# Read any message from Git carefully.
-$ python test_growth.py
-$ git push
-\end{lstlisting}
-  If Git reports a conflict, stop and resolve the marked files before pushing.
-\end{columns}
-
-\vspace{0.7em}
-Do not solve this with force: for this course workflow, never use
-\texttt{git push --force}, which can discard shared history.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{What is a merge conflict?}
-\begin{columns}[T,onlytextwidth]
-  \column{0.50\textwidth}
-  A conflict occurs when Git cannot decide how to combine competing edits
-  automatically. Git marks the disputed region:
-  \vspace{0.5em}
-
-  \ttfamily\scriptsize
-  <<<<<<< HEAD\\
-  Percentage change calculator\\
-  =======\\
-  Growth rate calculator\\
-  >>>>>>> origin/main
-  \rmfamily\normalsize
-
-  \column{0.46\textwidth}
-  To resolve it,
-  \begin{enumerate}
-    \item read both versions;
-    \item edit the file to the intended final content;
-    \item remove all conflict markers;
-    \item run the program and tests;
-    \item stage and commit the resolution.
-  \end{enumerate}
-\end{columns}
-
-\vspace{0.7em}
-A conflict is a request for human judgment, not evidence that work was lost.
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \begin{frame}{The daily workflow}
 \begin{center}
 \begin{tikzpicture}[
@@ -889,5 +849,83 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
   \color{Muted}Use it on every project until the workflow becomes routine.
 \end{center}
 \end{frame}
+
+% -----------------------------------------------------------------------------
+% Appendix: not part of the main sequence, and not counted in the frame numbers
+% -----------------------------------------------------------------------------
+\appendix
+\backupbegin
+\setcounter{framenumber}{0}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
+      \color{Muted}\scriptsize\insertsectionhead
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
+      \color{Muted}\scriptsize\hfill A\insertframenumber
+    \end{beamercolorbox}}}
+\AtBeginSection[]{}
+\section{When things go wrong}
+
+\begin{frame}[fragile]{If a push is rejected, synchronize first}
+\begin{columns}[T,onlytextwidth]
+  \column{0.52\textwidth}
+\begin{lstlisting}[style=terminal]
+$ git push
+! [rejected] main -> main (fetch first)
+error: failed to push some refs
+\end{lstlisting}
+  This means GitHub has commits that your Codespace does not have. Git refuses to overwrite them.
+
+  \column{0.44\textwidth}
+  The safe response is
+\begin{lstlisting}[style=terminal]
+$ git status
+$ git pull
+# Read any message from Git carefully.
+$ python test_growth.py
+$ git push
+\end{lstlisting}
+  If Git reports a conflict, stop and resolve the marked files before pushing.
+\end{columns}
+
+\vspace{0.7em}
+Do not solve this with force: for this course workflow, never use
+\texttt{git push --force}, which can discard shared history.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{What is a merge conflict?}
+\begin{columns}[T,onlytextwidth]
+  \column{0.50\textwidth}
+  A conflict occurs when Git cannot decide how to combine competing edits
+  automatically. Git marks the disputed region:
+  \vspace{0.5em}
+
+  \ttfamily\scriptsize
+  <<<<<<< HEAD\\
+  Percentage change calculator\\
+  =======\\
+  Growth rate calculator\\
+  >>>>>>> origin/main
+  \rmfamily\normalsize
+
+  \column{0.46\textwidth}
+  To resolve it,
+  \begin{enumerate}
+    \item read both versions;
+    \item edit the file to the intended final content;
+    \item remove all conflict markers;
+    \item run the program and tests;
+    \item stage and commit the resolution.
+  \end{enumerate}
+\end{columns}
+
+\vspace{0.7em}
+A conflict is a request for human judgment, not evidence that work was lost.
+\end{frame}
+
+\backupend
 
 \end{document}
