@@ -1,0 +1,20 @@
+# Everything the course needs, for all three sessions.
+#
+# Install from the top folder of the repository:
+#     pip install -r requirements.txt
+#
+# If you are not sure whether this worked, run:
+#     python check_setup.py
+
+# Web scraping
+requests>=2.32
+beautifulsoup4>=4.12
+selenium>=4.25
+
+# Data handling and figures
+pandas>=1.4
+numpy>=1.22
+matplotlib>=3.5
+
+# Prediction
+scikit-learn>=1.1

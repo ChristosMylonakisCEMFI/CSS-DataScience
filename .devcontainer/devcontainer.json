@@ -1,0 +1,22 @@
+{
+  "name": "Data Science for Economics",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+
+  // Installs Chrome (needed by the Selenium part of the scraping session)
+  // and every package in requirements.txt. Runs once, when the Codespace is
+  // created, so participants have nothing to install by hand.
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  // Do not hand over the editor until the line above has finished, so nobody
+  // runs the course code against a half-built machine.
+  "waitFor": "postCreateCommand",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  }
+}

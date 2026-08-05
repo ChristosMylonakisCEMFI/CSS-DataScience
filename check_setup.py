@@ -1,12 +1,14 @@
 """
-check_setup.py - verify (and fix) everything needed for the scraping tutorial.
+check_setup.py - verify (and fix) everything needed for the course.
 
     python check_setup.py          # diagnose only
     python check_setup.py --fix    # diagnose, then install what is missing
 
 Nothing here is destructive: --fix only runs `pip install` for the packages
-listed in requirements.txt. Browsers are never installed silently; if one is
+listed in requirements.txt. Programs are never installed silently; if one is
 missing you get a direct download link for your operating system.
+
+Step-by-step instructions are in SETUP.md, in this same folder.
 """
 import argparse
 import importlib
@@ -23,17 +25,25 @@ GREEN, RED, YELLOW, BOLD, OFF = "\033[92m", "\033[91m", "\033[93m", "\033[1m", "
 if platform.system() == "Windows":
     os.system("")  # enable ANSI colours in cmd.exe
 
+# True when running inside a GitHub Codespace, where the editor is the browser
+# tab you are already looking at.
+IN_CODESPACE = bool(os.environ.get("CODESPACES"))
+
 PKGS = [
     # import name, pip spec, minimum version (or None)
     ("requests", "requests>=2.32", (2, 32)),
     ("bs4", "beautifulsoup4>=4.12", None),
-    ("pandas", "pandas>=1.4", None),
     ("selenium", "selenium>=4.25", (4, 25)),
+    ("pandas", "pandas>=1.4", None),
+    ("numpy", "numpy>=1.22", None),
     ("matplotlib", "matplotlib>=3.5", None),
+    ("sklearn", "scikit-learn>=1.1", None),
 ]
 
 CHROME_DOWNLOAD = "https://www.google.com/chrome/"
 EDGE_DOWNLOAD = "https://www.microsoft.com/edge/download"
+GIT_DOWNLOAD = "https://git-scm.com/downloads"
+VSCODE_DOWNLOAD = "https://code.visualstudio.com/"
 
 results = []
 
@@ -44,6 +54,15 @@ def report(ok, label, detail="", fix=""):
     print(f"  [{mark}] {label}" + (f"  {detail}" if detail else ""))
     if not ok and fix:
         print(f"         {YELLOW}fix:{OFF} {fix}")
+
+
+def note(ok, label, detail="", advice=""):
+    """Like report(), but a failure here does not stop you from following the
+    course: it is worth having, not required."""
+    mark = f"{GREEN}PASS{OFF}" if ok else f"{YELLOW}NOTE{OFF}"
+    print(f"  [{mark}] {label}" + (f"  {detail}" if detail else ""))
+    if not ok and advice:
+        print(f"         {YELLOW}suggested:{OFF} {advice}")
 
 
 def parse_version(v):
@@ -84,7 +103,8 @@ def check_packages():
 
 
 def find_browser():
-    names = ["chrome", "google-chrome", "chromium", "msedge"]
+    names = ["chrome", "google-chrome", "google-chrome-stable",
+             "chromium", "chromium-browser", "msedge"]
     for n in names:
         p = shutil.which(n)
         if p:
@@ -104,10 +124,58 @@ def find_browser():
 
 def check_browser():
     b = find_browser()
-    link = CHROME_DOWNLOAD if platform.system() != "Windows" else CHROME_DOWNLOAD
     report(bool(b), "browser (Chrome/Edge)", os.path.basename(b) if b else "not found",
-           fix=f"Download Chrome: {link}   (or Edge: {EDGE_DOWNLOAD})")
+           fix=f"Download Chrome: {CHROME_DOWNLOAD}   (or Edge: {EDGE_DOWNLOAD})")
     return bool(b)
+
+
+def git_config(key):
+    try:
+        out = subprocess.run(["git", "config", "--global", key],
+                             capture_output=True, text=True, timeout=15)
+        return out.stdout.strip()
+    except Exception:
+        return ""
+
+
+def check_git():
+    exe = shutil.which("git")
+    if not exe:
+        report(False, "Git", "not found",
+               fix=f"Install Git from {GIT_DOWNLOAD}, then close and reopen this window.")
+        return False
+    try:
+        ver = subprocess.run(["git", "--version"], capture_output=True, text=True,
+                             timeout=15).stdout.strip()
+    except Exception:
+        ver = ""
+    report(True, "Git", ver or "installed")
+
+    name, email = git_config("user.name"), git_config("user.email")
+    ok = bool(name and email)
+    report(ok, "Git knows who you are", f"{name} <{email}>" if ok else "not set yet",
+           fix=('run these two lines, with your own name and email:\n'
+                '           git config --global user.name "Your Name"\n'
+                '           git config --global user.email "you@example.com"'))
+    return ok
+
+
+def check_vscode():
+    if IN_CODESPACE:
+        note(True, "VS Code (the editor)", "you are working in a Codespace")
+        return True
+    exe = shutil.which("code")
+    if exe:
+        note(True, "VS Code (the editor)", "found")
+        return True
+    mac_app = "/Applications/Visual Studio Code.app"
+    win_app = os.path.expandvars(r"%LOCALAPPDATA%\Programs\Microsoft VS Code\Code.exe")
+    if os.path.exists(mac_app) or os.path.exists(win_app):
+        note(True, "VS Code (the editor)", "installed")
+        return True
+    note(False, "VS Code (the editor)", "not found",
+         advice=f"Install it from {VSCODE_DOWNLOAD} (not required, but we use it in class).")
+    return False
 
 
 def check_selenium_cache():
@@ -175,8 +243,9 @@ def main():
                     help="install missing/outdated packages, then re-check")
     args = ap.parse_args()
 
-    print(f"\n{BOLD}Setup check - web scraping tutorial{OFF}")
-    print(f"  {platform.system()} {platform.release()} | {sys.executable}\n")
+    print(f"\n{BOLD}Setup check - Data Science for Economics{OFF}")
+    where = "GitHub Codespace" if IN_CODESPACE else f"{platform.system()} {platform.release()}"
+    print(f"  {where} | {sys.executable}\n")
 
     check_python()
     missing = check_packages()
@@ -188,7 +257,9 @@ def main():
         check_python()
         missing = check_packages()
 
+    check_git()
     check_browser()
+    check_vscode()
     check_selenium_cache()
     if not missing:
         check_driver()
@@ -197,8 +268,7 @@ def main():
     failed = [(lbl, fix) for ok, lbl, fix in results if not ok]
     print()
     if not failed:
-        print(f"{GREEN}{BOLD}All checks passed. You are ready.{OFF}")
-        print("  Next:  python code/01_json.py\n")
+        print(f"{GREEN}{BOLD}All checks passed. You are ready for the course.{OFF}\n")
         return 0
 
     print(f"{RED}{BOLD}{len(failed)} check(s) failed.{OFF}")
@@ -208,7 +278,9 @@ def main():
     for lbl, fix in failed:
         if fix:
             print(f"  - {lbl}\n      {fix}")
-    print()
+    print(f"\n  Step-by-step instructions: SETUP.md")
+    print("  Still stuck? Send us this whole screen and we will sort it out"
+          " before the first session.\n")
     return 1
 
 

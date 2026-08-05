@@ -24,9 +24,12 @@ cd CSS-DataScience/slides/web-scraping
 
 ## 2. Install what you need
 
-You need **Python 3.9 or newer** and **Google Chrome** (or Microsoft Edge).
+Nothing, if you are working in a Codespace: Python, Chrome, and every package
+are already there. See [`SETUP.md`](../../SETUP.md) at the top of the
+repository, which covers this session and the other two from scratch.
 
-Install the Python packages:
+On your own machine you need **Python 3.9 or newer** and **Google Chrome** (or
+Microsoft Edge), plus the packages. From the top folder of the repository:
 
 ```bash
 pip install -r requirements.txt
@@ -36,6 +39,8 @@ If `pip` is not found, try `python -m pip install -r requirements.txt`
 (on macOS/Linux, `python3 -m pip ...`).
 
 ## 3. Check that it works
+
+From the top folder of the repository:
 
 ```bash
 python check_setup.py
@@ -47,22 +52,6 @@ packages automatically:
 
 ```bash
 python check_setup.py --fix
-```
-
-A passing run looks like this:
-
-```
-  [PASS] Python 3.11.7
-  [PASS] package: requests  2.32.5
-  [PASS] package: bs4  4.12.3
-  [PASS] package: pandas  2.2.1
-  [PASS] package: selenium  4.36.0
-  [PASS] browser (Chrome/Edge)  chrome.exe
-  [PASS] selenium driver cache  ok
-  [PASS] chromedriver (auto-managed by Selenium 4)  launched ok
-  [PASS] network: reach the Greenhouse API  HTTP 200
-
-All checks passed. You are ready.
 ```
 
 **You do not need to download a browser driver.** Selenium 4 fetches the right
@@ -125,7 +114,7 @@ re-download.
 
 | File | What it does |
 | --- | --- |
-| `check_setup.py` | Verifies your machine; `--fix` installs what is missing |
+| `../../check_setup.py` | Verifies your machine; `--fix` installs what is missing |
 | `code/config.py` | Shared settings: which jobs, which URLs, one shared session |
 | `code/01_json.py` | Method 1 — the hidden data address |
 | `code/02_beautifulsoup.py` | Method 2 — parse the HTML page |
