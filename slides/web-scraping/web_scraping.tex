@@ -53,45 +53,23 @@
 \end{frame}
 
 % =============================================================================
-\begin{frame}{The example}
-\begin{wideitemize}
-  \item Several US states now require postings to state a salary range.
-  \item Some firms quote a different range for each city.
-  \item Same firm, same job, same text. Only the city differs.
-  \item So: how much does the posted range change with location?
-\end{wideitemize}
-\end{frame}
-
-% =============================================================================
-\begin{frame}{The answer, collected today}
-\begin{wideitemize}
-  \item 525 postings quote more than one city.
-  \item The average gap between top and bottom city is 22\%.
-  \item For the typical posting it is 15\%.
-  \item Collecting the data took about ten seconds.
-\end{wideitemize}
-\end{frame}
-
-% =============================================================================
 \begin{frame}{Posted pay avoids a classic problem}
 \begin{wideitemize}
   \item Admin data show what each worker is actually paid.
-  \item But better workers sort into better jobs and better firms.
-  \item So pay and worker quality are tangled in those wages.
+  \item But better workers sort into better jobs, so pay and quality are tangled.
   \item A posted range is attached to the job, before anyone is hired.
   \item It prices the job itself, not the worker who takes it.
 \end{wideitemize}
 \end{frame}
 
 % =============================================================================
-\begin{frame}{Plan}
+\begin{frame}{Three questions}
 \begin{wideitemize}
-  \item Look at the page before writing any code.
-  \item How the web actually works.
-  \item Three ways to collect the same numbers.
-  \item From three postings to nine thousand.
-  \item The price of a job attribute: location, skills, an amenity.
-  \item Doing this responsibly.
+  \item Several US states now require postings to state a salary range.
+  \item The same job is often posted with a single attribute changed.
+  \item How much does the posted range change with location?
+  \item What is a skill worth?
+  \item Is remote work paid for, or discounted?
 \end{wideitemize}
 \end{frame}
 
@@ -235,8 +213,7 @@
 % =============================================================================
 \begin{frame}{What to try, in order}
 \begin{wideitemize}
-  \item Is there a bulk download? Take it and stop.
-  \item Is there an official API? Use it.
+  \item Is there a bulk download or an official API? Use it and stop.
   \item Is there a hidden JSON address? Check the Network tab.
   \item Is the content in the HTML? Use requests and BeautifulSoup.
   \item Does it need a real browser? Use Selenium.
@@ -538,10 +515,9 @@ How much more the top city pays than the bottom: & \\
 \section{Responsibly}
 \begin{frame}{Scraping responsibly}
 \begin{wideitemize}
-  \item Prefer a bulk download or an official API when one exists.
-  \item Send a User-Agent that says who you are.
+  \item Prefer a bulk download or an official API; read robots.txt and the terms.
+  \item Identify yourself with a User-Agent, and slow down when you see 429.
   \item Ask for many records per request, not many requests.
-  \item Slow down when you see 429; read robots.txt and the terms.
   \item Do not collect personal data you do not need.
   \item Keep the raw replies, so results can be reproduced.
 \end{wideitemize}
@@ -554,8 +530,7 @@ How much more the top city pays than the bottom: & \\
   \item Check for a hidden JSON address before parsing HTML.
   \item Make fewer requests, not faster parsers.
   \item Expect failure, and cache every raw reply.
-  \item Collecting the data is the easy part.
-  \item What you compare is the research.
+  \item Collecting the data is the easy part; what you compare is the research.
 \end{wideitemize}
 \end{frame}
 
@@ -599,8 +574,7 @@ How much more the top city pays than the bottom: & \\
   \item A band could mean room to negotiate, or a role spanning levels.
   \item It could also be a convention that satisfies a disclosure rule.
   \item Spikes at round ratios point to convention.
-  \item But a flat percentage is not a flat amount.
-  \item 31\% of \$400k is \$124k; 31\% of \$130k is \$40k.
+  \item A flat percentage is not a flat amount: 31\% of \$400k is \$124k, of \$130k \$40k.
   \item So this says nothing about whether people negotiate.
 \end{wideitemize}
 \end{frame}
