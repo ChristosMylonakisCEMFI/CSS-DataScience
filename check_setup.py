@@ -29,6 +29,10 @@ if platform.system() == "Windows":
 # tab you are already looking at.
 IN_CODESPACE = bool(os.environ.get("CODESPACES"))
 
+# True in a Codespace or any other container. Chrome needs two extra flags
+# there; see check_driver().
+IN_CONTAINER = IN_CODESPACE or os.path.exists("/.dockerenv")
+
 PKGS = [
     # import name, pip spec, minimum version (or None)
     ("requests", "requests>=2.32", (2, 32)),
@@ -201,6 +205,12 @@ def check_driver():
         o = Options()
         o.add_argument("--headless=new")
         o.add_argument("--log-level=3")
+        if IN_CONTAINER:
+            # Chrome cannot build its own security sandbox inside a container
+            # and quits on the spot without these. The course code does the
+            # same thing; see slides/web-scraping/code/03_selenium.py.
+            o.add_argument("--no-sandbox")
+            o.add_argument("--disable-dev-shm-usage")
         d = webdriver.Chrome(options=o)
         d.quit()
         report(True, "chromedriver (auto-managed by Selenium 4)", "launched ok")

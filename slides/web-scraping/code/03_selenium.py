@@ -14,6 +14,7 @@ It always works. It is also slow, heavy, and easy to break.
 The first run downloads a "driver" (the program that controls Chrome).
 Selenium 4 does this automatically - you do not need to install anything.
 """
+import os
 import time
 
 from selenium import webdriver
@@ -26,6 +27,11 @@ from selenium.common.exceptions import StaleElementReferenceException
 from config import JOBS, url_web, show
 
 
+def in_container():
+    """True in a Codespace or any other Docker container."""
+    return bool(os.environ.get("CODESPACES")) or os.path.exists("/.dockerenv")
+
+
 def start_browser(headless=True):
     options = Options()
     if headless:
@@ -33,6 +39,13 @@ def start_browser(headless=True):
         # Comment this out once, and watch it actually work. It is fun.
         options.add_argument("--headless=new")
     options.add_argument("--log-level=3")      # keep Chrome quiet
+    if in_container():
+        # Inside a container Chrome cannot build its own security sandbox, and
+        # exits immediately if asked to. It also gets a very small /dev/shm,
+        # which it will run out of. Neither flag is needed on a laptop, and
+        # --no-sandbox weakens Chrome, so we set them only where we must.
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
     return webdriver.Chrome(options=options)
 
 

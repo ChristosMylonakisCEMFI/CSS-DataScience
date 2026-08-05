@@ -95,7 +95,7 @@ python 02_beautifulsoup.py   # method 2: download the page, dig out the numbers
 python 03_selenium.py        # method 3: drive a real browser
 python 04_compare.py         # all three side by side: do they agree, what do they cost?
 
-python 05_scale_up.py        # the same idea over ~100 companies -> data/postings.csv
+python 05_scale_up.py        # NOT IN CLASS - see below
 python 06_analysis.py        # what the data says
 python 07_text_as_data.py    # turn the posting TEXT into variables
 python 08_compensating.py    # is the remote option paid for?
@@ -104,9 +104,17 @@ python 08_compensating.py    # is the remote option paid for?
 The first three each print the same three salaries. That is the point: three
 very different techniques, one answer.
 
-`05_scale_up.py` caches every reply in `data/cache/`, so running it a second
-time takes no time at all and makes no new requests. Use `--fresh` to force a
-re-download.
+**Do not run `05_scale_up.py` during the session.** It downloads the boards of
+about 109 companies. A room full of people doing that at the same moment sends
+thousands of requests from the same place within a couple of minutes, which is
+discourteous at best and gets everyone rate-limited at worst. Its output,
+`data/postings.csv`, is already in the repository, so `06`, `07` and `08` run
+without it.
+
+Run it at home afterwards, where it is exactly what it claims to be: an
+illustration of threads, caching, and error handling at scale. It caches every
+reply in `data/cache/`, so a second run makes no requests at all. Use
+`--fresh` to force a re-download, and `--workers` to be gentler.
 
 ---
 

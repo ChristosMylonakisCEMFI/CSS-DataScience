@@ -14,6 +14,11 @@ the other introduces four problems that did not exist before:
     python 05_scale_up.py --fresh     # ignore the cache and re-download
 
 Output: data/postings.csv
+
+NOT IN CLASS. This script contacts about 109 companies. A whole room running
+it at the same moment is discourteous to the site and gets everyone
+rate-limited. Its output is already committed, so the later scripts work
+without it. Run it at home, where point 4 above still applies to you alone.
 """
 import argparse
 import json

@@ -32,7 +32,7 @@ beforehand than in the room.
 1. Go to <https://github.com/signup> and create a free account.
 2. GitHub emails you a code. **Open the email and confirm your address.** An
    unconfirmed account cannot open a Codespace, and this is the most common
-   reason people get stuck at Part 2.
+   reason people get stuck at Parts 2 and 3.
 
 The free account is enough. You will never be asked to pay or to enter card
 details for this course.
@@ -41,15 +41,53 @@ Write your username and password down somewhere you will find them again.
 
 ---
 
-## Part 2. Open the course in a Codespace
+## Part 2. Make your own copy of the course
+
+Everything on GitHub lives in a **repository**: a folder of files, together
+with a record of every change ever made to them. The course material sits in
+our repository.
+
+You can read our repository — anyone can — but you cannot save anything into
+it, just as you cannot edit a page on somebody else's website. So GitHub lets
+you take your own copy. A copy of somebody else's repository, made under your
+own account, is called a **fork**.
+
+Three things are worth knowing about a fork:
+
+- **It is yours.** All the same files, but in your account, and you can change
+  anything in it.
+- **It is separate.** Nothing you do in your fork touches ours, and nothing
+  the other participants do touches yours. You cannot break the course for
+  anyone else, so experiment freely.
+- **It remembers where it came from.** If we improve the material later, you
+  can pull our changes into your copy with one click. Part 6 shows how.
+
+Making one takes two clicks:
 
 1. Make sure you are **signed in to GitHub** in your browser.
 2. Go to the course repository:
    <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>
-3. Click the green **`< > Code`** button near the top right.
-4. In the little panel that opens, click the **Codespaces** tab (next to
+3. Click **Fork**, near the top right.
+4. On the page that opens, change nothing and click **Create fork**.
+
+After a few seconds you are looking at your own copy. Check the name at the
+top of the page: it should read **your own username**, then
+`/ CSS-DataScience`, with a smaller line underneath saying "forked from
+ChristosMylonakisCEMFI/CSS-DataScience".
+
+**This page is now your home for the course.** Bookmark it.
+
+---
+
+## Part 3. Open your copy in a Codespace
+
+Do this **on your fork** — the page from Part 2, with your username at the
+top. Not on ours.
+
+1. Click the green **`< > Code`** button near the top right.
+2. In the little panel that opens, click the **Codespaces** tab (next to
    "Local").
-5. Click **Create codespace on main**.
+3. Click **Create codespace on main**.
 
 A new tab opens and starts building your machine. **The first time takes
 around three to five minutes.** You will see text scrolling past; you do not
@@ -70,7 +108,7 @@ Enter, wait until the cursor comes back before typing the next one.
 
 ---
 
-## Part 3. Tell Git your name
+## Part 4. Tell Git your name
 
 Git records who made each change to a file, so it wants to know who you are.
 Type these two lines into the terminal, replacing the name and email with your
@@ -86,7 +124,7 @@ Nothing visible happens. That is what success looks like.
 
 ---
 
-## Part 4. Check that everything works
+## Part 5. Check that everything works
 
 Type:
 
@@ -126,7 +164,7 @@ A line marked `NOTE` is a suggestion, not a problem. Ignore it.
 
 ---
 
-## Part 5. Four things to know about Codespaces
+## Part 6. Things to know about Codespaces
 
 **Your work is saved.** Closing the tab does not lose anything. The Codespace
 keeps your files exactly as you left them.
@@ -145,6 +183,48 @@ you well inside it: click **Stop** rather than leaving it open overnight
 (from <https://github.com/codespaces>, the "..." menu next to your Codespace),
 and do not create several Codespaces when one will do.
 
+**If we update the material**, your fork does not change by itself. Go to
+your fork's page on GitHub and click **Sync fork**, then **Update branch**. In
+your Codespace, run `git pull` afterwards to bring the new files in. We will
+tell you if this is ever necessary.
+
+**When the course is over**, delete your Codespaces from
+<https://github.com/codespaces>. A stopped Codespace still takes up a little
+of your free storage allowance. Deleting it does not delete your fork on
+GitHub, so anything you have saved there stays.
+
+---
+
+## Part 7. What happens in the sessions
+
+You have now done, on your own, the two things the first session opens with:
+you have a GitHub account, and you have used a Codespace. **Come with that
+already working.** We will not have time to install anything in the room, and
+somebody starting from nothing will spend the first session watching rather
+than doing.
+
+Here is how the sessions use what you have just set up.
+
+**The first session, on Git and GitHub**, starts from your account. We build a
+small project from scratch in a *new*, empty repository — not this one — so
+that you see every step: creating a repository, opening a Codespace on it,
+writing a file, recording the change, and sending it to GitHub. You will
+therefore end up with two Codespaces: the one you made today, and one for the
+practice project. That is expected. Follow along on your own screen; the
+whole point is the repetition.
+
+**The second and third sessions**, on web scraping and prediction, use the
+Codespace you created today. Reopen it from
+<https://github.com/codespaces>, and the course code is there, ready to run.
+Nothing further to install.
+
+One script is deliberately left out of class: `05_scale_up.py`, in the
+scraping session, downloads adverts from about a hundred companies. Thirty of
+us running it at once would be rude to the site and slow for everyone, so we
+will not. The data it produces is already saved in the repository, so the rest
+of the session works without it. Run it at home afterwards if you are curious
+— that is what it is there for.
+
 ---
 
 ## If something goes wrong
@@ -154,6 +234,13 @@ You are not signed in to GitHub, or your email address is not yet confirmed.
 Sign in, check your inbox for the confirmation email from GitHub, then reload
 the page.
 
+**Git says something like "permission denied" or "403" when you save work**
+You are almost certainly in a Codespace made on *our* repository rather than
+on your own fork. Nobody but us can save changes into ours. Go to
+<https://github.com/codespaces>, delete the Codespace, and start again from
+Part 2. Check the username at the top of the page before you click the green
+Code button.
+
 **"You have exceeded your usage quota" or a request for a payment method**
 Your free allowance for this month is spent — usually because of another
 course or project. It resets at the start of your next billing month. Tell us
@@ -161,7 +248,7 @@ and we will sort something out; do not enter card details on our account.
 
 **The Codespace has been building for more than ten minutes**
 Close the tab, go to <https://github.com/codespaces>, delete the one that is
-stuck, and create it again from Part 2. A second attempt almost always works.
+stuck, and create it again from Part 3. A second attempt almost always works.
 
 **`python: command not found`, or a `FAIL` on many packages at once**
 The machine was handed to you before it finished setting itself up. In the
@@ -177,6 +264,9 @@ on it alone.
 ## Before the first session
 
 - Open your Codespace once and confirm `python check_setup.py` still passes.
+- Confirm it is a Codespace on **your fork**: the file list should be there,
+  and the Codespace should be listed at <https://github.com/codespaces> under
+  your own copy of `CSS-DataScience`.
 - Do this on the connection you will actually use in class, if you can.
 - Make sure you can sign in to GitHub without having to reset your password.
 - Bring your charger.
@@ -247,16 +337,22 @@ unfriendly and is harmless.
 **On Windows** — press Start, type `powershell`, open **Windows PowerShell**.
 **On a Mac** — press `Cmd` and the space bar, type `terminal`, press Enter.
 
-Then type these three lines, one at a time, pressing Enter after each:
+First make your own copy of the course, exactly as in Part 2 above: fork it on
+GitHub. Then type these three lines, one at a time, pressing Enter after each.
+**Replace `YOUR-USERNAME` with your GitHub username**, so that you are
+downloading your copy rather than ours:
 
 ```
 cd Documents
-git clone https://github.com/ChristosMylonakisCEMFI/CSS-DataScience.git
+git clone https://github.com/YOUR-USERNAME/CSS-DataScience.git
 cd CSS-DataScience
 ```
 
 The first moves to your Documents folder, the second copies the course onto
 your computer, the third moves into the new folder.
+
+If you skip the fork and clone our address instead, everything still runs —
+you simply will not be able to save your work back to GitHub.
 
 > **On a Mac**, if the second line offers to install "command line developer
 > tools", accept, wait, then run the line again. That was Git installing
@@ -279,7 +375,7 @@ python check_setup.py
 **On a Mac**, the same, but write `python3` in place of `python`.
 
 The first line prints several screens of text and takes a few minutes. The
-last line is the one that matters; read Part 4 above for how to interpret it.
+last line is the one that matters; read Part 5 above for how to interpret it.
 If packages are missing, `python check_setup.py --fix` installs them for you.
 
 ### A7. Coming back later

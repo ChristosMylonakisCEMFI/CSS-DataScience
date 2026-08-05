@@ -5,6 +5,9 @@
 # Codespace, and check_setup.py will report the problem clearly.
 set -u
 
+# Never let apt stop to ask a question: the Codespace would appear to hang.
+export DEBIAN_FRONTEND=noninteractive
+
 echo
 echo "==> Installing the Python packages for the course"
 python -m pip install --user --no-cache-dir --upgrade pip

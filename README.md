@@ -7,8 +7,9 @@ Slides, exercises, and code for the course "Data Science for Economics".
 Read [`SETUP.md`](SETUP.md) and follow it step by step. It assumes no prior
 experience and takes about fifteen minutes.
 
-All you need is a free GitHub account and a browser. The course runs in a
-**Codespace** — a machine GitHub provides in the cloud — and the
+All you need is a free GitHub account and a browser. Fork this repository, so
+that the copy you work in is your own, then open your fork in a **Codespace** —
+a machine GitHub provides in the cloud. The
 [`.devcontainer/`](.devcontainer/) configuration installs Python, Chrome, and
 every package in [`requirements.txt`](requirements.txt) when the Codespace is
 created. Nothing is installed on your own laptop.
