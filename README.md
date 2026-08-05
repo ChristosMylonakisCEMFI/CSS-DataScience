@@ -8,13 +8,10 @@ Read [`SETUP.md`](SETUP.md) and follow it step by step. It assumes no prior
 experience and takes about fifteen minutes.
 
 All you need is a free GitHub account and a browser. Click **Code →
-Codespaces → Create codespace on main** above: the
-[`.devcontainer/`](.devcontainer/) configuration installs Python, Chrome, and
-every package in [`requirements.txt`](requirements.txt) while it builds, so
-nothing is installed on your own laptop.
+Codespaces → Create codespace on main** above, and wait a few minutes while it
+builds. Everything is installed for you; nothing goes on your own laptop.
 
-Once the Codespace is open, this command should report that every check
-passed:
+Once it opens, this command should report that every check passed:
 
 ```bash
 python check_setup.py

@@ -4,7 +4,8 @@ A hands-on session. We collect salary ranges from online job postings three
 different ways, compare the approaches, and then use about 9,000 postings to
 look at a standard question in labour economics (compensating differentials).
 
-Everything here runs on any laptop. Total setup time: about five minutes.
+Nothing to install: your Codespace already has everything. If you have not set
+one up yet, do [`SETUP.md`](../../SETUP.md) first.
 
 > **Note on the data.** The example targets live job postings, which companies
 > add and remove continually. By the time you run this, the specific postings
@@ -13,54 +14,7 @@ Everything here runs on any laptop. Total setup time: about five minutes.
 
 ---
 
-## 1. Get the files
-
-If you already cloned the course repository, you have them. Otherwise:
-
-```bash
-git clone https://github.com/ChristosMylonakisCEMFI/CSS-DataScience.git
-cd CSS-DataScience/slides/web-scraping
-```
-
-## 2. Install what you need
-
-Nothing, if you are working in a Codespace: Python, Chrome, and every package
-are already there. See [`SETUP.md`](../../SETUP.md) at the top of the
-repository, which covers this session and the other two from scratch.
-
-On your own machine you need **Python 3.9 or newer** and **Google Chrome** (or
-Microsoft Edge), plus the packages. From the top folder of the repository:
-
-```bash
-pip install -r requirements.txt
-```
-
-If `pip` is not found, try `python -m pip install -r requirements.txt`
-(on macOS/Linux, `python3 -m pip ...`).
-
-## 3. Check that it works
-
-From the top folder of the repository:
-
-```bash
-python check_setup.py
-```
-
-You will get a line per requirement. If anything fails, the script prints the
-exact command or download link that fixes it. To install missing Python
-packages automatically:
-
-```bash
-python check_setup.py --fix
-```
-
-**You do not need to download a browser driver.** Selenium 4 fetches the right
-one by itself the first time you run it. This only works on Selenium 4.25 or
-newer, which is why `requirements.txt` pins it.
-
----
-
-## 4. Before writing any code, look at the page
+## 1. Before writing any code, look at the page
 
 Open these three links in your browser, in order. This is the habit worth
 taking away from the whole session: **never write a scraper for a page you
@@ -85,7 +39,7 @@ see the request to `boards-api.greenhouse.io` appear in the list.
 
 ---
 
-## 5. Run the scripts, in order
+## 2. Run the scripts, in order
 
 ```bash
 cd code
@@ -118,11 +72,10 @@ reply in `data/cache/`, so a second run makes no requests at all. Use
 
 ---
 
-## 6. What each file is
+## 3. What each file is
 
 | File | What it does |
 | --- | --- |
-| `../../check_setup.py` | Verifies your machine; `--fix` installs what is missing |
 | `code/config.py` | Shared settings: which jobs, which URLs, one shared session |
 | `code/01_json.py` | Method 1 — the hidden data address |
 | `code/02_beautifulsoup.py` | Method 2 — parse the HTML page |
@@ -160,28 +113,11 @@ tool.
 
 ---
 
-## 7. Troubleshooting
+## 4. Troubleshooting
 
-**`ModuleNotFoundError: No module named 'bs4'`**
-The packages are not installed, or installed for a different Python. Run
-`python check_setup.py --fix`.
-
-**Selenium: `SessionNotCreatedException` or a driver error**
-Almost always an old Selenium. `pip install --upgrade "selenium>=4.25"`.
-Check Chrome is actually installed: <https://www.google.com/chrome/>.
-
-**Selenium: `Cache folder ... cannot be created`**
-Something on your machine created `~/.cache` as a *file*, so Selenium cannot
-make its folder. Point it elsewhere:
-
-```bash
-# Windows
-set SE_CACHE_PATH=%USERPROFILE%\selenium_cache
-# macOS / Linux
-export SE_CACHE_PATH=$HOME/selenium_cache
-```
-
-`code/config.py` already does this for you.
+Anything that looks like a missing package or a broken browser is a setup
+problem, not a scraping one: run `python check_setup.py` from the top folder
+of the repository and follow what it prints.
 
 **`StaleElementReferenceException`**
 Not a bug in your code — the page rebuilt itself while you were reading it.
@@ -193,7 +129,7 @@ so one failure never stops the run.
 
 ---
 
-## 8. A note on scraping responsibly
+## 5. A note on scraping responsibly
 
 - Prefer a bulk download or an official API when one exists.
 - Identify yourself with a `User-Agent` header, as the code here does.

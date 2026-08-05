@@ -95,7 +95,8 @@ is spent, usually on another project. Tell us; do not enter card details.
 always works.
 
 **Many packages `FAIL` at once** — the machine was handed over before it
-finished setting up. Run `bash .devcontainer/setup.sh`, then check again.
+finished setting up. Delete it at <https://github.com/codespaces> and create
+it again.
 
 ---
 

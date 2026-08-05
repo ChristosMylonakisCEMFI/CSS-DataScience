@@ -42,7 +42,7 @@
   \leavevmode%
   \hbox{%
     \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.7ex,dp=1.2ex,leftskip=.45cm]{author in head/foot}%
-      \color{Muted}\scriptsize Git, GitHub, and Codespaces: a hands-on tutorial
+      \color{Muted}\scriptsize\insertsectionhead
     \end{beamercolorbox}%
     \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.7ex,dp=1.2ex,rightskip=.45cm plus1fil]{date in head/foot}%
       \color{Muted}\scriptsize\hfill\insertframenumber/\inserttotalframenumber
@@ -50,6 +50,16 @@
 
 \setbeamerfont{frametitle}{series=\bfseries,size=\large}
 \setbeamerfont{title}{series=\bfseries,size=\LARGE}
+
+% Section dividers: show where we are in the deck
+\setbeamerfont{section in toc}{size=\large}
+\setbeamercolor{section in toc}{fg=Ink}
+\setbeamertemplate{section in toc}{%
+  \inserttocsectionnumber.\quad\inserttocsection\par\smallskip}
+\AtBeginSection[]{%
+  \begin{frame}{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}}
 
 % -----------------------------------------------------------------------------
 % Listings and reusable elements
@@ -133,6 +143,13 @@ We will learn Git by repeatedly using it on one small project.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\section{Why Git}
+
 \begin{frame}{Why not save a new file every time?}
 \begin{columns}[T,onlytextwidth]
   \column{0.43\textwidth}
@@ -202,6 +219,8 @@ them apart prevents most of the confusion that follows.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Setup}
+
 \begin{frame}{Step 1: open GitHub's repository form}
 \begin{columns}[T,onlytextwidth]
   \column{0.50\textwidth}
