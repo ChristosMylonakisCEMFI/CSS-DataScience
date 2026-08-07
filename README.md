@@ -34,7 +34,7 @@ Working on your own machine instead is covered at the end of
 
   ```bash
   curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
-  pip install pandas matplotlib ipykernel
+  pip install pandas matplotlib
   ```
 
 ### Session 2 — Prediction

@@ -718,54 +718,37 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Fetch it, and install what it needs}
-The file lives in the course repository. Bring a copy into yours:
+\begin{frame}[fragile]{Set it up}
+Fetch the file:
 \begin{lstlisting}[style=terminalsmall]
 $ curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
 \end{lstlisting}
 
-\vspace{0.1em}
-{\small (it is on the front page of the course repository too, to copy rather
-than type)}
-
-\vspace{0.5em}
-Then the libraries it uses. Anything already present is reported and left
-alone:
+\vspace{0.6em}
+Install what it uses:
 \begin{lstlisting}[style=terminal]
-$ pip install pandas matplotlib ipykernel
+$ pip install pandas matplotlib
 \end{lstlisting}
 
-\vspace{0.5em}
-Finally the editor itself. In the \textbf{Extensions} panel on the left bar,
-install \textbf{Python} and \textbf{Jupyter}, both by Microsoft. Without them
-VS Code treats this file as plain text and \button{Shift+Enter} does nothing.
+\vspace{0.8em}
+Then open the \textbf{Extensions} panel on the left bar and install
+\textbf{Python}, by Microsoft.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Open it and run it}
-\begin{columns}[T,onlytextwidth]
-  \column{0.50\textwidth}
-  \begin{enumerate}
-    \item In the Explorer, click \texttt{python\_basics.py}.
-    \item Put the cursor anywhere in the first block.
-    \item Press \button{Shift+Enter}.
-  \end{enumerate}
-  \vspace{0.4em}
-  The first time, VS Code asks which Python to use. Choose the recommended one;
-  it asks once.
+\begin{frame}{Run it}
+\begin{center}
+\vspace{0.5em}
+{\Large
+  Select a few lines. \quad Press \button{Shift+Enter}.
+}
 
-  \column{0.46\textwidth}
-  The file is an ordinary script and still runs whole, with
-  \texttt{python python\_basics.py}.
-  \vspace{0.6em}
+\vspace{1.6em}
+They run in the terminal below, and the output appears there.
+\end{center}
 
-  The \texttt{\# \%\%} lines also divide it into \emph{blocks}, and
-  \button{Shift+Enter} runs only the block you are in. Its output --- tables and
-  figures included --- appears in a panel beside the code.
-  \vspace{0.6em}
-
-  We will go through it block by block together.
-\end{columns}
+\vspace{1.6em}
+Work down the file a few lines at a time. We will do it together.
 \end{frame}
 
 % -----------------------------------------------------------------------------

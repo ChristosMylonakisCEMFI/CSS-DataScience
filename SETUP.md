@@ -106,7 +106,7 @@ it again.
 Only if you would rather not use Codespaces. You need Python 3.9+ from
 <https://www.python.org/downloads/> (on Windows, tick **"Add python.exe to
 PATH"** in the installer), VS Code from <https://code.visualstudio.com/> with
-its Python and Jupyter extensions, Git from <https://git-scm.com/downloads>,
+its Python extension, Git from <https://git-scm.com/downloads>,
 and Chrome from <https://www.google.com/chrome/>.
 
 Then, in PowerShell (Windows) or Terminal (Mac):
