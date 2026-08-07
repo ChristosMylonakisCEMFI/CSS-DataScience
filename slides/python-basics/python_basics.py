@@ -1,11 +1,15 @@
 # %% [markdown]
 # # Python for economists
 #
-# So far this repository has been about Git: you created it, wrote `growth.py`,
+# So far your repository has been about Git: you created it, wrote `growth.py`,
 # and pushed your commits to GitHub. The commands were the subject and the
 # Python was incidental. Here they swap over.
 #
-# This file covers the five ideas you cannot read anyone else's code without:
+# You did not write this file. You fetched it from the course repository a
+# moment ago, which is how most code reaches you: already written, by someone
+# else, for you to read and run before you change anything.
+#
+# It covers the five ideas you cannot read anyone else's code without:
 # values, records, loops and functions, tables, and figures. It is not a course
 # in the language, which takes months.
 #

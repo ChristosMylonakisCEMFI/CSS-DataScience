@@ -35,10 +35,6 @@
   \addtocounter{framenumberappendix}{-\value{framenumber}}%
   \addtocounter{framenumber}{\value{framenumberappendix}}}
 
-% The template repository participants copy in Step 1. Change it here and it
-% changes everywhere in the deck.
-\newcommand{\templaterepo}{github.com/ChristosMylonakisCEMFI/growth-calculator-template}
-
 % -----------------------------------------------------------------------------
 % Listings and reusable elements
 % -----------------------------------------------------------------------------
@@ -70,6 +66,12 @@
   keywordstyle=\color{white},
   commentstyle=\color{white},
   stringstyle=\color{white}
+}
+
+% For the one command that is a full web address and must stay on a single line.
+\lstdefinestyle{terminalsmall}{
+  style=terminal,
+  basicstyle=\ttfamily\tiny\color{white}
 }
 
 \newcommand{\button}[1]{%
@@ -117,6 +119,91 @@ We will learn Git by repeatedly using it on one small project.
 % -----------------------------------------------------------------------------
 \begin{frame}{Outline}
   \tableofcontents
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\section{Start the machine}
+
+\begin{frame}{Step 1: open GitHub's repository form}
+\begin{columns}[T,onlytextwidth]
+  \column{0.50\textwidth}
+  In the GitHub website:
+  \begin{enumerate}
+    \item Sign in at \texttt{github.com}.
+    \item In the upper-right corner, click \button{+}.
+    \item Select \button{New repository}.
+  \end{enumerate}
+
+  \column{0.46\textwidth}
+  The menu that opens lists:
+  \vspace{0.5em}
+
+  \ttfamily
+  New repository\\
+  Import repository\\
+  New codespace\\
+  New gist
+  \rmfamily
+\end{columns}
+
+\vspace{1em}
+A repository is the project folder plus the Git history attached to it.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Step 2: configure and create the repository}
+\begin{columns}[T,onlytextwidth]
+  \column{0.60\textwidth}
+  Fill in the form as follows.
+  \vspace{0.5em}
+
+  % \small: at full size the Description row is wider than the column and
+  % runs into the bullets opposite
+  {\small
+  \begin{tabular}{@{}ll@{}}
+    Owner & \texttt{your-username}\\
+    Repository name & \texttt{growth-calculator}\\
+    Description & \texttt{A Python growth calculator}\\
+    Visibility & Private\\
+    Add a README file & yes\\
+  \end{tabular}}
+
+  \vspace{0.6em}
+  Then click \button{Create repository}.
+
+  \column{0.35\textwidth}
+  We add a README because
+  \begin{itemize}
+    \item it explains the project to a visitor;
+    \item it gives the repository a first file;
+    \item GitHub creates the first commit for us.
+  \end{itemize}
+\end{columns}
+
+\vspace{0.9em}
+Checkpoint: the repository exists on GitHub.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Step 3: start a Codespace}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  From the repository page:
+  \begin{enumerate}
+    \item Click the green \button{Code} button.
+    \item Select the \button{Codespaces} tab.
+    \item Click \button{Create codespace on main}.
+  \end{enumerate}
+
+  \column{0.48\textwidth}
+  GitHub opens a new browser tab and begins building your machine. This takes
+  a few minutes, because it installs Python and the packages we need.
+\end{columns}
+
+\vspace{0.9em}
+\textbf{Start it now and leave it running.} Do not wait for it and do not
+reload the page. While it builds, we will answer the question you should be
+asking: what is Git for?
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -185,97 +272,21 @@ Git stores named snapshots of the project and a history connecting them.
 \end{tikzpicture}
 \end{center}
 
-\vspace{1em}
+\vspace{0.9em}
 Saving a file, committing it, and pushing it are three separate actions. Keeping
 them apart prevents most of the confusion that follows.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\section{Setup}
-
-\begin{frame}{Step 1: copy the course template}
-\begin{columns}[T,onlytextwidth]
-  \column{0.52\textwidth}
-  In the GitHub website:
-  \begin{enumerate}
-    \item Sign in at \texttt{github.com}.
-    \item Open the course template, below.
-    \item Click the green \button{Use this template}.
-    \item Select \button{Create a new repository}.
-  \end{enumerate}
-
-  \column{0.44\textwidth}
-  A \emph{template} is an ordinary repository that GitHub will copy for you.
-  \vspace{0.5em}
-
-  What you get is a repository of your own, with its own history. Nothing you
-  do in it can affect the original, and nothing in it is shared with anyone
-  else.
-\end{columns}
-
-\vspace{0.8em}
-\begin{center}
-  \texttt{\small\templaterepo}
-\end{center}
-
-\vspace{0.4em}
-A repository is the project folder plus the Git history attached to it.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Step 2: configure and create the repository}
-\begin{columns}[T,onlytextwidth]
-  \column{0.60\textwidth}
-  Fill in the form as follows.
-  \vspace{0.5em}
-
-  % \small: at full size the Description row is wider than the column and
-  % runs into the bullets opposite
-  {\small
-  \begin{tabular}{@{}ll@{}}
-    Owner & \texttt{your-username}\\
-    Repository name & \texttt{growth-calculator}\\
-    Description & \texttt{A Python growth calculator}\\
-    Visibility & Private\\
-  \end{tabular}}
-
-  \vspace{0.6em}
-  Then click \button{Create repository}.
-
-  \column{0.35\textwidth}
-  Your new repository arrives with three things in it:
-  \begin{itemize}
-    \item a README, which explains the project to a visitor;
-    \item the Python file for the second half of today;
-    \item a setup file, which tells the Codespace what to install.
-  \end{itemize}
-  They come with a first commit already made.
-\end{columns}
 
 \vspace{0.9em}
-Checkpoint: the repository exists on GitHub.
+\begin{center}
+  \color{Muted}Now go back to the other browser tab. Your Codespace should be
+  ready.
+\end{center}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Step 3: start a Codespace}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  From the repository page:
-  \begin{enumerate}
-    \item Click the green \button{Code} button.
-    \item Select the \button{Codespaces} tab.
-    \item Click \button{Create codespace on main}.
-  \end{enumerate}
-
-  \column{0.48\textwidth}
-  GitHub opens a new browser tab. Starting the cloud computer can take a minute.
-\end{columns}
-
-\vspace{1em}
-The Codespace contains a working copy of the GitHub repository.
-\end{frame}
 
 % -----------------------------------------------------------------------------
+\section{Your Codespace}
 \begin{frame}{Orient yourself inside Codespaces}
 \begin{columns}[T,onlytextwidth]
   \column{0.62\textwidth}
@@ -286,9 +297,7 @@ The Codespace contains a working copy of the GitHub repository.
     \draw[fill=CodeBG] (0.08,0.08) rectangle (2.40,3.82);
     \node[anchor=north west,font=\bfseries\scriptsize] at (0.2,3.65) {EXPLORER};
     \node[anchor=north west,font=\ttfamily\tiny] at (0.28,3.28) {growth-calc/};
-    % The second filename is the widest thing in this panel; 5pt is what fits.
-    \node[anchor=north west,font=\ttfamily\fontsize{5}{6}\selectfont] at (0.45,2.98) {README.md};
-    \node[anchor=north west,font=\ttfamily\fontsize{5}{6}\selectfont] at (0.45,2.70) {python\_basics.py};
+    \node[anchor=north west,font=\ttfamily\scriptsize] at (0.45,2.95) {README.md};
     \draw[fill=white] (2.47,1.42) rectangle (7.92,3.82);
     \node[text=Muted,font=\small] at (5.20,2.65) {Editor: view and change files};
     \draw[fill=Navy!92] (2.47,0.08) rectangle (7.92,1.34);
@@ -339,7 +348,7 @@ your GitHub account.
 $ pwd
 /workspaces/growth-calculator
 $ ls
-README.md  python_basics.py
+README.md
 $ git status
 On branch main
 Your branch is up to date with 'origin/main'.
@@ -355,7 +364,6 @@ nothing to commit, working tree clean
     \item \texttt{origin/main}: GitHub's corresponding branch.
     \item \texttt{clean}: no unsaved Git changes.
   \end{itemize}
-  The second file is for the second half of the session; leave it closed for now.
 \end{columns}
 
 \vspace{0.9em}
@@ -874,18 +882,41 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Fetch it, and install what it needs}
+The file lives in the course repository. Bring a copy into yours --- this is
+one line, however it looks:
+\begin{lstlisting}[style=terminalsmall]
+$ curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
+\end{lstlisting}
+
+\vspace{0.2em}
+It is linked from the front page of the course repository too, if you would
+rather copy than type it.
+
+\vspace{0.7em}
+Then install the three libraries it uses. If they are already present, pip says
+so and does nothing:
+\begin{lstlisting}[style=terminal]
+$ pip install pandas matplotlib ipykernel
+\end{lstlisting}
+
+\vspace{0.4em}
+\texttt{ls} now shows \texttt{python\_basics.py}, and \texttt{git status} shows
+it as untracked: it is in your folder, but Git has not been told to keep it.
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}{Open it and run it}
 \begin{columns}[T,onlytextwidth]
   \column{0.50\textwidth}
-  Nothing to download: the file came with the repository.
   \begin{enumerate}
     \item In the Explorer, click \texttt{python\_basics.py}.
     \item Put the cursor anywhere in the first block.
     \item Press \button{Shift+Enter}.
   \end{enumerate}
   \vspace{0.4em}
-  The first time, VS Code asks which Python to use. Choose the recommended
-  3.12; it asks once.
+  The first time, VS Code asks which Python to use. Choose the recommended one;
+  it asks once.
 
   \column{0.46\textwidth}
   The file is an ordinary script and still runs whole, with
@@ -966,7 +997,7 @@ of them once.
   Someone else changed the shared copy
     & the edit made on GitHub, then \texttt{fetch} and \texttt{pull} \\[0.35em]
   Code arrives that you did not write
-    & \texttt{python\_basics.py} \\[0.35em]
+    & fetching \texttt{python\_basics.py} \\[0.35em]
   Understand it well enough to change it
     & its section 7 \\[0.35em]
   Record a change so others can read it

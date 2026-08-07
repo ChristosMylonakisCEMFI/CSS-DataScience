@@ -29,9 +29,13 @@ Working on your own machine instead is covered at the end of
   a small program, and record and publish their changes.
 - [`slides/python-basics/`](slides/python-basics/): `python_basics.py` — values,
   records, functions and loops, pandas, and one figure, applied to the job
-  postings dataset. Distributed through the
-  [starter template](https://github.com/ChristosMylonakisCEMFI/growth-calculator-template);
-  its contents are mirrored in [`template-repo/`](template-repo/).
+  postings dataset. Participants fetch it into their own repository during the
+  session:
+
+  ```bash
+  curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
+  pip install pandas matplotlib ipykernel
+  ```
 
 ### Session 2 — Prediction
 

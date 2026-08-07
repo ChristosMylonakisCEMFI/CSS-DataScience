@@ -37,7 +37,9 @@
 % Section dividers: one plain outline frame at the start of each section,
 % with the current section in dark blue and the others in grey.
 % -----------------------------------------------------------------------------
-\setbeamerfont{section in toc}{size=\normalsize}
+% \small, and a measured gap rather than \smallskip, so that a deck with eight
+% sections still fits on one outline slide.
+\setbeamerfont{section in toc}{size=\small}
 \setbeamercolor{section in toc}{fg=Grey}
 \setbeamercolor{section in toc shaded}{fg=Grey}
 % Beamer fades unvisited sections to 20% by default, which disappears on a

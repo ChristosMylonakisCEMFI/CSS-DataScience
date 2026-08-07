@@ -72,9 +72,10 @@ machine and spends your free hours twice.
 Come with the four steps above already done — there will be no time to install
 anything in the room.
 
-- **Session 1 (Git, GitHub, and Python)** starts from a separate template
-  repository, so you will create a second Codespace and stay in it for the
-  whole session. That is expected; nothing needs installing in it.
+- **Session 1 (Git, GitHub, and Python)** builds a small project in a new,
+  empty repository of your own, so that you see every step yourself. You will
+  create a second Codespace at the start of it and stay in that one for the
+  whole session. That is expected.
 - **Sessions 2 and 3 (prediction, web scraping)** reuse the Codespace you made
   today. Reopen it and the code is there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
