@@ -97,18 +97,17 @@
   growth-calculator/\\
   \quad README.md\\
   \quad growth.py\\
-  \quad test\_growth.py\\
-  \quad .gitignore
+  \quad python\_basics.py
   \rmfamily
 
   \column{0.50\textwidth}
   By the end, you can
   \begin{itemize}
     \item create a repository and a Codespace;
-    \item edit, run, and test Python code;
+    \item edit and run Python code;
     \item inspect, stage, and commit changes;
     \item push work to GitHub and pull new work;
-    \item recognize the state of a Git repository.
+    \item run and change code you did not write.
   \end{itemize}
 \end{columns}
 
@@ -601,66 +600,6 @@ Fast-forward
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{Ignoring files}
-
-\begin{frame}{What is \texttt{.gitignore}?}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  \texttt{.gitignore} is a plain-text file that tells Git which files or folders
-  it should not track. Each line names a path or pattern to ignore; that line is
-  sometimes called a ``rule.''
-
-  \column{0.48\textwidth}
-  For this project, the complete file is one line:
-  \vspace{0.5em}
-
-  {\ttfamily\large \_\_pycache\_\_/}
-
-  \vspace{0.6em}
-  Python writes \texttt{\_\_pycache\_\_/} the moment one of your files imports
-  another.
-\end{columns}
-
-\vspace{1em}
-Adding the rule now means the cache never reaches a commit. Nothing is deleted:
-files stay on the computer, and Git simply stops offering to include them.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Create, check, and commit \texttt{.gitignore}}
-\begin{columns}[T,onlytextwidth]
-  \column{0.51\textwidth}
-  Create the file:
-\begin{lstlisting}[style=terminal]
-$ printf "__pycache__/\n" > .gitignore
-$ cat .gitignore
-__pycache__/
-\end{lstlisting}
-  \texttt{printf} writes the line into \texttt{.gitignore}; \texttt{cat} checks what was written.
-
-  \vspace{0.4em}
-  Check the result:
-\begin{lstlisting}[style=terminal]
-$ git status --short
-?? .gitignore
-\end{lstlisting}
-  Only the new file is listed. Anything matching a rule is now invisible to
-  Git.
-
-  \column{0.45\textwidth}
-  Share the instruction:
-\begin{lstlisting}[style=terminal]
-$ git add .gitignore
-$ git commit -m "Ignore Python cache"
-$ git push
-\end{lstlisting}
-  We commit \texttt{.gitignore} so everyone using the repository gets the same
-  instruction: \texttt{.gitignore} is tracked, \texttt{\_\_pycache\_\_/} is
-  ignored.
-\end{columns}
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \section{Summary}
 
 \begin{frame}{The daily workflow}
@@ -1014,6 +953,67 @@ $ git push
 
 \vspace{0.7em}
 A good commit is small, coherent, reviewed, and tested.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+
+% -----------------------------------------------------------------------------
+\section{Ignoring files}
+
+\begin{frame}{What is \texttt{.gitignore}?}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  \texttt{.gitignore} is a plain-text file that tells Git which files or folders
+  it should not track. Each line names a path or pattern to ignore; that line is
+  sometimes called a ``rule.''
+
+  \column{0.48\textwidth}
+  For this project, the complete file is one line:
+  \vspace{0.5em}
+
+  {\ttfamily\large \_\_pycache\_\_/}
+
+  \vspace{0.6em}
+  It means: ``Git, ignore the \texttt{\_\_pycache\_\_/} directory that Python
+  created when the tests imported \texttt{growth.py}.''
+\end{columns}
+
+\vspace{1em}
+Nothing is deleted. The directory stays on the computer; Git simply stops
+offering to include it in commits.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Create, check, and commit \texttt{.gitignore}}
+\begin{columns}[T,onlytextwidth]
+  \column{0.51\textwidth}
+  Create the file:
+\begin{lstlisting}[style=terminal]
+$ printf "__pycache__/\n" > .gitignore
+$ cat .gitignore
+__pycache__/
+\end{lstlisting}
+  \texttt{printf} writes the line into \texttt{.gitignore}; \texttt{cat} checks what was written.
+
+  \vspace{0.4em}
+  Check the result:
+\begin{lstlisting}[style=terminal]
+$ git status --short
+?? .gitignore
+\end{lstlisting}
+  The cache is no longer listed because Git is ignoring it.
+
+  \column{0.45\textwidth}
+  Share the instruction:
+\begin{lstlisting}[style=terminal]
+$ git add .gitignore
+$ git commit -m "Ignore Python cache"
+$ git push
+\end{lstlisting}
+  We commit \texttt{.gitignore} so everyone using the repository gets the same
+  instruction: \texttt{.gitignore} is tracked, \texttt{\_\_pycache\_\_/} is
+  ignored.
+\end{columns}
 \end{frame}
 
 % -----------------------------------------------------------------------------
