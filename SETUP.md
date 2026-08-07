@@ -16,6 +16,9 @@ and this is where most people get stuck.
 
 ## 2. Open the course in a Codespace
 
+This proves your account can open one, which is the thing worth finding out
+now rather than in a session. It is also the machine sessions 2 and 3 use.
+
 On the course repository page:
 **green `< > Code` button → Codespaces tab → Create codespace on main**.
 
@@ -32,6 +35,9 @@ In the terminal, with your own name and the email you used for GitHub:
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
+
+Despite the name, `--global` means "this machine", not "this account". A new
+Codespace will ask again; session 1 covers it.
 
 ## 4. Check that it worked
 
@@ -62,6 +68,9 @@ machine and spends your free hours twice.
 - GitHub gives free accounts 120 core-hours a month — about 60 hours on the
   machine we use, far more than this course needs. Stop it rather than leaving
   it running overnight.
+- GitHub removes a Codespace left unused for a month. If yours has gone before
+  a later session, make it again; the course files come from GitHub, so only
+  changes you never pushed are lost.
 - Delete your Codespaces from the same page when the course is over.
 - Want to keep your own changes on GitHub? Click **Fork** on the repository
   first, and create the Codespace on your copy. Otherwise your edits live only
@@ -69,14 +78,14 @@ machine and spends your free hours twice.
 
 ## In the sessions
 
-Come with the four steps above already done — there will be no time to install
-anything in the room.
+Come with the four steps above already done. There is no time in the room to
+sort out an account that cannot open a Codespace.
 
-- **Session 1 (Git, GitHub, and Python)** builds a small project in a new,
-  empty repository of your own, so that you see every step yourself. You will
-  create a second Codespace at the start of it and stay in that one for the
-  whole session. That is expected.
-- **Sessions 2 and 3 (prediction, web scraping)** reuse the Codespace you made
+- **Session 1 (Git, GitHub, and Python)** starts from nothing. You will create
+  a new, empty repository of your own and a second Codespace on it, in the
+  room, so that you see every step yourself. Nothing you set up today is used:
+  today's steps are there to prove your account works.
+- **Sessions 2 and 3 (prediction, web scraping)** use the Codespace you made
   today. Reopen it and the code is there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
   and a whole room doing that at once gets everyone blocked. Its output is
