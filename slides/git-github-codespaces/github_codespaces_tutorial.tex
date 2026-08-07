@@ -719,26 +719,26 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 
 % -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Fetch it, and install what it needs}
-The file lives in the course repository. Bring a copy into yours --- this is
-one line, however it looks:
+The file lives in the course repository. Bring a copy into yours:
 \begin{lstlisting}[style=terminalsmall]
 $ curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
 \end{lstlisting}
 
-\vspace{0.2em}
-It is linked from the front page of the course repository too, if you would
-rather copy than type it.
+\vspace{0.1em}
+{\small (it is on the front page of the course repository too, to copy rather
+than type)}
 
-\vspace{0.7em}
-Then install the three libraries it uses. If they are already present, pip says
-so and does nothing:
+\vspace{0.5em}
+Then the libraries it uses. Anything already present is reported and left
+alone:
 \begin{lstlisting}[style=terminal]
 $ pip install pandas matplotlib ipykernel
 \end{lstlisting}
 
-\vspace{0.4em}
-\texttt{ls} now shows \texttt{python\_basics.py}, and \texttt{git status} shows
-it as untracked: it is in your folder, but Git has not been told to keep it.
+\vspace{0.5em}
+Finally the editor itself. In the \textbf{Extensions} panel on the left bar,
+install \textbf{Python} and \textbf{Jupyter}, both by Microsoft. Without them
+VS Code treats this file as plain text and \button{Shift+Enter} does nothing.
 \end{frame}
 
 % -----------------------------------------------------------------------------
