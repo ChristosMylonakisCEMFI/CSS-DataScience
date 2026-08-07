@@ -308,6 +308,29 @@ The Codespace contains a working copy of the GitHub repository.
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Step 4: check that Git knows who you are}
+Every commit is signed with a name and an email. Ask what this machine will
+use:
+\begin{lstlisting}[style=terminal]
+$ git config --global user.name
+$ git config --global user.email
+\end{lstlisting}
+
+\vspace{0.3em}
+If both print something, you are done. If either prints nothing, set it, using
+your own name and the email you signed up to GitHub with:
+\begin{lstlisting}[style=terminal]
+$ git config --global user.name "Your Name"
+$ git config --global user.email "you@example.com"
+\end{lstlisting}
+
+\vspace{0.5em}
+This is set per machine, not per repository, so a new Codespace may ask again.
+Commits made with the wrong email still work; they are just not credited to
+your GitHub account.
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Inspect the starting repository}
 \begin{columns}[T,onlytextwidth]
   \column{0.54\textwidth}
