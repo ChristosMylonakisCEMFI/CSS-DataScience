@@ -6,6 +6,10 @@ You need a free **GitHub account** and a **browser**. Nothing is installed on
 your laptop: we work on a computer GitHub provides in the cloud, called a
 *Codespace*, which arrives with Python and everything else already on it.
 
+**Step 1 is all that session 1 needs.** Steps 2 to 4 prepare the machine used
+in sessions 2 and 3, and confirm that your account can open one at all. Do them
+all now: the sessions run in the same week, and there is no time in between.
+
 ---
 
 ## 1. Create a GitHub account
@@ -16,10 +20,9 @@ and this is where most people get stuck.
 
 ## 2. Open the course in a Codespace
 
-This proves your account can open one, which is the thing worth finding out
-now rather than in a session. It is also the machine sessions 2 and 3 use.
+On the course repository page,
+<https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>:
 
-On the course repository page:
 **green `< > Code` button → Codespaces tab → Create codespace on main**.
 
 The first launch takes a few minutes while it installs Python, the course
@@ -49,8 +52,8 @@ Every line should say `PASS`, ending with "All checks passed". If a line says
 `FAIL`, the exact fix is printed underneath it — do that, then run the command
 again. `NOTE` is a suggestion, not a problem.
 
-**If it does not pass, email us the whole screen.** Do not spend an hour on
-it, and do not leave it until the first session.
+**If it does not pass, email the whole screen to <christos.mylonakis@cemfi.edu.es>.**
+Do not spend an hour on it, and do not leave it until the first session.
 
 ---
 
@@ -68,29 +71,26 @@ machine and spends your free hours twice.
 - GitHub gives free accounts 120 core-hours a month — about 60 hours on the
   machine we use, far more than this course needs. Stop it rather than leaving
   it running overnight.
-- GitHub removes a Codespace left unused for a month. If yours has gone before
-  a later session, make it again; the course files come from GitHub, so only
-  changes you never pushed are lost.
 - Delete your Codespaces from the same page when the course is over.
-- Want to keep your own changes on GitHub? Click **Fork** on the repository
-  first, and create the Codespace on your copy. Otherwise your edits live only
-  inside the Codespace, which is fine for following along.
+- Want to keep your own changes on GitHub? Click **Fork** on the course
+  repository, <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>,
+  and create the Codespace on your copy. Otherwise your edits live only inside
+  the Codespace, which is fine for following along.
 
 ## In the sessions
 
 Come with the four steps above already done. There is no time in the room to
 sort out an account that cannot open a Codespace.
 
-- **Session 1 (Git, GitHub, and Python)** starts from nothing. You will create
-  a new, empty repository of your own and a second Codespace on it, in the
-  room, so that you see every step yourself. Nothing you set up today is used:
-  today's steps are there to prove your account works.
+- **Session 1 (Git, GitHub, and Python)** needs only your GitHub account. You
+  will create a new, empty repository of your own and a second Codespace on it,
+  in the room, so that you see every step yourself.
 - **Sessions 2 and 3 (prediction, web scraping)** use the Codespace you made
   today. Reopen it and the code is there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
   and a whole room doing that at once gets everyone blocked. Its output is
-  already saved in the repository, so session 3 works without it. Run it at
-  home if you are curious.
+  already saved in the course repository, <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>,
+  so session 3 works without it. Run it at home if you are curious.
 
 ## If something goes wrong
 
@@ -98,7 +98,8 @@ sort out an account that cannot open a Codespace.
 email is not confirmed yet.
 
 **"You have exceeded your usage quota"** — your free allowance for this month
-is spent, usually on another project. Tell us; do not enter card details.
+is spent, usually on another project. Email <christos.mylonakis@cemfi.edu.es>;
+do not enter card details.
 
 **Still building after ten minutes** — delete it at
 <https://github.com/codespaces> and create it again. A second attempt almost

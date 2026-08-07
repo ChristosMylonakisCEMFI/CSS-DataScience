@@ -7,8 +7,10 @@ Slides, exercises, and code for the course "Data Science for Economics".
 Read [`SETUP.md`](SETUP.md) and follow it step by step. It assumes no prior
 experience.
 
-All you need is a free GitHub account and a browser. Click **Code →
-Codespaces → Create codespace on main** above, and wait a few minutes while it
+All you need is a free GitHub account and a browser. Session 1 needs nothing
+beyond the account. For sessions 2 and 3, open a Codespace on this repository,
+<https://github.com/ChristosMylonakisCEMFI/CSS-DataScience> — **Code →
+Codespaces → Create codespace on main** above — and wait a few minutes while it
 builds. Everything is installed for you; nothing goes on your own laptop.
 
 Once it opens, this command should report that every check passed:
@@ -18,7 +20,8 @@ python check_setup.py
 ```
 
 Working on your own machine instead is covered at the end of
-[`SETUP.md`](SETUP.md).
+[`SETUP.md`](SETUP.md). Questions before the course:
+<christos.mylonakis@cemfi.edu.es>.
 
 ## Materials
 
