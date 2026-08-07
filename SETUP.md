@@ -1,6 +1,6 @@
 # Getting ready for the course
 
-Do this **before the first session**. It takes about ten minutes.
+Do this **before the first session**.
 
 You need a free **GitHub account** and a **browser**. Nothing is installed on
 your laptop: we work on a computer GitHub provides in the cloud, called a
@@ -72,16 +72,15 @@ machine and spends your free hours twice.
 Come with the four steps above already done — there will be no time to install
 anything in the room.
 
-- **Session 1 (Git, GitHub, and Python basics)** builds a small project in a
-  repository of your own, so that you see every step yourself. You will make a
-  second Codespace at the start of it, and stay in that one for the whole
-  session, Python included. That is expected; nothing needs installing in it.
-- **Sessions 2 and 3 (scraping, prediction)** reuse the Codespace you made
+- **Session 1 (Git, GitHub, and Python)** starts from a separate template
+  repository, so you will create a second Codespace and stay in it for the
+  whole session. That is expected; nothing needs installing in it.
+- **Sessions 2 and 3 (prediction, web scraping)** reuse the Codespace you made
   today. Reopen it and the code is there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
   and a whole room doing that at once gets everyone blocked. Its output is
-  already saved in the repository, so the rest of the session works without
-  it. Run it at home if you are curious.
+  already saved in the repository, so session 3 works without it. Run it at
+  home if you are curious.
 
 ## If something goes wrong
 

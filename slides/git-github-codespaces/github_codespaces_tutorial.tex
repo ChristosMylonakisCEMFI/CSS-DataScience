@@ -823,33 +823,31 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Second half: the language itself}
+\begin{frame}{Now: somebody else's code}
 \begin{columns}[T,onlytextwidth]
-  \column{0.52\textwidth}
-  So far the commands have been the subject and the Python incidental. For the
-  next half hour they swap over. In the Explorer, open
-  \vspace{0.35em}
-
-  \texttt{python\_basics.py}
-  \vspace{0.35em}
-
-  It is an ordinary script, but the \texttt{\# \%\%} lines cut it into
-  \emph{blocks}. Put the cursor in one and press \button{Shift+Enter}: that
-  block runs, and its output appears beside the code.
-  \vspace{0.35em}
-
-  The first time, VS Code asks which Python to use. Choose the recommended
-  3.12; it asks once.
-
-  \column{0.44\textwidth}
-  Nothing to install and nothing to download: the repository you created
-  already contains the file, and your Codespace already has what it needs.
+  \column{0.48\textwidth}
+  Everything so far has been yours. You wrote it, so you already knew what it
+  was supposed to do.
   \vspace{0.7em}
 
-  You did not write this file. Somebody else did, and you are about to run it,
-  change one line of it, and push that change back --- which is what working
-  with other people actually looks like.
+  The rest of the session begins from the opposite position. Your repository
+  contains a file you did not write.
+
+  \column{0.46\textwidth}
+  That is the ordinary situation on any project, and the task it sets is always
+  the same:
+  \begin{enumerate}
+    \item run it;
+    \item follow what each part does;
+    \item change one thing;
+    \item record the change and push it.
+  \end{enumerate}
 \end{columns}
+
+\vspace{1.0em}
+\begin{center}
+  We move to the Codespace and work through \texttt{python\_basics.py} together.
+\end{center}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -885,31 +883,6 @@ of them once.
 \begin{center}
   \color{Muted}\small
   Together: the workflow used \emph{inside} a project.
-\end{center}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{The next thing to learn}
-\begin{columns}[T,onlytextwidth]
-  \column{0.47\textwidth}
-  \textbf{Branches.} Today everything happened on \texttt{main}. A branch lets
-  you develop a change beside the working version and merge it only once it is
-  finished.
-
-  \column{0.47\textwidth}
-  \textbf{Pull requests.} A way to propose a change to a repository you do not
-  own. Nothing lands until the owner reviews it and accepts.
-\end{columns}
-
-\vspace{1.1em}
-Both are built on exactly the commands you used today; neither replaces them.
-Contributing to somebody else's project is the same loop --- read, run, change,
-commit --- with a review step in the middle.
-
-\vspace{0.9em}
-\begin{center}
-  \color{Muted}
-  For now: pull before you start, commit small, push often.
 \end{center}
 \end{frame}
 

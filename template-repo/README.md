@@ -1,39 +1,34 @@
 # Growth calculator
 
-This repository is yours. You made it from a template at the start of the first
-session of *Data Science for Economics*, and everything in it from here on is
-your own work.
+Starter repository for session 1 of *Data Science for Economics* (CEMFI).
+Created from a template; the contents are yours to change.
 
-## The two halves of the session
+## Contents
 
-**Git and GitHub.** You will write a small program, `growth.py`, and its tests,
-and put them under version control: `git status` to see what changed, `git add`
-to choose what to record, `git commit` to record it, `git push` to send it to
-GitHub. The program itself is deliberately simple, because the commands are the
-point.
+| File | Description |
+| --- | --- |
+| `growth.py` | A small program, written during the session |
+| `test_growth.py` | Its tests, written during the session |
+| `python_basics.py` | Python for economists: values, records, functions, tables, figures |
+| `.devcontainer/` | Codespace configuration |
 
-**Python basics.** Then open [`python_basics.py`](python_basics.py) and the
-emphasis reverses: half an hour on the language itself, ending with a real
-dataset of about ten thousand job adverts.
+## Running `python_basics.py`
 
-That file is an ordinary Python script — `python python_basics.py` runs it from
-top to bottom — but the `# %%` lines cut it into blocks, and VS Code will run
-one block at a time. Put the cursor in a block and press `Shift` + `Enter`; the
-output, figures included, appears in a panel beside the code. The first time,
-VS Code asks which Python to use: choose the recommended 3.12.
+The file runs top to bottom with `python python_basics.py`. The `# %%` markers
+also divide it into blocks: place the cursor in one and press `Shift` + `Enter`
+to run that block alone, with its output beside the code. Select the
+recommended Python 3.12 interpreter when prompted.
 
-You did not write that file, which is the normal situation when you join a
-project. It ends by asking you to change one line of it and push the change
-back, which is the normal thing to do next.
+## Requirements
 
-## Working here later
-
-This Codespace stops itself after 30 minutes of inactivity, and nothing is lost.
-Reopen it from <https://github.com/codespaces> rather than creating a second one.
-
-Everything the code needs is already installed. If you ever want to work on your
-own laptop instead, you would need Python 3.9 or later and:
+Provided by the Codespace. To work locally instead, Python 3.9 or later and:
 
 ```bash
 pip install pandas matplotlib ipykernel
 ```
+
+## Data
+
+`python_basics.py` reads `postings.csv` over https from the course repository,
+<https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>. No local copy is
+required.

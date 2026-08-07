@@ -1,21 +1,17 @@
 # %% [markdown]
-# # Python for economists: the first thirty minutes
+# # Python for economists
 #
-# For the last hour and a half this repository has been about Git: you created
-# it, wrote `growth.py`, and pushed your commits to GitHub. The commands were
-# the subject and the Python was incidental.
+# So far this repository has been about Git: you created it, wrote `growth.py`,
+# and pushed your commits to GitHub. The commands were the subject and the
+# Python was incidental. Here they swap over.
 #
-# Now they swap over. This file sits in the same repository, open in the same
-# Codespace, and Git steps into the background until the end.
+# This file covers the five ideas you cannot read anyone else's code without:
+# values, records, loops and functions, tables, and figures. It is not a course
+# in the language, which takes months.
 #
-# It is deliberately short. The aim is not to teach you the language, which
-# takes months, but the five ideas you cannot read anyone else's code without:
-# values, records, loops and functions, tables, and figures.
-#
-# From section 5 we work on a real file: about ten thousand job adverts
-# collected from sixty-three company career pages. You will collect that file
-# yourself in the scraping session, and use it again in the prediction session.
-# Today we only read it.
+# From section 5 it uses a real file: about ten thousand job adverts collected
+# from sixty-three company career pages. That file is the one collected in the
+# web scraping session.
 
 # %% [markdown]
 # ---
@@ -298,10 +294,8 @@ plt.show()
 #
 # ### Where to go from here
 #
-# - Sections 3 and 4 are all you need to read the scraping code.
-# - Section 5 is all you need to follow the prediction session.
-# - Sessions 2 and 3 are both written as scripts like this one: eight numbered
-#   ones for scraping, and a single command that regenerates every figure for
-#   prediction.
+# - Section 5 is what the prediction session assumes.
+# - Sections 3 to 5 are what the web scraping session assumes.
+# - Both of those sessions are written as scripts like this one.
 # - When you are stuck, the last line of the error and the library's
 #   documentation will settle it faster than a search engine.

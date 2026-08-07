@@ -5,7 +5,7 @@ Slides, exercises, and code for the course "Data Science for Economics".
 ## Before the course starts
 
 Read [`SETUP.md`](SETUP.md) and follow it step by step. It assumes no prior
-experience and takes about fifteen minutes.
+experience.
 
 All you need is a free GitHub account and a browser. Click **Code →
 Codespaces → Create codespace on main** above, and wait a few minutes while it
@@ -22,8 +22,30 @@ Working on your own machine instead is covered at the end of
 
 ## Materials
 
-- [`slides/git-github-codespaces/`](slides/git-github-codespaces/): a hands-on tutorial on Git, GitHub, and Codespaces.
-- [`slides/python-basics/`](slides/python-basics/): thirty minutes of Python, taught straight after the Git tutorial and inside the same repository participants have just created. Values, dictionaries and lists, functions and loops, then pandas and one figure, all on the job postings the scraping session collects. It ends by having them change one line and push it, so the session doubles as a first collaboration exercise. The file itself is `python_basics.py`, a script cut into blocks by `# %%` markers, and it lives in the template repository whose contents are in [`template-repo/`](template-repo/); instructor notes are in its [README](slides/python-basics/README.md).
-- [`slides/web-scraping/`](slides/web-scraping/): a hands-on session on web scraping. Collect salary ranges from online job postings three ways (a JSON endpoint, BeautifulSoup, Selenium), compare the approaches, scale up to about 9,000 postings, and use them to look at compensating differentials. Runnable code, a one-command setup check, and slides. See its [README](slides/web-scraping/README.md) to get started.
-- [`slides/prediction/`](slides/prediction/): a session on prediction — overfitting, the bias-variance trade-off, cross-validation, data leakage, measures of predictive accuracy, the construction of regressors, and a menu of estimators. Every figure is produced by a seeded simulation in [`figures/make_figures.py`](slides/prediction/figures/make_figures.py); regenerate with `python make_figures.py`.
+### Session 1 — Git, GitHub, and Python
+
+- [`slides/git-github-codespaces/`](slides/git-github-codespaces/): tutorial on
+  Git, GitHub, and Codespaces. Participants create a repository, write and test
+  a small program, and record and publish their changes.
+- [`slides/python-basics/`](slides/python-basics/): `python_basics.py` — values,
+  records, functions and loops, pandas, and one figure, applied to the job
+  postings dataset. Distributed through the
+  [starter template](https://github.com/ChristosMylonakisCEMFI/growth-calculator-template);
+  its contents are mirrored in [`template-repo/`](template-repo/).
+
+### Session 2 — Prediction
+
+- [`slides/prediction/`](slides/prediction/): overfitting, the bias-variance
+  trade-off, cross-validation, data leakage, measures of predictive accuracy,
+  the construction of regressors, and a menu of estimators. Figures are produced
+  by a seeded simulation in
+  [`figures/make_figures.py`](slides/prediction/figures/make_figures.py).
+
+### Session 3 — Web scraping
+
+- [`slides/web-scraping/`](slides/web-scraping/): salary ranges collected from
+  online job postings three ways — a JSON endpoint, BeautifulSoup, and Selenium
+  — compared, then scaled to about 9,000 postings and used to examine
+  compensating differentials. See its
+  [README](slides/web-scraping/README.md).
 
