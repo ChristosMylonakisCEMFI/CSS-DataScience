@@ -207,12 +207,12 @@ jobs.isna().mean().round(3)      # share of missing values, by column
 # several currencies. Any statement about pay has to be conditioned on both, so
 # we select the rows we can actually use.
 #
-# Three things to read carefully. The currency is written once, as a name, so
-# that changing it changes the selection and everything reported afterwards.
-# Conditions are combined with `&` (and) and `|` (or), and each must be wrapped
-# in brackets. And a new column is created simply by assigning to a name that
-# does not exist yet — the arithmetic applies to the whole column at once, with
-# no loop.
+# Three things to read carefully. The currency is written once, as a name, and
+# read back wherever it is needed, so that it cannot fall out of step with the
+# labels. Conditions are combined with `&` (and) and `|` (or), and each must be
+# wrapped in brackets. And a new column is created simply by assigning to a
+# name that does not exist yet — the arithmetic applies to the whole column at
+# once, with no loop.
 
 # %%
 CURRENCY = "USD"
@@ -267,12 +267,9 @@ plt.show()
 # The next step is the one that matters: understand a piece of it well enough to
 # change it, and then return your change.
 #
-# **Make one small edit.** Pick whichever you prefer:
-#
-# - in section 6, halve the number of bins in the histogram, and run that
-#   block again;
-# - in section 5, set `CURRENCY` to euros instead, and see how many postings
-#   survive.
+# **Make one small edit.** In section 6, halve the number of bins the histogram
+# is drawn with, and run that block again. The shape of the distribution should
+# survive; the detail should coarsen.
 #
 # **Then look at what you changed**, in the terminal:
 #
