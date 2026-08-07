@@ -6,17 +6,18 @@ You need a free **GitHub account** and a **browser**. Nothing is installed on
 your laptop: we work on a computer GitHub provides in the cloud, called a
 *Codespace*, which arrives with Python and everything else already on it.
 
-**Step 1 is all that session 1 needs.** Steps 2 to 4 prepare the machine used
-in sessions 2 and 3, and confirm that your account can open one at all. Do them
-all now: the sessions run in the same week, and there is no time in between.
+**Step 1 is all that session 1 needs.** Steps 2 to 4 prepare the machine for
+session 3, where you run the scraping code, and confirm that your account can
+open a Codespace at all. Do them now rather than later: the machine takes a few
+minutes to build, the sessions run in the same week, and there is no time in
+between.
 
 ---
 
 ## 1. Create a GitHub account
 
 Sign up at <https://github.com/signup>, then **open the email GitHub sends you
-and confirm your address**. An unconfirmed account cannot open a Codespace,
-and this is where most people get stuck.
+and confirm your address**. An unconfirmed account cannot open a Codespace.
 
 ## 2. Open the course in a Codespace
 
@@ -85,8 +86,11 @@ sort out an account that cannot open a Codespace.
 - **Session 1 (Git, GitHub, and Python)** needs only your GitHub account. You
   will create a new, empty repository of your own and a second Codespace on it,
   in the room, so that you see every step yourself.
-- **Sessions 2 and 3 (prediction, web scraping)** use the Codespace you made
-  today. Reopen it and the code is there.
+- **Session 2 (prediction)** is a lecture. Nothing to run, nothing to prepare.
+- **Session 3 (web scraping)** uses the Codespace you made today: the code, the
+  data, and the browser it drives are all in the course repository,
+  <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>. Reopen it and everything is
+  there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
   and a whole room doing that at once gets everyone blocked. Its output is
   already saved in the course repository, <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>,

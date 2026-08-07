@@ -8,7 +8,8 @@ Read [`SETUP.md`](SETUP.md) and follow it step by step. It assumes no prior
 experience.
 
 All you need is a free GitHub account and a browser. Session 1 needs nothing
-beyond the account. For sessions 2 and 3, open a Codespace on this repository,
+beyond the account, and session 2 is a lecture. For session 3 you run the
+scraping code, so open a Codespace on this repository,
 <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience> — **Code →
 Codespaces → Create codespace on main** above — and wait a few minutes while it
 builds. Everything is installed for you; nothing goes on your own laptop.
