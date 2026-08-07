@@ -54,7 +54,6 @@ Every line should say `PASS`, ending with "All checks passed". If a line says
 again. `NOTE` is a suggestion, not a problem.
 
 **If it does not pass, email the whole screen to <christos.mylonakis@cemfi.edu.es>.**
-Do not spend an hour on it, and do not leave it until the first session.
 
 ---
 
