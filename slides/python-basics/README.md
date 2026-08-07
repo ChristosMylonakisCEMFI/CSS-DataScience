@@ -1,8 +1,10 @@
 # Python basics — instructor notes
 
 Taught in the second part of session 1, in the repository participants create
-during the Git tutorial. There are no slides: the file is worked through live in
-the Codespace.
+during the Git tutorial. The file itself is worked through live in the
+Codespace; the Git deck carries only the framing and the instructions for the
+closing exercise — *Now: somebody else's code*, *Open it and run it*, *Change
+one thing*, *Record and publish your change*.
 
 ## Where the material lives
 

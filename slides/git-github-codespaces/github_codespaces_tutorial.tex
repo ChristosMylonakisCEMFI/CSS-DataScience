@@ -851,6 +851,83 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}{Open it and run it}
+\begin{columns}[T,onlytextwidth]
+  \column{0.50\textwidth}
+  Nothing to download: the file came with the repository.
+  \begin{enumerate}
+    \item In the Explorer, click \texttt{python\_basics.py}.
+    \item Put the cursor anywhere in the first block.
+    \item Press \button{Shift+Enter}.
+  \end{enumerate}
+  \vspace{0.4em}
+  The first time, VS Code asks which Python to use. Choose the recommended
+  3.12; it asks once.
+
+  \column{0.46\textwidth}
+  The file is an ordinary script and still runs whole, with
+  \texttt{python python\_basics.py}.
+  \vspace{0.6em}
+
+  The \texttt{\# \%\%} lines also divide it into \emph{blocks}, and
+  \button{Shift+Enter} runs only the block you are in. Its output --- tables and
+  figures included --- appears in a panel beside the code.
+  \vspace{0.6em}
+
+  We will go through it block by block together.
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Change one thing}
+Once we have been through the file, make one small edit of your own. Either:
+\vspace{0.7em}
+
+\begin{columns}[T,onlytextwidth]
+  \column{0.46\textwidth}
+  \textbf{In section 6}, the histogram is drawn with 40 bars. Change it to 20
+  and run that block again.
+
+  \column{0.46\textwidth}
+  \textbf{In section 5}, the rows are filtered to salaries quoted in US
+  dollars. Change it to euros and see how many postings remain.
+\end{columns}
+
+\vspace{1.0em}
+Keep it small and deliberate. The test is whether you can describe what you
+changed in one short sentence --- because in a moment you will have to.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Record and publish your change}
+\begin{columns}[T,onlytextwidth]
+  \column{0.52\textwidth}
+\begin{lstlisting}[style=terminal]
+$ git status
+$ git diff
+$ git add python_basics.py
+$ git commit -m "Use 20 histogram bars"
+$ git push
+\end{lstlisting}
+
+  \column{0.44\textwidth}
+  The same five commands as this morning, on somebody else's file instead of
+  your own:
+  \begin{itemize}
+    \item \texttt{status}: what has changed;
+    \item \texttt{diff}: exactly which lines;
+    \item \texttt{add}: choose what to record;
+    \item \texttt{commit}: record it, with a description;
+    \item \texttt{push}: send it to GitHub.
+  \end{itemize}
+\end{columns}
+
+\vspace{0.8em}
+\texttt{git diff} shows your one line and nothing else. Refresh your repository
+page on GitHub and the change is there, with your name against it.
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}{What you have just practised}
 \vspace{0.2em}
 Every idea below is one you will meet on a real project. You have now met all
