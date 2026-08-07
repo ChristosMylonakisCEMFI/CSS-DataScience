@@ -11,12 +11,11 @@ All you need is a free GitHub account and a browser. Session 1 needs nothing
 beyond the account, and session 2 is a lecture. For session 3 you run the
 scraping code, so open a Codespace on this repository,
 <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience> — **Code →
-Codespaces → Create codespace on main** above. The first build is slow, so
-start it before the course rather than in a session, and leave the tab open
+Codespaces → Create codespace on main** above. The first build is slow, leave the tab open
 until it finishes. Everything is installed for you; nothing goes on your own
 laptop.
 
-**Bring your laptop to session 1 and be signed in to GitHub.** It is hands-on.
+Session 1 will be hands-on so if you want to follow the process step-by-step, it is suggested to bring your laptop and be signed in to GitHub. 
 
 Once it opens, this command should report that every check passed:
 
