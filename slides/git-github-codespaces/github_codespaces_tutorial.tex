@@ -853,6 +853,67 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}{What you have just practised}
+\vspace{0.2em}
+Every idea below is one you will meet on a real project. You have now met all
+of them once.
+\vspace{0.7em}
+
+{\small
+\begin{tabular}{@{}p{0.47\textwidth}p{0.47\textwidth}@{}}
+  \toprule
+  \textbf{The idea} & \textbf{Where you met it} \\
+  \midrule
+  Put your own work under version control
+    & \texttt{growth.py}: add, commit, push \\[0.35em]
+  Someone else changed the shared copy
+    & the edit made on GitHub, then \texttt{fetch} and \texttt{pull} \\[0.35em]
+  Code arrives that you did not write
+    & \texttt{python\_basics.py} \\[0.35em]
+  Understand it well enough to change it
+    & its section 7 \\[0.35em]
+  Record a change so others can read it
+    & \texttt{git diff}, then a commit message that says what you did \\[0.35em]
+  Publish it
+    & \texttt{git push} \\[0.35em]
+  Two edits collide
+    & merge conflicts \\
+  \bottomrule
+\end{tabular}}
+
+\vspace{0.5em}
+\begin{center}
+  \color{Muted}\small
+  Together: the workflow used \emph{inside} a project.
+\end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The next thing to learn}
+\begin{columns}[T,onlytextwidth]
+  \column{0.47\textwidth}
+  \textbf{Branches.} Today everything happened on \texttt{main}. A branch lets
+  you develop a change beside the working version and merge it only once it is
+  finished.
+
+  \column{0.47\textwidth}
+  \textbf{Pull requests.} A way to propose a change to a repository you do not
+  own. Nothing lands until the owner reviews it and accepts.
+\end{columns}
+
+\vspace{1.1em}
+Both are built on exactly the commands you used today; neither replaces them.
+Contributing to somebody else's project is the same loop --- read, run, change,
+commit --- with a review step in the middle.
+
+\vspace{0.9em}
+\begin{center}
+  \color{Muted}
+  For now: pull before you start, commit small, push often.
+\end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
 % Appendix: not part of the main sequence, and not counted in the frame numbers
 % -----------------------------------------------------------------------------
 \appendix
