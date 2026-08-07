@@ -386,7 +386,16 @@ Both labels point to the same commit, so the two copies are synchronized.
     \item Enter the code shown here.
     \item Save with \button{Ctrl+S}.
   \end{enumerate}
-  No package installation is needed.
+
+  \vspace{0.3em}
+  Checkpoint --- in the terminal:
+\begin{lstlisting}[style=terminal]
+$ ls
+README.md  growth.py
+\end{lstlisting}
+  If \texttt{growth.py} is not listed, it was never written to disk: an unsaved
+  tab shows a dot instead of an \texttt{x}. Press \button{Ctrl+S} and look
+  again.
 
   \column{0.58\textwidth}
 \begin{lstlisting}[style=code,language=Python]
@@ -535,94 +544,6 @@ Checkpoint: Codespace and GitHub contain the new commit.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{Tests}
-
-\begin{frame}[fragile]{Create package-free tests: \texttt{test\_growth.py}}
-\begin{columns}[T,onlytextwidth]
-  \column{0.38\textwidth}
-  Create a new file named \texttt{test\_growth.py}.
-
-  \vspace{0.5em}
-  Each \texttt{assert} states a result that must be true. If one is false, Python
-  stops with an error.
-
-  \vspace{0.5em}
-  \texttt{growth} refers to our own \texttt{growth.py} file. The tests use only
-  Python itself.
-
-  \column{0.58\textwidth}
-\begin{lstlisting}[style=code,language=Python]
-from growth import percentage_change
-
-
-assert percentage_change(100, 105) == 5
-assert percentage_change(100, 90) == -10
-assert percentage_change(100, 100) == 0
-
-print("All tests passed.")
-\end{lstlisting}
-\end{columns}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Run the tests---and see what failure looks like}
-\begin{columns}[T,onlytextwidth]
-  \column{0.49\textwidth}
-  When all expectations are correct:
-\begin{lstlisting}[style=terminal]
-$ python test_growth.py
-All tests passed.
-\end{lstlisting}
-
-  Temporarily change the first expected result from \texttt{5} to \texttt{6} and rerun.
-
-  \column{0.47\textwidth}
-  A failing test:
-\begin{lstlisting}[style=terminal]
-$ python test_growth.py
-Traceback (most recent call last):
-  File "test_growth.py", line 4
-    assert percentage_change(100,105) == 6
-AssertionError
-\end{lstlisting}
-  Restore \texttt{5} and rerun until all tests pass.
-\end{columns}
-
-\vspace{0.7em}
-A test converts an expected result into a check the computer can repeat.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Record the tested change}
-\begin{columns}[T,onlytextwidth]
-  \column{0.55\textwidth}
-\begin{lstlisting}[style=terminal]
-$ git status
-$ git diff
-$ python test_growth.py
-All tests passed.
-$ git add test_growth.py
-$ git diff --staged
-$ git commit -m "Add tests for growth calculator"
-$ git push
-\end{lstlisting}
-
-  \column{0.41\textwidth}
-  The order matters:
-  \begin{enumerate}
-    \item identify changed files;
-    \item inspect their contents;
-    \item verify the code works;
-    \item select the intended change;
-    \item review, commit, and share it.
-  \end{enumerate}
-\end{columns}
-
-\vspace{0.7em}
-A good commit is small, coherent, reviewed, and tested.
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \section{Pulling}
 
 \begin{frame}{Simulate a collaborator by editing on GitHub}
@@ -700,13 +621,13 @@ Fast-forward
   {\ttfamily\large \_\_pycache\_\_/}
 
   \vspace{0.6em}
-  It means: ``Git, ignore the \texttt{\_\_pycache\_\_/} directory that Python
-  created.''
+  Python writes \texttt{\_\_pycache\_\_/} the moment one of your files imports
+  another.
 \end{columns}
 
 \vspace{1em}
-Nothing is deleted. The directory stays on the computer; Git simply stops
-offering to include it in commits.
+Adding the rule now means the cache never reaches a commit. Nothing is deleted:
+files stay on the computer, and Git simply stops offering to include them.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -727,7 +648,8 @@ __pycache__/
 $ git status --short
 ?? .gitignore
 \end{lstlisting}
-  The cache is no longer listed because Git is ignoring it.
+  Only the new file is listed. Anything matching a rule is now invisible to
+  Git.
 
   \column{0.45\textwidth}
   Share the instruction:
@@ -1011,6 +933,96 @@ of them once.
       \color{Muted}\scriptsize\hfill A\insertframenumber
     \end{beamercolorbox}}}
 \AtBeginSection[]{}
+\section{Tests}
+
+\begin{frame}[fragile]{Create package-free tests: \texttt{test\_growth.py}}
+\begin{columns}[T,onlytextwidth]
+  \column{0.38\textwidth}
+  Create a new file named \texttt{test\_growth.py}.
+
+  \vspace{0.5em}
+  Each \texttt{assert} states a result that must be true. If one is false, Python
+  stops with an error.
+
+  \vspace{0.5em}
+  \texttt{growth} refers to our own \texttt{growth.py} file. The tests use only
+  Python itself.
+
+  \column{0.58\textwidth}
+\begin{lstlisting}[style=code,language=Python]
+from growth import percentage_change
+
+
+assert percentage_change(100, 105) == 5
+assert percentage_change(100, 90) == -10
+assert percentage_change(100, 100) == 0
+
+print("All tests passed.")
+\end{lstlisting}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Run the tests---and see what failure looks like}
+\begin{columns}[T,onlytextwidth]
+  \column{0.49\textwidth}
+  When all expectations are correct:
+\begin{lstlisting}[style=terminal]
+$ python test_growth.py
+All tests passed.
+\end{lstlisting}
+
+  Temporarily change the first expected result from \texttt{5} to \texttt{6} and rerun.
+
+  \column{0.47\textwidth}
+  A failing test:
+\begin{lstlisting}[style=terminal]
+$ python test_growth.py
+Traceback (most recent call last):
+  File "test_growth.py", line 4
+    assert percentage_change(100,105) == 6
+AssertionError
+\end{lstlisting}
+  Restore \texttt{5} and rerun until all tests pass.
+\end{columns}
+
+\vspace{0.7em}
+A test converts an expected result into a check the computer can repeat.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Record the tested change}
+\begin{columns}[T,onlytextwidth]
+  \column{0.55\textwidth}
+\begin{lstlisting}[style=terminal]
+$ git status
+$ git diff
+$ python test_growth.py
+All tests passed.
+$ git add test_growth.py
+$ git diff --staged
+$ git commit -m "Add tests for growth calculator"
+$ git push
+\end{lstlisting}
+
+  \column{0.41\textwidth}
+  The order matters:
+  \begin{enumerate}
+    \item identify changed files;
+    \item inspect their contents;
+    \item verify the code works;
+    \item select the intended change;
+    \item review, commit, and share it.
+  \end{enumerate}
+\end{columns}
+
+\vspace{0.7em}
+A good commit is small, coherent, reviewed, and tested.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+
+% -----------------------------------------------------------------------------
 \section{When things go wrong}
 
 \begin{frame}[fragile]{If a push is rejected, synchronize first}
