@@ -122,91 +122,6 @@ We will learn Git by repeatedly using it on one small project.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{Start the machine}
-
-\begin{frame}{Step 1: open GitHub's repository form}
-\begin{columns}[T,onlytextwidth]
-  \column{0.50\textwidth}
-  In the GitHub website:
-  \begin{enumerate}
-    \item Sign in at \texttt{github.com}.
-    \item In the upper-right corner, click \button{+}.
-    \item Select \button{New repository}.
-  \end{enumerate}
-
-  \column{0.46\textwidth}
-  The menu that opens lists:
-  \vspace{0.5em}
-
-  \ttfamily
-  New repository\\
-  Import repository\\
-  New codespace\\
-  New gist
-  \rmfamily
-\end{columns}
-
-\vspace{1em}
-A repository is the project folder plus the Git history attached to it.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Step 2: configure and create the repository}
-\begin{columns}[T,onlytextwidth]
-  \column{0.60\textwidth}
-  Fill in the form as follows.
-  \vspace{0.5em}
-
-  % \small: at full size the Description row is wider than the column and
-  % runs into the bullets opposite
-  {\small
-  \begin{tabular}{@{}ll@{}}
-    Owner & \texttt{your-username}\\
-    Repository name & \texttt{growth-calculator}\\
-    Description & \texttt{A Python growth calculator}\\
-    Visibility & Private\\
-    Add a README file & yes\\
-  \end{tabular}}
-
-  \vspace{0.6em}
-  Then click \button{Create repository}.
-
-  \column{0.35\textwidth}
-  We add a README because
-  \begin{itemize}
-    \item it explains the project to a visitor;
-    \item it gives the repository a first file;
-    \item GitHub creates the first commit for us.
-  \end{itemize}
-\end{columns}
-
-\vspace{0.9em}
-Checkpoint: the repository exists on GitHub.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Step 3: start a Codespace}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  From the repository page:
-  \begin{enumerate}
-    \item Click the green \button{Code} button.
-    \item Select the \button{Codespaces} tab.
-    \item Click \button{Create codespace on main}.
-  \end{enumerate}
-
-  \column{0.48\textwidth}
-  GitHub opens a new browser tab and begins building your machine. This takes
-  a few minutes, because it installs Python and the packages we need.
-\end{columns}
-
-\vspace{0.9em}
-\textbf{Start it now and leave it running.} Do not wait for it and do not
-reload the page. While it builds, we will answer the question you should be
-asking: what is Git for?
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \section{Why Git}
 
 \begin{frame}{Why not save a new file every time?}
@@ -272,21 +187,85 @@ Git stores named snapshots of the project and a history connecting them.
 \end{tikzpicture}
 \end{center}
 
-\vspace{0.9em}
+\vspace{1em}
 Saving a file, committing it, and pushing it are three separate actions. Keeping
 them apart prevents most of the confusion that follows.
-
-\vspace{0.9em}
-\begin{center}
-  \color{Muted}Now go back to the other browser tab. Your Codespace should be
-  ready.
-\end{center}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 
 % -----------------------------------------------------------------------------
-\section{Your Codespace}
+
+% -----------------------------------------------------------------------------
+\section{Setup}
+
+\begin{frame}{Step 1: open GitHub's repository form}
+In the GitHub website:
+\begin{enumerate}
+  \item Sign in at \texttt{github.com}.
+  \item In the upper-right corner, click \button{+}.
+  \item Select \button{New repository}.
+\end{enumerate}
+
+\vspace{1.2em}
+A repository is the project folder plus the Git history attached to it.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Step 2: configure and create the repository}
+\begin{columns}[T,onlytextwidth]
+  \column{0.60\textwidth}
+  Fill in the form as follows.
+  \vspace{0.5em}
+
+  % \small: at full size the Description row is wider than the column and
+  % runs into the bullets opposite
+  {\small
+  \begin{tabular}{@{}ll@{}}
+    Owner & \texttt{your-username}\\
+    Repository name & \texttt{growth-calculator}\\
+    Description & \texttt{A Python growth calculator}\\
+    Visibility & Private\\
+    Add a README file & yes\\
+  \end{tabular}}
+
+  \vspace{0.6em}
+  Then click \button{Create repository}.
+
+  \column{0.35\textwidth}
+  We add a README because
+  \begin{itemize}
+    \item it explains the project to a visitor;
+    \item it gives the repository a first file;
+    \item GitHub creates the first commit for us.
+  \end{itemize}
+\end{columns}
+
+\vspace{0.9em}
+Checkpoint: the repository exists on GitHub.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Step 3: start a Codespace}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  From the repository page:
+  \begin{enumerate}
+    \item Click the green \button{Code} button.
+    \item Select the \button{Codespaces} tab.
+    \item Click \button{Create codespace on main}.
+  \end{enumerate}
+
+  \column{0.48\textwidth}
+  GitHub opens a new browser tab. Starting the cloud computer takes a minute
+  or two; wait for it rather than reloading the page.
+\end{columns}
+
+\vspace{1em}
+The Codespace contains a working copy of the GitHub repository.
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}{Orient yourself inside Codespaces}
 \begin{columns}[T,onlytextwidth]
   \column{0.62\textwidth}
