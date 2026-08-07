@@ -719,20 +719,20 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 
 % -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Set it up}
-Fetch the file:
 \begin{lstlisting}[style=terminalsmall]
 $ curl -O https://raw.githubusercontent.com/ChristosMylonakisCEMFI/CSS-DataScience/main/slides/python-basics/python_basics.py
-\end{lstlisting}
-
-\vspace{0.6em}
-Install what it uses:
-\begin{lstlisting}[style=terminal]
+$ git add python_basics.py
+$ git commit -m "Add the Python basics file"
 $ pip install pandas matplotlib
 \end{lstlisting}
 
-\vspace{0.8em}
+\vspace{1.0em}
 Then open the \textbf{Extensions} panel on the left bar and install
 \textbf{Python}, by Microsoft.
+
+\vspace{1.0em}
+Commit it before you change it. \texttt{git diff} can only show changes to a
+file Git already knows about.
 \end{frame}
 
 % -----------------------------------------------------------------------------

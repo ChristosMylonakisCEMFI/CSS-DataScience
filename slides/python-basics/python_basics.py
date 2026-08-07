@@ -179,9 +179,9 @@ print("wrote salaries.png")
 # ---------------------------------------------------------------------------
 # 6. Change one thing, and send it back
 # ---------------------------------------------------------------------------
-# You did not write this file. You fetched it, which is how most code reaches
-# you: already written, by someone else, to be read and run before it is
-# changed.
+# You did not write this file. You fetched it and committed it as it arrived,
+# which is how most code reaches you: already written, by someone else, to be
+# read and run before it is changed.
 #
 # Make one edit. In section 5, halve the number of bins, and run those lines
 # again. The shape should survive; the detail should coarsen.
