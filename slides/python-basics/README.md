@@ -3,7 +3,7 @@
 Taught in the second part of session 1, in the repository participants create
 during the Git tutorial. The file itself is worked through live in the
 Codespace; the Git deck carries only the framing and the instructions for the
-closing exercise — *Now: somebody else's code*, *Open it and run it*, *Change
+closing exercise — *Now: somebody else's code*, *Set it up*, *Run it*, *Change
 one thing*, *Record and publish your change*.
 
 ## Where the material lives
