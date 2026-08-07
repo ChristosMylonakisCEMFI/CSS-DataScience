@@ -37,25 +37,34 @@ The cost is that the prose is comments rather than rendered markdown. Blocks
 marked `# %% [markdown]` do render if you run them, but in the editor they read
 as comment text.
 
-## Publishing the template (do this once)
+## The template repository
 
-1. Create a new, empty repository on your account named
-   `growth-calculator-template`.
-2. Copy in everything from [`template-repo/`](../../template-repo/) — the
-   README, `python_basics.py`, and the `.devcontainer` folder — and push.
-3. In that repository: **Settings → General → tick "Template repository"**.
-4. Check that **Use this template** now appears as a green button on its page.
+It is live, public, and marked as a template:
 
-Do **not** add a `.gitignore`. Creating one is a lesson in the Git tutorial, and
-supplying it in advance spoils that section.
+<https://github.com/ChristosMylonakisCEMFI/growth-calculator-template>
 
-If you name the repository something else, change `\templaterepo` near the top
-of
+Public because participants have to be able to reach it to click **Use this
+template**; a private template is invisible to anyone who is not a collaborator.
+They can still make *their* copy private, which is what the slides tell them to
+do.
+
+It deliberately has no `.gitignore`. Creating one is a lesson in the Git
+tutorial, and supplying it in advance spoils that section.
+
+To change what participants receive, edit the template repository directly. The
+copy in [`template-repo/`](../../template-repo/) is a reference copy kept here so
+the contents are reviewable alongside the slides — if you edit one, edit the
+other, or the two drift apart.
+
+If you ever rename the template, change `\templaterepo` near the top of
 [`github_codespaces_tutorial.tex`](../git-github-codespaces/github_codespaces_tutorial.tex)
-and rebuild; the slide picks it up from there.
+and rebuild; the slide picks the address up from there.
 
-The template is the only home of `python_basics.py`. Edit it there rather than
-keeping a second copy here, so there is nothing to keep in sync.
+### Before the first session
+
+Click **Use this template** yourself, build a Codespace on the result, and check
+that the interpreter prompt behaves and that `Shift`+`Enter` runs a block. That
+is the one thing that cannot be verified from a laptop.
 
 ## What it covers, and roughly when
 
