@@ -133,8 +133,8 @@ print(postings[-1]["company"])    # the last one
 # ## 4. Doing the same thing to every record
 #
 # A **function** names a calculation so that you write it once — you have
-# already written one, `growth_rate`, in `growth.py`. A **loop** applies it to
-# each record in turn.
+# already written one, `percentage_change`, in `growth.py`. A **loop** applies
+# it to each record in turn.
 #
 # Note the colon and the indentation: in Python, indentation is not decoration.
 # It is how the language knows which lines belong to the function or the loop.
@@ -207,16 +207,20 @@ jobs.isna().mean().round(3)      # share of missing values, by column
 # several currencies. Any statement about pay has to be conditioned on both, so
 # we select the rows we can actually use.
 #
-# Two things to read carefully. Conditions are combined with `&` (and) and `|`
-# (or), and each must be wrapped in brackets. And a new column is created simply
-# by assigning to a name that does not exist yet — the arithmetic applies to the
-# whole column at once, with no loop.
+# Three things to read carefully. The currency is written once, as a name, so
+# that changing it changes the selection and everything reported afterwards.
+# Conditions are combined with `&` (and) and `|` (or), and each must be wrapped
+# in brackets. And a new column is created simply by assigning to a name that
+# does not exist yet — the arithmetic applies to the whole column at once, with
+# no loop.
 
 # %%
-pay = jobs[(jobs["currency"] == "USD") & jobs["lo"].notna()].copy()
+CURRENCY = "USD"
+
+pay = jobs[(jobs["currency"] == CURRENCY) & jobs["lo"].notna()].copy()
 pay["mid"] = (pay["lo"] + pay["hi"]) / 2
 
-print(len(pay), "postings with a salary range in USD")
+print(len(pay), "postings with a salary range in", CURRENCY)
 pay["mid"].describe().round(0)
 
 # %% [markdown]
@@ -245,7 +249,7 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(figsize=(6.5, 3.5))
 ax.hist(pay["mid"] / 1000, bins=40, color="0.35")
-ax.set_xlabel("Midpoint of posted salary range (thousands of USD)")
+ax.set_xlabel(f"Midpoint of posted salary range (thousands of {CURRENCY})")
 ax.set_ylabel("Number of postings")
 ax.spines[["top", "right"]].set_visible(False)
 plt.show()
@@ -265,8 +269,10 @@ plt.show()
 #
 # **Make one small edit.** Pick whichever you prefer:
 #
-# - in section 6, change `bins=40` to `bins=20` and run the block again;
-# - in section 5, change `"USD"` to `"EUR"` and see how many postings survive.
+# - in section 6, halve the number of bins in the histogram, and run that
+#   block again;
+# - in section 5, set `CURRENCY` to euros instead, and see how many postings
+#   survive.
 #
 # **Then look at what you changed**, in the terminal:
 #
