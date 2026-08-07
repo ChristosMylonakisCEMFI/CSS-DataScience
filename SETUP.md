@@ -8,9 +8,10 @@ your laptop: we work on a computer GitHub provides in the cloud, called a
 
 **Step 1 is all that session 1 needs.** Steps 2 to 4 prepare the machine for
 session 3, where you run the scraping code, and confirm that your account can
-open a Codespace at all. Do them now rather than later: the machine takes a few
-minutes to build, the sessions run in the same week, and there is no time in
-between.
+open a Codespace at all.
+
+Building that machine is slow, which is exactly why it is not something we can
+do together in class. Please do it before the course starts.
 
 ---
 
@@ -26,10 +27,18 @@ On the course repository page,
 
 **green `< > Code` button → Codespaces tab → Create codespace on main**.
 
-The first launch takes a few minutes while it installs Python, the course
-packages, and Chrome. Then you are looking at VS Code in your browser, with
-the course files on the left and a terminal at the bottom. If you cannot see
-the terminal, press `Ctrl` + `` ` ``.
+**The first launch is slow.** GitHub has to build the machine from scratch:
+Python, the course packages, and a full copy of Chrome for the scraping
+session. Expect to sit and watch a progress log for a while, and on a slow
+connection considerably longer.
+
+**Leave the tab open and let it finish.** Closing it part-way through, or
+reloading, leaves you with a half-built machine whose packages will fail later.
+Start it when you have something else to be getting on with.
+
+When it is done you are looking at VS Code in your browser, with the course
+files on the left and a terminal at the bottom. If you cannot see the terminal,
+press `Ctrl` + `` ` ``.
 
 ## 3. Tell Git who you are
 
@@ -82,18 +91,24 @@ machine and spends your free hours twice.
 Come with the four steps above already done. There is no time in the room to
 sort out an account that cannot open a Codespace.
 
+**Bring your laptop to session 1, and be signed in to GitHub before you sit
+down.** The session is hands-on: you build a repository and write code as we
+go. You can follow on the screen without a laptop, but you will not be able to
+do any of it yourself.
+
 - **Session 1 (Git, GitHub, and Python)** needs only your GitHub account. You
   will create a new, empty repository of your own and a second Codespace on it,
   in the room, so that you see every step yourself.
 - **Session 2 (prediction)** is a lecture. Nothing to run, nothing to prepare.
 - **Session 3 (web scraping)** uses the Codespace you made today: the code, the
   data, and the browser it drives are all in the course repository,
-  <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>. Reopen it and everything is
-  there.
+  <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>. Reopen it and
+  everything is there.
 - **Do not run `05_scale_up.py` in class.** It contacts about 109 websites,
   and a whole room doing that at once gets everyone blocked. Its output is
-  already saved in the course repository, <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>,
-  so session 3 works without it. Run it at home if you are curious.
+  already saved in the course repository,
+  <https://github.com/ChristosMylonakisCEMFI/CSS-DataScience>, so session 3
+  works without it. Run it at home if you are curious.
 
 ## If something goes wrong
 
@@ -104,9 +119,10 @@ email is not confirmed yet.
 is spent, usually on another project. Email <christos.mylonakis@cemfi.edu.es>;
 do not enter card details.
 
-**Still building after ten minutes** — delete it at
-<https://github.com/codespaces> and create it again. A second attempt almost
-always works.
+**Stuck building** — a long build is normal, so judge it by the log rather
+than the clock: if nothing new has appeared in it for several minutes, delete
+the Codespace at <https://github.com/codespaces> and create it again. A second
+attempt almost always works.
 
 **Many packages `FAIL` at once** — the machine was handed over before it
 finished setting up. Delete it at <https://github.com/codespaces> and create
