@@ -35,6 +35,10 @@
   \addtocounter{framenumberappendix}{-\value{framenumber}}%
   \addtocounter{framenumber}{\value{framenumberappendix}}}
 
+% The template repository participants copy in Step 1. Change it here and it
+% changes everywhere in the deck.
+\newcommand{\templaterepo}{github.com/ChristosMylonakisCEMFI/growth-calculator-template}
+
 % -----------------------------------------------------------------------------
 % Listings and reusable elements
 % -----------------------------------------------------------------------------
@@ -189,29 +193,32 @@ them apart prevents most of the confusion that follows.
 % -----------------------------------------------------------------------------
 \section{Setup}
 
-\begin{frame}{Step 1: open GitHub's repository form}
+\begin{frame}{Step 1: copy the course template}
 \begin{columns}[T,onlytextwidth]
-  \column{0.50\textwidth}
+  \column{0.52\textwidth}
   In the GitHub website:
   \begin{enumerate}
     \item Sign in at \texttt{github.com}.
-    \item In the upper-right corner, click \button{+}.
-    \item Select \button{New repository}.
+    \item Open the course template, below.
+    \item Click the green \button{Use this template}.
+    \item Select \button{Create a new repository}.
   \end{enumerate}
 
-  \column{0.46\textwidth}
-  The menu that opens lists:
+  \column{0.44\textwidth}
+  A \emph{template} is an ordinary repository that GitHub will copy for you.
   \vspace{0.5em}
 
-  \ttfamily
-  New repository\\
-  Import repository\\
-  New codespace\\
-  New gist
-  \rmfamily
+  What you get is a repository of your own, with its own history. Nothing you
+  do in it can affect the original, and nothing in it is shared with anyone
+  else.
 \end{columns}
 
-\vspace{1em}
+\vspace{0.8em}
+\begin{center}
+  \texttt{\small\templaterepo}
+\end{center}
+
+\vspace{0.4em}
 A repository is the project folder plus the Git history attached to it.
 \end{frame}
 
@@ -230,19 +237,19 @@ A repository is the project folder plus the Git history attached to it.
     Repository name & \texttt{growth-calculator}\\
     Description & \texttt{A Python growth calculator}\\
     Visibility & Private\\
-    Add a README file & yes\\
   \end{tabular}}
 
   \vspace{0.6em}
   Then click \button{Create repository}.
 
   \column{0.35\textwidth}
-  We add a README because
+  Your new repository arrives with three things in it:
   \begin{itemize}
-    \item it explains the project to a visitor;
-    \item it gives the repository a first file;
-    \item GitHub creates the first commit for us.
+    \item a README, which explains the project to a visitor;
+    \item the Python file for the second half of today;
+    \item a setup file, which tells the Codespace what to install.
   \end{itemize}
+  They come with a first commit already made.
 \end{columns}
 
 \vspace{0.9em}
@@ -276,15 +283,17 @@ The Codespace contains a working copy of the GitHub repository.
     \draw[fill=Navy] (0,0) rectangle (8.0,4.3);
     \draw[fill=Ink] (0,3.85) rectangle (8.0,4.3);
     \node[anchor=west,text=white,font=\scriptsize] at (0.2,4.07) {File \quad Edit \quad Selection \quad View \quad Go \quad Run \quad Terminal};
-    \draw[fill=CodeBG] (0.08,0.08) rectangle (2.05,3.82);
+    \draw[fill=CodeBG] (0.08,0.08) rectangle (2.40,3.82);
     \node[anchor=north west,font=\bfseries\scriptsize] at (0.2,3.65) {EXPLORER};
     \node[anchor=north west,font=\ttfamily\tiny] at (0.28,3.28) {growth-calc/};
-    \node[anchor=north west,font=\ttfamily\scriptsize] at (0.45,2.95) {README.md};
-    \draw[fill=white] (2.12,1.42) rectangle (7.92,3.82);
-    \node[text=Muted,font=\small] at (5.0,2.65) {Editor: view and change files};
-    \draw[fill=Navy!92] (2.12,0.08) rectangle (7.92,1.34);
-    \node[anchor=north west,text=white,font=\ttfamily\scriptsize] at (2.3,1.17) {\$ python growth.py};
-    \node[text=LightBlue,font=\scriptsize] at (5.0,0.55) {Terminal: run Python and Git commands};
+    % The second filename is the widest thing in this panel; 5pt is what fits.
+    \node[anchor=north west,font=\ttfamily\fontsize{5}{6}\selectfont] at (0.45,2.98) {README.md};
+    \node[anchor=north west,font=\ttfamily\fontsize{5}{6}\selectfont] at (0.45,2.70) {python\_basics.py};
+    \draw[fill=white] (2.47,1.42) rectangle (7.92,3.82);
+    \node[text=Muted,font=\small] at (5.20,2.65) {Editor: view and change files};
+    \draw[fill=Navy!92] (2.47,0.08) rectangle (7.92,1.34);
+    \node[anchor=north west,text=white,font=\ttfamily\scriptsize] at (2.65,1.17) {\$ python growth.py};
+    \node[text=LightBlue,font=\scriptsize] at (5.20,0.55) {Terminal: run Python and Git commands};
   \end{tikzpicture}
 
   \column{0.34\textwidth}
@@ -307,7 +316,7 @@ The Codespace contains a working copy of the GitHub repository.
 $ pwd
 /workspaces/growth-calculator
 $ ls
-README.md
+README.md  python_basics.py
 $ git status
 On branch main
 Your branch is up to date with 'origin/main'.
@@ -323,6 +332,7 @@ nothing to commit, working tree clean
     \item \texttt{origin/main}: GitHub's corresponding branch.
     \item \texttt{clean}: no unsaved Git changes.
   \end{itemize}
+  The second file is for the second half of the session; leave it closed for now.
 \end{columns}
 
 \vspace{0.9em}
@@ -810,6 +820,36 @@ When uncertain, start with \texttt{git status}; read Git's message before acting
 \begin{center}
   \color{Muted}Use it on every project until the workflow becomes routine.
 \end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Second half: the language itself}
+\begin{columns}[T,onlytextwidth]
+  \column{0.52\textwidth}
+  So far the commands have been the subject and the Python incidental. For the
+  next half hour they swap over. In the Explorer, open
+  \vspace{0.35em}
+
+  \texttt{python\_basics.py}
+  \vspace{0.35em}
+
+  It is an ordinary script, but the \texttt{\# \%\%} lines cut it into
+  \emph{blocks}. Put the cursor in one and press \button{Shift+Enter}: that
+  block runs, and its output appears beside the code.
+  \vspace{0.35em}
+
+  The first time, VS Code asks which Python to use. Choose the recommended
+  3.12; it asks once.
+
+  \column{0.44\textwidth}
+  Nothing to install and nothing to download: the repository you created
+  already contains the file, and your Codespace already has what it needs.
+  \vspace{0.7em}
+
+  You did not write this file. Somebody else did, and you are about to run it,
+  change one line of it, and push that change back --- which is what working
+  with other people actually looks like.
+\end{columns}
 \end{frame}
 
 % -----------------------------------------------------------------------------
