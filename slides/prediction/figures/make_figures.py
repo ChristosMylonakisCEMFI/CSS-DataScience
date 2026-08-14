@@ -573,9 +573,13 @@ def compare():
         "Forest": RandomForestRegressor(n_estimators=200, random_state=0),
         "Boosting": GradientBoostingRegressor(random_state=0),
     }
-    reg_scores = {k: -cross_val_score(m, Xr, yr, cv=5,
-                                      scoring="neg_root_mean_squared_error").mean()
-                  for k, m in reg_models.items()}
+    # Keep the individual fold scores: the standard error across folds is what
+    # tells the reader which of these differences are differences at all.
+    reg_folds = {k: -cross_val_score(m, Xr, yr, cv=5,
+                                     scoring="neg_root_mean_squared_error")
+                 for k, m in reg_models.items()}
+    reg_scores = {k: s.mean() for k, s in reg_folds.items()}
+    reg_se = {k: s.std(ddof=1) / np.sqrt(len(s)) for k, s in reg_folds.items()}
 
     Xc, yc = make_moons(n_samples=600, noise=0.30, random_state=7)
     clf_models = {
@@ -585,26 +589,32 @@ def compare():
         "Forest": RandomForestClassifier(n_estimators=200, random_state=0),
         "Boosting": GradientBoostingClassifier(random_state=0),
     }
-    clf_scores = {k: cross_val_score(m, Xc, yc, cv=5, scoring="roc_auc").mean()
-                  for k, m in clf_models.items()}
+    clf_folds = {k: cross_val_score(m, Xc, yc, cv=5, scoring="roc_auc")
+                 for k, m in clf_models.items()}
+    clf_scores = {k: s.mean() for k, s in clf_folds.items()}
+    clf_se = {k: s.std(ddof=1) / np.sqrt(len(s)) for k, s in clf_folds.items()}
 
     # wider than the other two-panel figures: ten estimator names have to sit
     # side by side without running into one another
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=sz(10.8, 3.4))
-    ax1.bar(list(reg_scores), list(reg_scores.values()), color=BLUE, width=0.6)
-    for i, v in enumerate(reg_scores.values()):
-        ax1.text(i, v + .02, f"{v:.2f}", ha="center", fontsize=9)
-    ax1.set_ylim(0, max(reg_scores.values()) * 1.20)
+    ax1.bar(list(reg_scores), list(reg_scores.values()), color=BLUE, width=0.6,
+            yerr=list(reg_se.values()), capsize=3,
+            error_kw={"ecolor": BLACK, "elinewidth": 0.8, "capthick": 0.8})
+    for i, (v, e) in enumerate(zip(reg_scores.values(), reg_se.values())):
+        ax1.text(i, v + e + .05, f"{v:.2f}", ha="center", fontsize=9)
+    ax1.set_ylim(0, max(reg_scores.values()) * 1.25)
     ax1.set_ylabel("cross-validated RMSE")
     ax1.set_title("Continuous outcome (lower better)")
     ax1.grid(axis="x")
     ax1.tick_params(axis="x", labelsize=8.5)
     _clean(ax1)
 
-    ax2.bar(list(clf_scores), list(clf_scores.values()), color=BLUE, width=0.6)
+    ax2.bar(list(clf_scores), list(clf_scores.values()), color=BLUE, width=0.6,
+            yerr=list(clf_se.values()), capsize=3,
+            error_kw={"ecolor": BLACK, "elinewidth": 0.8, "capthick": 0.8})
     ax2.set_ylim(0.5, 1.09)
-    for i, v in enumerate(clf_scores.values()):
-        ax2.text(i, v + .006, f"{v:.2f}", ha="center", fontsize=9)
+    for i, (v, e) in enumerate(zip(clf_scores.values(), clf_se.values())):
+        ax2.text(i, v + e + .012, f"{v:.2f}", ha="center", fontsize=9)
     ax2.set_ylabel("cross-validated AUC")
     ax2.set_title("Binary outcome (higher better)")
     ax2.grid(axis="x")

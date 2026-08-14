@@ -71,9 +71,9 @@
 \begin{frame}{Overfitting with a binary outcome}
 \simfig{0.78\textwidth}{fig_overfit_clf}
 \begin{wideitemize}
-  \item Not a property of polynomials, nor of continuous outcomes.
-  \item The unrestricted tree isolates single observations.
-  \item Its boundary is this sample, not a regularity.
+  \item Overfitting is not a property of polynomials or of continuous outcomes.
+  \item Left unrestricted, the tree keeps splitting until each region is pure.
+  \item It ends up isolating single observations, and misclassifies new ones.
 \end{wideitemize}
 \end{frame}
 
@@ -125,12 +125,25 @@
 \vspace{0.3em}
 \begin{wideitemize}
   \item Out-of-sample error is unobserved. Hide observations and imitate it.
-  \item Training: the coefficients, for one given specification.
-  \item Validation: the choice between specifications, and how flexible.
-  \item Test: one number, once, after every choice is final.
+  \item Training: estimate the coefficients of one given specification.
+  \item Validation: measure error there to \emph{choose} --- which regressors,
+        which estimator, how flexible.
+  \item Test: measure error once more, to \emph{report} what the chosen rule
+        will do.
 \end{wideitemize}
-\closingline{Why a third sample: a sample used to choose is no longer unseen,
-and its error is optimistic.}
+\closingline{Both measure error; they answer different questions.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Why the test sample is separate}
+\begin{wideitemize}
+  \item Compare twenty specifications on the validation sample. One wins.
+  \item It won partly on merit, partly because that sample's noise suited it.
+  \item So the winner's validation error is better than its true accuracy.
+  \item The more specifications compared, the larger that gap.
+\end{wideitemize}
+\closingline{The test sample took part in no comparison, so its error is not
+flattered by having been chosen on. That is the number to report.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -153,19 +166,32 @@ and its error is optimistic.}
 \end{center}
 \vspace{0.2em}
 \begin{wideitemize}
-  \item One validation sample: few observations, and one arbitrary draw.
+  \item One validation block wastes those observations, and is one arbitrary draw.
   \item Instead, cut the training data into $k$ folds of equal size.
-  \item Each fold is the validation sample once; the other $k-1$ estimate.
-  \item Average the $k$ errors.
+  \item Each fold takes the validation role in turn; the other $k-1$ estimate.
+  \item Average the $k$ errors: one number per specification, using all the data.
 \end{wideitemize}
-\closingline{Cross-validation replaces the validation sample, not the test
-sample. That one is still untouched.}
+\closingline{The validation role rotates inside the training data; nothing is
+permanently set aside. The test sample stays outside the rotation, still unused.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \section{Leakage}
 
-\begin{frame}{Leakage}
+\begin{frame}{What leakage is}
+\begin{wideitemize}
+  \item Leakage: the fit uses information that will not be available when the
+        rule is actually applied.
+  \item The estimate of accuracy is then an estimate of a task that is easier
+        than the real one.
+  \item It shows up as a good cross-validated error and a disappointing one in use.
+\end{wideitemize}
+\closingline{Nothing in the procedure complains. The fold was held out, so the
+arithmetic is correct; it is the data that were contaminated.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Leakage in a cross-validated fit}
 \begin{columns}[T,onlytextwidth]
   \column{0.44\textwidth}
   \vspace{0.6em}
@@ -174,35 +200,40 @@ sample. That one is still untouched.}
   \column{0.52\textwidth}
   \vspace{0.6em}
   \begin{wideitemize}
-    \item One regressor built from the outcome.
-    \item Cross-validated fit: almost perfect.
-    \item Drop it: no better than honest.
+    \item Here one regressor was built from the outcome itself.
+    \item Cross-validation reports an almost perfect fit.
+    \item Remove that regressor and the fit is ordinary.
   \end{wideitemize}
 \end{columns}
-\closingline{The held-out fold was never really unseen, and nothing in the
-procedure said so.}
+\closingline{The held-out fold was held out, but its outcome had already
+travelled into the regressors.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Two kinds of leakage}
 \begin{wideitemize}
-  \item Wrong date: a regressor unknown at the moment of the prediction.
-  \item Wrong sample: a quantity computed on data outside the training fold.
-  \item The second, in practice: standardization, imputation, category means.
-  \item Both raise the cross-validated fit and lower the real one.
+  \item Wrong date: a regressor recorded after the outcome, or unknown at the
+        moment the prediction would be made.
+  \item Wrong sample: a quantity computed on the whole data and then used
+        inside the folds.
+  \item The second is the common one: standardization, imputation, category
+        means, the choice of which regressors to keep.
 \end{wideitemize}
-\closingline{An unexpectedly good fit is a symptom before it is a result.}
+\closingline{Both make the cross-validated error too low, and the error in use
+a surprise.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Keeping the estimate honest}
 \begin{wideitemize}
   \item Split first, transform afterwards. Never the reverse.
-  \item Every transformation fitted on the training fold, applied to the other.
-  \item A regressor enters only if it is known before the outcome.
+  \item Means, standard deviations and imputed values are estimated on the
+        training fold, then applied to the held-out one.
+  \item A regressor enters only if it is known before the outcome is realized.
   \item The test sample is opened once, at the end.
 \end{wideitemize}
-\closingline{In code: the transformations go inside the fold, with the estimator.}
+\closingline{In code, this is why the transformations and the estimator are
+fitted together, inside the fold, rather than beforehand.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -272,42 +303,60 @@ not an estimation problem.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{What a transformation buys}
+\begin{frame}{What the estimator cannot build, you supply}
 \begin{wideitemize}
-  \item Linear models: curvature and interactions only where supplied.
-  \item Trees: both on their own, but learned, and only with enough data.
-  \item A monotone transformation: everything for the first, nothing for a tree.
-  \item Ratios, shares, per capita, real terms: worth supplying to either.
+  \item A linear model fits curvature and interactions only where you supply them.
+  \item A tree builds both itself, but spends observations on every split it needs.
+  \item Monotone transformations ($\log x$, $\sqrt{x}$, ranks) change a linear fit
+        entirely, and leave a tree's splits unchanged.
+  \item Ratios and differences help both: a tree approximates $a/b$ only with
+        many splits, and never exactly.
 \end{wideitemize}
-\closingline{The candidates come from the subject. The folds say which ones earn a place.}
+\closingline{A date is the clearest case. As a number it is close to useless;
+as month and day of the week it is often where the signal is.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Categories, dates, missing values}
+\begin{frame}{Categorical variables: the encoding is the decision}
 \begin{wideitemize}
-  \item Few categories: one indicator each. Many: group the rare ones.
-  \item The mean outcome within a category: leakage, unless computed per fold.
-  \item Dates: year, month, day of the week, as separate regressors.
-  \item Missing: impute, and keep the indicator. Missingness is informative.
+  \item Few levels: one indicator each, and nothing further is needed.
+  \item Many levels: as many regressors as levels, most of them nearly empty,
+        and each estimated on a handful of observations.
+  \item Group the rare levels together, or replace a level by its frequency.
+  \item Replacing a level by its mean outcome predicts well and leaks: the
+        outcome enters the regressor. Compute it within the fold or not at all.
 \end{wideitemize}
-\closingline{A regressor with no content is not free: it is paid for in variance.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Missing values carry information}
+\begin{wideitemize}
+  \item Values are rarely missing at random: no credit history, a firm too
+        young to report, a question refused.
+  \item Impute the value, and add an indicator for having imputed it.
+  \item The indicator is often the better predictor of the two.
+  \item Both the imputation and the indicator are built inside the fold.
+\end{wideitemize}
+\closingline{Dropping the incomplete observations throws that information away,
+and leaves a sample selected on the regressors.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \section{Choosing an estimator}
 
-\begin{frame}{Choosing an estimator}
+\begin{frame}{Three decisions}
 \begin{wideitemize}
-  \item No estimator dominates. The ranking is a property of the data.
-  \item Least squares first: the benchmark against which flexibility is judged.
-  \item Then one flexible estimator, on the same regressors and the same folds.
-  \item More only when the gain is larger than the variation across folds.
+  \item Which family: penalized linear regression, or something tree-based.
+  \item How flexible within that family: the penalty, the depth, the number of trees.
+  \item When to stop: a gain smaller than the variation across folds is not a gain.
 \end{wideitemize}
-\closingline{Between two within sampling error of each other, take the simpler one.}
+\closingline{All three are settled by the same number, the cross-validated
+error, computed on identical folds with identical regressors. Least squares
+is the first entry, as the benchmark the rest have to beat.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{What decides the ranking}
+\begin{frame}{The first decision: which family}
 \vspace{0.6em}
 \begin{center}
 \begin{tabular}{@{}p{0.40\textwidth}p{0.40\textwidth}@{}}
@@ -321,20 +370,22 @@ Extrapolation is required & Prediction inside the data \\
 \bottomrule
 \end{tabular}
 \end{center}
-\closingline{Each row is a conjecture about the data. The cross-validated error
-settles it.}
+\closingline{Most outcomes in economics sit on the left: many regressors,
+modest signal. Each row is a conjecture, and the folds settle it.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{What each estimator buys}
+\begin{frame}{The second decision: what each estimator asks you to choose}
 \begin{wideitemize}
-  \item Least squares: a benchmark, with nothing to choose.
-  \item Ridge and LASSO: a penalty on the coefficients; LASSO also selects.
-  \item Regression tree: thresholds and interactions; on its own, unstable.
-  \item Random forest: the tree's flexibility, most of its variance removed.
-  \item Boosting: usually the most accurate, and the most to choose.
+  \item Least squares: nothing.
+  \item Ridge and LASSO: one penalty. LASSO also sets coefficients to zero.
+  \item Tree: the depth, or the smallest region allowed.
+  \item Random forest: the number of trees and the regressors per split. Little
+        turns on either.
+  \item Boosting: the rate, the depth, and the number of trees. Much turns on all three.
 \end{wideitemize}
-\closingline{Each has its counterpart for a binary outcome.}
+\closingline{Each estimator has its counterpart for a binary outcome, with the
+same choices to make.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -373,11 +424,13 @@ settles it.}
 \begin{frame}{Comparing estimators}
 \simfig{0.78\textwidth}{fig_compare}
 \begin{wideitemize}
-  \item Same regressors, same folds, for every estimator.
-  \item Flexible estimators win here: curvature and interaction in the data.
-  \item On data close to linear, the ordering reverses.
+  \item Same regressors, same folds, same measure, for every estimator.
+  \item Bars: the average over the five folds. Whiskers: one standard error.
+  \item Flexible fits win here; on data close to linear the ordering reverses.
 \end{wideitemize}
-\closingline{The table earlier is a guide to where to look. This figure is the answer.}
+\closingline{The third decision, read off the whiskers: on the left boosting
+is genuinely ahead of the forest, on the right the two are within one standard
+error and the forest is the simpler rule.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
