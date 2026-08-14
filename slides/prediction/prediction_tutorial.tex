@@ -30,6 +30,10 @@
 
 \newcommand{\simfig}[2]{\begin{center}\includegraphics[width=#1]{#2}\end{center}}
 
+% The one full sentence a frame is allowed: the line that carries the argument
+% on to the next frame. Set plain, below the bullets.
+\newcommand{\closingline}[1]{\vspace{0.9em}\noindent #1}
+
 \title{Prediction for Economists}
 \author{}
 \date{}
@@ -42,44 +46,46 @@
 % -----------------------------------------------------------------------------
 \begin{frame}{Prediction as an objective}
 \begin{wideitemize}
-  \item A prediction rule maps observed characteristics into an unobserved outcome.
-  \item It is estimated on a sample and judged on observations not used to estimate it.
-  \item The criterion is accuracy out of sample, not the value of any coefficient.
-  \item A model may describe the data poorly and still predict well.
-  \item Bias in the coefficients is acceptable if it lowers prediction error.
+  \item A rule: observed characteristics in, an unobserved outcome out.
+  \item Estimated on one sample, judged on another.
+  \item The criterion is error on the second, not the value of any coefficient.
+  \item Bias in the coefficients is acceptable when it lowers that error.
 \end{wideitemize}
+\closingline{Everything that follows is about estimating that error honestly.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \section{Overfitting and the trade-off}
 
 \begin{frame}{Overfitting}
-\simfig{0.82\textwidth}{fig_overfit_reg}
+\simfig{0.68\textwidth}{fig_overfit_reg}
 \begin{wideitemize}
-  \item Fit in the estimation sample improves monotonically with the degree.
-  \item With 20 observations, degree 19 passes through every point exactly.
-  \item Error in an independent sample is minimized at a low degree.
+  \item In-sample fit: better at every degree.
+  \item 20 observations, degree 19: every point exactly.
+  \item Error in an independent sample: lowest at a low degree.
 \end{wideitemize}
+\closingline{Fit in the estimation sample is not evidence of accuracy elsewhere.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Overfitting with a binary outcome}
 \simfig{0.78\textwidth}{fig_overfit_clf}
 \begin{wideitemize}
-  \item The same arises when the outcome is a category, not a quantity.
-  \item The unrestricted tree isolates individual observations.
-  \item Its boundary reflects this sample, not a lasting regularity.
+  \item Not a property of polynomials, nor of continuous outcomes.
+  \item The unrestricted tree isolates single observations.
+  \item Its boundary is this sample, not a regularity.
 \end{wideitemize}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Bias and variance}
-\simfig{0.82\textwidth}{fig_bias_variance}
+\simfig{0.74\textwidth}{fig_bias_variance}
 \begin{wideitemize}
-  \item Each grey line is a fit to an independent sample of 25 observations.
-  \item The restrictive fit varies little, but its mean is far from the truth.
-  \item The flexible fit is right on average; any one estimate may be far off.
+  \item Each grey line: one independent sample of 25 observations.
+  \item Restrictive fit: stable across samples, wrong on average.
+  \item Flexible fit: right on average, far off in any one sample.
 \end{wideitemize}
+\closingline{Two distinct errors, and less of one buys more of the other.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -92,19 +98,20 @@
   \column{0.52\textwidth}
   \vspace{0.4em}
   \begin{wideitemize}
-    \item Squared bias, variance, and noise.
-    \item Restrictive fits: bias dominates.
-    \item Flexible fits: variance dominates.
-    \item The noise cannot be reduced.
-    \item Choose a point on this curve.
+    \item Squared bias, variance, noise.
+    \item Restrictive: bias dominates.
+    \item Flexible: variance dominates.
+    \item The noise is irreducible.
+    \item One point on the curve is best.
   \end{wideitemize}
 \end{columns}
+\closingline{Which point, though? The curve is drawn here because the truth is known.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \section{Estimating out-of-sample error}
 
-\begin{frame}{Training, validation, and test samples}
+\begin{frame}{Holding observations back}
 \begin{center}
 \begin{tikzpicture}[font=\small]
   \draw[fill=white,draw=black] (0,0) rectangle (6.0,0.8);
@@ -117,11 +124,13 @@
 \end{center}
 \vspace{0.3em}
 \begin{wideitemize}
-  \item Training: estimate the parameters of a given specification.
-  \item Validation: choose among specifications, and how much flexibility.
-  \item Test: used once, after every choice is final.
-  \item Error in a sample used to choose is a downward-biased estimate.
+  \item Out-of-sample error is unobserved. Hide observations and imitate it.
+  \item Training: the coefficients, for one given specification.
+  \item Validation: the choice between specifications, and how flexible.
+  \item Test: one number, once, after every choice is final.
 \end{wideitemize}
+\closingline{Why a third sample: a sample used to choose is no longer unseen,
+and its error is optimistic.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -144,17 +153,19 @@
 \end{center}
 \vspace{0.2em}
 \begin{wideitemize}
-  \item Partition the sample into $k$ subsets of equal size.
-  \item Estimate on $k-1$ subsets and evaluate on the one left out.
-  \item Repeat so each subset serves once, then average the $k$ estimates.
-  \item With a binary outcome, folds preserve the proportion of ones.
+  \item One validation sample: few observations, and one arbitrary draw.
+  \item Instead, cut the training data into $k$ folds of equal size.
+  \item Each fold is the validation sample once; the other $k-1$ estimate.
+  \item Average the $k$ errors.
 \end{wideitemize}
+\closingline{Cross-validation replaces the validation sample, not the test
+sample. That one is still untouched.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \section{Leakage}
 
-\begin{frame}{Data leakage}
+\begin{frame}{Leakage}
 \begin{columns}[T,onlytextwidth]
   \column{0.44\textwidth}
   \vspace{0.6em}
@@ -163,31 +174,35 @@
   \column{0.52\textwidth}
   \vspace{0.6em}
   \begin{wideitemize}
-    \item One regressor encodes the outcome.
-    \item Its cross-validated fit is perfect.
-    \item Without it, no better than honest.
+    \item One regressor built from the outcome.
+    \item Cross-validated fit: almost perfect.
+    \item Drop it: no better than honest.
   \end{wideitemize}
 \end{columns}
+\closingline{The held-out fold was never really unseen, and nothing in the
+procedure said so.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Where leakage enters}
+\begin{frame}{Two kinds of leakage}
 \begin{wideitemize}
-  \item Transformations computed on the full sample before it is split.
-  \item Regressors dated after the outcome is realized.
-  \item Any variable constructed from the outcome, including category means.
-  \item A fit far better than expected is more often leakage than a good model.
+  \item Wrong date: a regressor unknown at the moment of the prediction.
+  \item Wrong sample: a quantity computed on data outside the training fold.
+  \item The second, in practice: standardization, imputation, category means.
+  \item Both raise the cross-validated fit and lower the real one.
 \end{wideitemize}
+\closingline{An unexpectedly good fit is a symptom before it is a result.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Obtaining an honest estimate of performance}
+\begin{frame}{Keeping the estimate honest}
 \begin{wideitemize}
-  \item Split the sample before computing any transformation.
-  \item Estimate standardization and imputation on training observations only.
-  \item Use the test sample once, after every choice has been made.
-  \item Include a regressor only if it is known before the outcome is realized.
+  \item Split first, transform afterwards. Never the reverse.
+  \item Every transformation fitted on the training fold, applied to the other.
+  \item A regressor enters only if it is known before the outcome.
+  \item The test sample is opened once, at the end.
 \end{wideitemize}
+\closingline{In code: the transformations go inside the fold, with the estimator.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -196,32 +211,33 @@
 \begin{frame}{Measuring accuracy: continuous outcomes}
 \simfig{0.78\textwidth}{fig_rmse_mae}
 \begin{wideitemize}
-  \item Root mean squared error weights large errors more heavily.
-  \item Mean absolute error weights every unit of error equally.
-  \item A few extreme observations move the first much more than the second.
-  \item Fix the measure in advance, to reflect the cost of an error.
+  \item Root mean squared error: large errors count for more.
+  \item Mean absolute error: every unit of error counts the same.
+  \item A few extreme observations move the first, not the second.
 \end{wideitemize}
+\closingline{Fix the measure before the estimation, by the cost of an error.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Measuring accuracy: binary outcomes}
 \simfig{0.76\textwidth}{fig_accuracy_trap}
 \begin{wideitemize}
-  \item When ones are rare, the share of correct classifications is uninformative.
-  \item Predicting zero everywhere is 96\% accurate and identifies nothing.
-  \item The table of predicted against actual outcomes is the useful summary.
+  \item Rare ones: the share of correct classifications says little.
+  \item Zero everywhere: 96\% correct, nothing identified.
+  \item Predicted against actual, as a table: the useful summary.
 \end{wideitemize}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Thresholds, precision, and recall}
 \begin{wideitemize}
-  \item Most estimators return a predicted probability, not a classification.
-  \item Turning it into a classification requires a threshold.
-  \item Precision: the share of predicted ones that are actual ones.
-  \item Recall: the share of actual ones that are predicted.
-  \item Raising the threshold raises precision and lowers recall.
+  \item Estimators return a probability. A classification needs a threshold.
+  \item Precision: of those predicted one, the share that are one.
+  \item Recall: of those that are one, the share predicted one.
+  \item A higher threshold: more precision, less recall.
 \end{wideitemize}
+\closingline{The threshold is a decision about the cost of the two errors,
+not an estimation problem.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -234,10 +250,10 @@
   \column{0.54\textwidth}
   \vspace{1.0em}
   \begin{wideitemize}
-    \item Traces both rates over all thresholds.
-    \item Its area summarizes the ordering.
-    \item No single threshold is involved.
-    \item A diagonal means no information.
+    \item Both rates, at every threshold.
+    \item Its area: the quality of the ordering.
+    \item No one threshold involved.
+    \item The diagonal: no information.
   \end{wideitemize}
 \end{columns}
 \end{frame}
@@ -246,49 +262,79 @@
 \section{Constructing regressors}
 
 \begin{frame}{The choice of regressors}
-\simfig{0.78\textwidth}{fig_features}
+\simfig{0.70\textwidth}{fig_features}
 \begin{wideitemize}
-  \item Both panels report least squares on a single regressor.
-  \item The outcome is generated by $y = 2\log x + \varepsilon$.
-  \item Replacing $x$ by $\log x$ lowers out-of-sample error by an order of magnitude.
-  \item How the regressors are built often matters more than the estimator.
+  \item Least squares on one regressor, in both panels.
+  \item The outcome: $y = 2\log x + \varepsilon$.
+  \item $x$ replaced by $\log x$: out-of-sample error down by an order of magnitude.
 \end{wideitemize}
+\closingline{Same estimator, same data. The transformation supplies the missing knowledge.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Constructing regressors in practice}
+\begin{frame}{What a transformation buys}
 \begin{wideitemize}
-  \item Indicators for categorical variables.
-  \item Interactions and ratios.
-  \item Logarithms and powers, for skewness and curvature.
-  \item Discretization of continuous variables.
-  \item Components of dates.
-  \item An explicit indicator for missing values.
+  \item Linear models: curvature and interactions only where supplied.
+  \item Trees: both on their own, but learned, and only with enough data.
+  \item A monotone transformation: everything for the first, nothing for a tree.
+  \item Ratios, shares, per capita, real terms: worth supplying to either.
 \end{wideitemize}
+\closingline{The candidates come from the subject. The folds say which ones earn a place.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Two cautions}
+\begin{frame}{Categories, dates, missing values}
 \begin{wideitemize}
-  \item Replacing a category by its mean outcome is a common source of leakage.
-  \item It has to be computed separately within each training fold.
-  \item Regressors with no predictive content raise the variance of the rule.
-  \item Adding them is not free, even when their coefficients are near zero.
+  \item Few categories: one indicator each. Many: group the rare ones.
+  \item The mean outcome within a category: leakage, unless computed per fold.
+  \item Dates: year, month, day of the week, as separate regressors.
+  \item Missing: impute, and keep the indicator. Missingness is informative.
 \end{wideitemize}
+\closingline{A regressor with no content is not free: it is paid for in variance.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{A menu of estimators}
+\section{Choosing an estimator}
 
-\begin{frame}{A menu of estimators}
+\begin{frame}{Choosing an estimator}
 \begin{wideitemize}
-  \item Least squares: transparent, and often competitive with good regressors.
-  \item Ridge and LASSO: a penalty on the coefficients; LASSO sets some to zero.
-  \item Regression tree: a recursive partition; a single tree is unstable.
-  \item Random forest: averages trees on resampled data; much lower variance.
-  \item Boosting: small trees in sequence, each fitted to the residuals.
-  \item Each has a counterpart when the outcome is binary.
+  \item No estimator dominates. The ranking is a property of the data.
+  \item Least squares first: the benchmark against which flexibility is judged.
+  \item Then one flexible estimator, on the same regressors and the same folds.
+  \item More only when the gain is larger than the variation across folds.
 \end{wideitemize}
+\closingline{Between two within sampling error of each other, take the simpler one.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{What decides the ranking}
+\vspace{0.6em}
+\begin{center}
+\begin{tabular}{@{}p{0.40\textwidth}p{0.40\textwidth}@{}}
+\toprule
+\textbf{Restrictive fits win} & \textbf{Flexible fits win} \\
+\midrule
+Few observations per regressor & Many observations \\[0.45em]
+Weak signal, much noise & Strong signal \\[0.45em]
+Smooth, additive relations & Thresholds and interactions \\[0.45em]
+Extrapolation is required & Prediction inside the data \\
+\bottomrule
+\end{tabular}
+\end{center}
+\closingline{Each row is a conjecture about the data. The cross-validated error
+settles it.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{What each estimator buys}
+\begin{wideitemize}
+  \item Least squares: a benchmark, with nothing to choose.
+  \item Ridge and LASSO: a penalty on the coefficients; LASSO also selects.
+  \item Regression tree: thresholds and interactions; on its own, unstable.
+  \item Random forest: the tree's flexibility, most of its variance removed.
+  \item Boosting: usually the most accurate, and the most to choose.
+\end{wideitemize}
+\closingline{Each has its counterpart for a binary outcome.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -296,42 +342,42 @@
 \simfig{0.73\textwidth}{fig_lasso_path}
 \begin{wideitemize}
   \item 70 observations, 40 regressors, 3 with nonzero coefficients.
-  \item The penalty shrinks coefficients and sets irrelevant ones to zero.
-  \item Test error is minimized at a strictly positive penalty.
-  \item The penalty is chosen by cross-validation, not by the fit.
+  \item The penalty shrinks the coefficients, and sets the irrelevant to zero.
+  \item Lowest test error at a strictly positive penalty.
 \end{wideitemize}
+\closingline{The penalty is one more choice, and the folds make it.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Trees and random forests}
 \simfig{0.74\textwidth}{fig_tree_rf}
 \begin{wideitemize}
-  \item A single tree's boundary depends heavily on the particular sample.
-  \item A forest averages many trees, each estimated on resampled data.
-  \item Flexibility is retained while the variance is substantially reduced.
+  \item One tree: the boundary is a feature of the particular sample.
+  \item A forest: many trees on resampled data, averaged.
+  \item The flexibility kept, most of the variance gone.
 \end{wideitemize}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Boosting}
 \begin{wideitemize}
-  \item Trees are added in sequence rather than averaged in parallel.
-  \item Each is fitted to the residuals of the current model.
-  \item Each enters with a small weight, so progress is gradual.
-  \item It is typically the most accurate of the estimators considered here.
-  \item It has more parameters, and overfits if they are chosen carelessly.
-  \item A random forest needs fewer choices and is a good starting point.
+  \item Trees in sequence, not in parallel.
+  \item Each one fitted to the residuals of the current model.
+  \item Each entering with a small weight, so progress is gradual.
+  \item More parameters than a forest, and it overfits when they are careless.
 \end{wideitemize}
+\closingline{A forest asks fewer questions of you, and is the better place to start.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Comparing estimators}
 \simfig{0.78\textwidth}{fig_compare}
 \begin{wideitemize}
-  \item The same regressors and the same folds for every estimator.
-  \item The flexible estimators win here: the data have curvature and interaction.
-  \item On data close to linear the ordering is frequently reversed.
+  \item Same regressors, same folds, for every estimator.
+  \item Flexible estimators win here: curvature and interaction in the data.
+  \item On data close to linear, the ordering reverses.
 \end{wideitemize}
+\closingline{The table earlier is a guide to where to look. This figure is the answer.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -355,22 +401,22 @@
 \end{center}
 \vspace{0.4em}
 \begin{wideitemize}
-  \item Was every transformation estimated on training observations only?
-  \item Could any regressor incorporate the outcome?
-  \item Are the regressors and the folds identical across specifications?
-  \item Prefer the simplest specification within sampling error of the best.
+  \item Was every transformation fitted inside the fold?
+  \item Could any regressor contain the outcome?
+  \item Same regressors and same folds across every specification?
 \end{wideitemize}
+\closingline{Step 6 happens once. Anything learned there is not a reason to
+return to step 2.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Summary}
 \begin{wideitemize}
-  \item Predictive accuracy concerns observations not used in estimation.
-  \item Fit in the estimation sample does not establish it.
-  \item The relevant trade-off is between bias and variance.
-  \item Cross-validation is the standard way of estimating that accuracy.
+  \item Accuracy concerns observations not used in the estimation.
+  \item In-sample fit does not measure it; bias against variance is the trade-off.
+  \item Cross-validation estimates it. Leakage quietly destroys the estimate.
   \item Fix the measure of accuracy in advance, by the cost of an error.
-  \item The construction of regressors often matters more than the estimator.
+  \item Regressors first, estimator second.
 \end{wideitemize}
 \end{frame}
 
@@ -407,12 +453,13 @@ random sample,
   \column{0.50\textwidth}
   \vspace{0.8em}
   \begin{wideitemize}
-    \item Each point uses a new partition.
+    \item Each point: a new partition.
     \item One split varies a great deal.
     \item The average over folds is stable.
-    \item It matters most in small samples.
+    \item Small samples: it matters most.
   \end{wideitemize}
 \end{columns}
+\closingline{With a binary outcome, keep the share of ones equal across folds.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
