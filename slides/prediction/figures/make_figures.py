@@ -441,6 +441,14 @@ def roc():
 # The role of the regressor, not the estimator
 # ---------------------------------------------------------------------------
 def features():
+    """Changing the regressor against changing the estimator.
+
+    Three panels on identical data, so the comparison is between the middle
+    panel and the right one: a flexible estimator on the raw regressor does
+    not catch up with least squares on the right regressor.
+    """
+    from sklearn.ensemble import RandomForestRegressor
+
     rng = np.random.default_rng(9)
     n = 120
     x = rng.uniform(0.3, 6, n)
@@ -448,26 +456,55 @@ def features():
     xg = np.linspace(0.3, 6, 300)
     xtr, xte, ytr, yte = train_test_split(x, y, test_size=0.4, random_state=0)
 
-    fig, axes = plt.subplots(1, 2, figsize=sz(9.0, 3.4), sharey=True)
+    fig, axes = plt.subplots(1, 3, figsize=sz(12.6, 3.4), sharey=True)
 
     m1 = LinearRegression().fit(xtr[:, None], ytr)
     r1 = np.sqrt(mean_squared_error(yte, m1.predict(xte[:, None])))
-    axes[0].scatter(x, y, s=18, color=BLACK)
     axes[0].plot(xg, m1.predict(xg[:, None]), color=RED, lw=1.8)
-    axes[0].set_title(f"Regressor $x$ (RMSE {r1:.2f})")
+    axes[0].set_title(f"Least squares on $x$\n(RMSE {r1:.2f})")
 
-    m2 = LinearRegression().fit(np.log(xtr)[:, None], ytr)
-    r2 = np.sqrt(mean_squared_error(yte, m2.predict(np.log(xte)[:, None])))
-    axes[1].scatter(x, y, s=18, color=BLACK)
-    axes[1].plot(xg, m2.predict(np.log(xg)[:, None]), color=BLUE, lw=1.8)
-    axes[1].set_title(f"Regressor $\\log x$ (RMSE {r2:.2f})")
+    m2 = RandomForestRegressor(n_estimators=300, random_state=0).fit(xtr[:, None], ytr)
+    r2 = np.sqrt(mean_squared_error(yte, m2.predict(xte[:, None])))
+    axes[1].plot(xg, m2.predict(xg[:, None]), color=GRAY, lw=1.8)
+    axes[1].set_title(f"Random forest on $x$\n(RMSE {r2:.2f})")
+
+    m3 = LinearRegression().fit(np.log(xtr)[:, None], ytr)
+    r3 = np.sqrt(mean_squared_error(yte, m3.predict(np.log(xte)[:, None])))
+    axes[2].plot(xg, m3.predict(np.log(xg)[:, None]), color=BLUE, lw=1.8)
+    axes[2].set_title(f"Least squares on $\\log x$\n(RMSE {r3:.2f})")
 
     for ax in axes:
+        ax.scatter(x, y, s=14, color=BLACK, zorder=0)
         ax.set_xlabel("$x$")
         _clean(ax)
     axes[0].set_ylabel("$y$")
-    fig.tight_layout(w_pad=2.0)
+    fig.tight_layout(w_pad=1.6)
     _finish(fig, "features")
+
+
+# ---------------------------------------------------------------------------
+# The curse of dimensionality, after Hastie, Tibshirani and Friedman, sec. 2.5
+# ---------------------------------------------------------------------------
+def dimension():
+    """Edge length of the neighbourhood needed to hold a fraction r of the data.
+
+    For observations uniform on the unit cube in p dimensions, a cubical
+    neighbourhood holding a fraction r has expected edge length r**(1/p).
+    """
+    p = np.arange(1, 21)
+    fig, ax = plt.subplots(figsize=sz(5.6, 3.4))
+    for r, colour, style in ((0.01, BLUE, "-"), (0.10, RED, "--")):
+        ax.plot(p, r ** (1 / p), color=colour, ls=style, lw=1.8,
+                label=f"{r:.0%} of the observations")
+    ax.axhline(1.0, color=LIGHTGRAY, lw=0.8, zorder=0)
+    ax.set_xlabel("number of regressors $p$")
+    ax.set_ylabel("edge length, as a share\nof the range of each")
+    ax.set_ylim(0, 1.05)
+    ax.set_xticks([1, 5, 10, 15, 20])
+    ax.legend(frameon=False, fontsize=8.5, loc="lower right")
+    _clean(ax)
+    fig.tight_layout()
+    _finish(fig, "dimension")
 
 
 # ---------------------------------------------------------------------------
@@ -692,6 +729,7 @@ FIGURES = {
     "accuracy_trap": accuracy_trap,
     "roc": roc,
     "features": features,
+    "dimension": dimension,
     "lasso_path": lasso_path,
     "tree_rf": tree_rf,
     "compare": compare,

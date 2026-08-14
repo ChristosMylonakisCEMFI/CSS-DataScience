@@ -34,6 +34,9 @@
 % on to the next frame. Set plain, below the bullets.
 \newcommand{\closingline}[1]{\vspace{0.9em}\noindent #1}
 
+% Attribution for the frames that state a result from the literature.
+\newcommand{\source}[1]{\par\vspace{0.7em}\noindent{\footnotesize\color{Grey}#1}}
+
 \title{Prediction for Economists}
 \author{}
 \date{}
@@ -292,18 +295,20 @@ not an estimation problem.}
 % -----------------------------------------------------------------------------
 \section{Constructing regressors}
 
-\begin{frame}{The choice of regressors}
-\simfig{0.70\textwidth}{fig_features}
+\begin{frame}{Lesson 1: the regressors matter more than the estimator}
+\simfig{0.92\textwidth}{fig_features}
 \begin{wideitemize}
-  \item Least squares on one regressor, in both panels.
-  \item The outcome: $y = 2\log x + \varepsilon$.
-  \item $x$ replaced by $\log x$: out-of-sample error down by an order of magnitude.
+  \item Same 120 observations and same measure in all three panels.
+  \item Changing the estimator, in the middle, removes part of the error.
+  \item Changing the regressor removes nearly all of it: 0.24, against a noise
+        floor of 0.25.
 \end{wideitemize}
-\closingline{Same estimator, same data. The transformation supplies the missing knowledge.}
+\source{Domingos (2012): the features used are the single most important factor
+in whether a prediction succeeds, and where most of the work goes.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{What the estimator cannot build, you supply}
+\begin{frame}{Lesson 1, applied: what the estimator cannot build for itself}
 \begin{wideitemize}
   \item A linear model fits curvature and interactions only where you supply them.
   \item A tree builds both itself, but spends observations on every split it needs.
@@ -317,28 +322,39 @@ as month and day of the week it is often where the signal is.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Categorical variables: the encoding is the decision}
-\begin{wideitemize}
-  \item Few levels: one indicator each, and nothing further is needed.
-  \item Many levels: as many regressors as levels, most of them nearly empty,
-        and each estimated on a handful of observations.
-  \item Group the rare levels together, or replace a level by its frequency.
-  \item Replacing a level by its mean outcome predicts well and leaks: the
-        outcome enters the regressor. Compute it within the fold or not at all.
-\end{wideitemize}
+\begin{frame}{Lesson 2: every regressor costs data}
+\begin{columns}[T,onlytextwidth]
+  \column{0.46\textwidth}
+  \vspace{0.8em}
+  \includegraphics[width=\linewidth]{fig_dimension}
+
+  \column{0.50\textwidth}
+  \vspace{0.4em}
+  \begin{wideitemize}
+    \item Observations spread over the unit cube in $p$ dimensions.
+    \item A neighbourhood holding a fraction $r$ of them needs edge $r^{1/p}$.
+    \item At $p=10$, holding 1\% takes 63\% of the range of every regressor.
+  \end{wideitemize}
+\end{columns}
+\closingline{A neighbourhood that wide is not local, and an estimator that
+learns from neighbours has nothing left to learn from. This is what an
+irrelevant regressor costs.}
+\source{Hastie, Tibshirani and Friedman, sec.~2.5.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Missing values carry information}
+\begin{frame}{Lesson 3: bet on sparsity}
 \begin{wideitemize}
-  \item Values are rarely missing at random: no credit history, a firm too
-        young to report, a question refused.
-  \item Impute the value, and add an indicator for having imputed it.
-  \item The indicator is often the better predictor of the two.
-  \item Both the imputation and the indicator are built inside the fold.
+  \item If many regressors each matter a little, no procedure predicts well:
+        the data cannot support that many estimated effects.
+  \item If a few matter a lot, penalized methods find them.
+  \item So act as though few matter. Build the candidates, let the penalty select.
+  \item The bet is not always right. It is that there is nothing better to bet on.
 \end{wideitemize}
-\closingline{Dropping the incomplete observations throws that information away,
-and leaves a sample selected on the regressors.}
+\closingline{The selected set is not a finding: on another sample a different
+set appears, predicting about as well.}
+\source{Hastie, Tibshirani and Friedman, sec.~16.2.2; Mullainathan and Spiess
+(2017) on the instability of the selection.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -527,6 +543,31 @@ random sample,
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}{Categorical variables: the encoding is the decision}
+\begin{wideitemize}
+  \item Few levels: one indicator each, and nothing further is needed.
+  \item Many levels: as many regressors as levels, most of them nearly empty,
+        and each estimated on a handful of observations.
+  \item Group the rare levels together, or replace a level by its frequency.
+  \item Replacing a level by its mean outcome predicts well and leaks: the
+        outcome enters the regressor. Compute it within the fold or not at all.
+\end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Missing values carry information}
+\begin{wideitemize}
+  \item Values are rarely missing at random: no credit history, a firm too
+        young to report, a question refused.
+  \item Impute the value, and add an indicator for having imputed it.
+  \item The indicator is often the better predictor of the two.
+  \item Both the imputation and the indicator are built inside the fold.
+\end{wideitemize}
+\closingline{Dropping the incomplete observations throws that information away,
+and leaves a sample selected on the regressors.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}{Further measures for binary outcomes}
 \begin{wideitemize}
   \item When ones are rare, the precision--recall curve is more informative.
@@ -543,6 +584,7 @@ random sample,
 \begin{wideitemize}
   \item Mullainathan and Spiess (2017), \emph{Journal of Economic Perspectives} 31(2).
   \item Athey and Imbens (2019), \emph{Annual Review of Economics} 11, 685--725.
+  \item Domingos (2012), \emph{Communications of the ACM} 55(10), 78--87.
   \item James, Witten, Hastie and Tibshirani, \emph{Introduction to Statistical Learning}.
   \item Hastie, Tibshirani and Friedman, \emph{The Elements of Statistical Learning}.
 \end{wideitemize}
