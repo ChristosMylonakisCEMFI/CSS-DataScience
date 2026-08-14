@@ -377,6 +377,31 @@ Both moved & New work on each side & \texttt{git pull},\newline then \texttt{git
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Three commands, three questions}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.28\textwidth}p{0.44\textwidth}p{0.18\textwidth}@{}}
+\toprule
+\textbf{Command} & \textbf{Answers} & \textbf{Asks GitHub?} \\
+\midrule
+\texttt{git status} & What I changed, not yet committed & No \\
+\texttt{git log --oneline} & What I committed & No \\
+\texttt{git fetch} & What is on GitHub now & Yes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{1.1em}
+Edit a file: \texttt{status} changes, \texttt{log} does not.
+
+\vspace{0.3em}
+Commit it: \texttt{log} changes, \texttt{status} goes clean.
+
+\vspace{1.1em}
+Only \texttt{fetch}, \texttt{pull} and \texttt{push} leave the Codespace.
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}[fragile]{Inspect the starting repository}
 \begin{columns}[T,onlytextwidth]
   \column{0.54\textwidth}
@@ -426,7 +451,10 @@ a1b2c3d (HEAD -> main, origin/main)
 \end{columns}
 
 \vspace{1em}
-One commit, both labels on it: in sync.
+\texttt{status}: not yet committed. \texttt{log}: already committed.
+
+\vspace{0.3em}
+Here: one commit, both labels on it.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -709,6 +737,7 @@ What exactly is selected for the next commit? & \texttt{git diff --staged} \\
 Which changes should enter the next commit? & \texttt{git add <file>} \\
 How do I save the staged snapshot? & \texttt{git commit -m "message"} \\
 What commits exist in the history? & \texttt{git log --oneline} \\
+What is on GitHub now? & \texttt{git fetch} \\
 How do I receive GitHub's newer commits? & \texttt{git pull} \\
 How do I send my local commits to GitHub? & \texttt{git push} \\
 \bottomrule
