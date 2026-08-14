@@ -561,72 +561,6 @@ def combine():
 
 
 # ---------------------------------------------------------------------------
-# Target encoding: when the level means are computed
-# ---------------------------------------------------------------------------
-def encoding():
-    """Encoding a category by its mean outcome, at three moments.
-
-    The category is drawn independently of the outcome, so the honest answer
-    is zero. Computing the level means on the full sample invents signal;
-    computing them from the training fold leaves the training rows inside
-    their own mean, which teaches the estimator a slope that is not there.
-    """
-    from sklearn.model_selection import KFold
-
-    rng = np.random.default_rng(11)
-    n, L = 2000, 400
-    level = rng.integers(0, L, n)
-    y = rng.normal(size=n)
-
-    def enc(lv_fit, y_fit, lv_apply, m=10):
-        s = np.bincount(lv_fit, weights=y_fit, minlength=L)
-        c = np.bincount(lv_fit, minlength=L)
-        gm = y_fit.mean()
-        e = np.where(c > 0, (s + m * gm) / np.maximum(c + m, 1e-9), gm)
-        return e[lv_apply]
-
-    everywhere = enc(level, y, level)
-    kf = KFold(5, shuffle=True, random_state=0)
-    pred = {k: [] for k in range(3)}
-    truth = []
-    for tr, te in kf.split(level):
-        truth.append(y[te])
-        fit = lambda e_tr, e_te: (LinearRegression()
-                                  .fit(e_tr[:, None], y[tr]).predict(e_te[:, None]))
-        pred[0].append(fit(everywhere[tr], everywhere[te]))
-
-        e_te = enc(level[tr], y[tr], level[te])
-        pred[1].append(fit(enc(level[tr], y[tr], level[tr]), e_te))
-
-        e_tr = np.empty(len(tr))
-        for i_in, i_out in KFold(5, shuffle=True, random_state=1).split(tr):
-            e_tr[i_out] = enc(level[tr][i_in], y[tr][i_in], level[tr][i_out])
-        pred[2].append(fit(e_tr, e_te))
-
-    t = np.concatenate(truth)
-    r2 = [1 - np.sum((t - np.concatenate(pred[k])) ** 2) / np.sum((t - t.mean()) ** 2)
-          for k in range(3)]
-
-    labels = ["computed on\nthe whole sample",
-              "computed from\nthe training fold",
-              "computed out of fold\nfor every row"]
-    fig, ax = plt.subplots(figsize=sz(6.6, 3.4))
-    ax.bar(labels, r2, width=0.55, color=[RED, RED, BLUE])
-    for i, v in enumerate(r2):
-        label = "0.00" if abs(v) < 0.005 else f"{v:+.2f}"
-        ax.text(i, v + (0.012 if v >= 0 else -0.03), label,
-                ha="center", fontsize=9)
-    ax.axhline(0, color=BLACK, lw=0.8)
-    ax.set_ylabel("cross-validated $R^2$")
-    ax.set_title("A category drawn independently of the outcome", fontsize=10)
-    ax.tick_params(axis="x", labelsize=8.5)
-    ax.grid(axis="x")
-    _clean(ax)
-    fig.tight_layout()
-    _finish(fig, "encoding")
-
-
-# ---------------------------------------------------------------------------
 # LASSO coefficient path
 # ---------------------------------------------------------------------------
 def lasso_path():
@@ -849,7 +783,6 @@ FIGURES = {
     "roc": roc,
     "monotone": monotone,
     "combine": combine,
-    "encoding": encoding,
     "lasso_path": lasso_path,
     "tree_rf": tree_rf,
     "compare": compare,
