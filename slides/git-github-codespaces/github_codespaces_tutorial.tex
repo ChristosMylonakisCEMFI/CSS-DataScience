@@ -265,7 +265,7 @@ The Codespace contains a working copy of the GitHub repository.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Orient yourself inside Codespaces}
+\begin{frame}{Step 4: orient yourself inside the Codespace}
 \begin{columns}[T,onlytextwidth]
   \column{0.62\textwidth}
   \begin{tikzpicture}[x=1cm,y=1cm]
@@ -295,7 +295,7 @@ The Codespace contains a working copy of the GitHub repository.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Step 4: check that Git knows who you are}
+\begin{frame}[fragile]{Step 5: check that Git knows who you are}
 Every commit is signed with a name and an email. Ask what this machine will
 use:
 \begin{lstlisting}[style=terminal]
@@ -318,8 +318,8 @@ your GitHub account.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Three labels: \texttt{main}, \texttt{origin/main}, \texttt{HEAD}}
-A commit is a snapshot. Commits never move. Labels do.
+\begin{frame}{Two labels: \texttt{main} and \texttt{origin/main}}
+Each commit is a saved snapshot with a short name.
 
 \vspace{0.8em}
 \begin{center}
@@ -341,64 +341,13 @@ A commit is a snapshot. Commits never move. Labels do.
 
 \vspace{0.5em}
 \begin{itemize}
-  \item \texttt{main} --- our branch. One step forward per commit.
-  \item \texttt{origin/main} --- GitHub's \texttt{main}, when we last asked.
-  \item \texttt{HEAD} --- where we are now.
-  \item \texttt{HEAD -> main} --- on \texttt{main}. The next commit moves it.
+  \item \texttt{main} --- our latest commit, here in the Codespace.
+  \item \texttt{origin/main} --- GitHub's latest commit, as we last saw it.
+  \item \texttt{HEAD} --- where we are. With one branch, always \texttt{main}.
 \end{itemize}
 
 \vspace{0.5em}
-Git never calls GitHub on its own. \texttt{origin/main} changes only on
-\texttt{fetch}, \texttt{pull}, \texttt{push}.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Reading the state from the two labels}
-Where is \texttt{main} against \texttt{origin/main}?
-
-\vspace{0.8em}
-\begin{center}
-\small
-\begin{tabular}{@{}p{0.34\textwidth}p{0.30\textwidth}p{0.28\textwidth}@{}}
-\toprule
-\textbf{In \texttt{git log --oneline}} & \textbf{Meaning} & \textbf{Do} \\
-\midrule
-Same commit & In sync & Nothing \\
-\texttt{main} above & GitHub lacks our work & \texttt{git push} \\
-\texttt{origin/main} above & We lack GitHub's work & \texttt{git pull} \\
-Both moved & New work on each side & \texttt{git pull},\newline then \texttt{git push} \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\vspace{0.9em}
-\texttt{git status} says the same in words --- from our last contact.
-\texttt{git fetch} first for today's answer.
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Three commands, three questions}
-\begin{center}
-\small
-\begin{tabular}{@{}p{0.28\textwidth}p{0.44\textwidth}p{0.18\textwidth}@{}}
-\toprule
-\textbf{Command} & \textbf{Answers} & \textbf{Asks GitHub?} \\
-\midrule
-\texttt{git status} & What I changed, not yet committed & No \\
-\texttt{git log --oneline} & What I committed & No \\
-\texttt{git fetch} & What is on GitHub now & Yes \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\vspace{1.1em}
-Edit a file: \texttt{status} changes, \texttt{log} does not.
-
-\vspace{0.3em}
-Commit it: \texttt{log} changes, \texttt{status} goes clean.
-
-\vspace{1.1em}
-Only \texttt{fetch}, \texttt{pull} and \texttt{push} leave the Codespace.
+Commits accumulate. The labels move to the newest one on each side.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -421,14 +370,13 @@ nothing to commit, working tree clean
   \begin{itemize}
     \item \texttt{pwd} --- current folder.
     \item \texttt{ls} --- files in it.
-    \item \texttt{main} --- our branch.
-    \item \texttt{origin/main} --- GitHub's, at last contact.
-    \item \texttt{clean} --- nothing to commit.
+    \item \texttt{up to date} --- the two labels agree.
+    \item \texttt{clean} --- nothing waiting to be committed.
   \end{itemize}
 \end{columns}
 
 \vspace{0.9em}
-Checkpoint: the two copies agree.
+Checkpoint: nothing of ours is unsaved, and GitHub has it all.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -444,17 +392,13 @@ a1b2c3d (HEAD -> main, origin/main)
   \column{0.48\textwidth}
   \begin{itemize}
     \item \texttt{a1b2c3d} --- the commit, shortened.
-    \item \texttt{HEAD -> main} --- we are on \texttt{main}.
-    \item \texttt{origin/main} --- GitHub, at last contact.
-    \item \texttt{Initial commit} --- the message.
+    \item \texttt{Initial commit} --- the message we gave it.
+    \item Both labels sit on that one commit.
   \end{itemize}
 \end{columns}
 
 \vspace{1em}
-\texttt{status}: not yet committed. \texttt{log}: already committed.
-
-\vspace{0.3em}
-Here: one commit, both labels on it.
+\texttt{status}: our files. \texttt{log}: our commits. Neither one calls GitHub.
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -685,97 +629,60 @@ Fast-forward
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{Summary}
+\begin{frame}[fragile]{What each command moves}
+All four commands are now familiar. This is what each one changes.
 
-\begin{frame}{The daily workflow}
+\vspace{0.9em}
 \begin{center}
-\begin{tikzpicture}[
-  >=Latex,node distance=0.36cm,
-  every node/.style={font=\small},
-  stagebox/.style={draw=Rule,rounded corners,minimum width=1.85cm,minimum height=0.95cm,align=center}
-]
-  \node[stagebox,fill=LightGreen] (pull) {1. Pull\\\ttfamily\scriptsize git pull};
-  \node[stagebox,fill=CodeBG,right=of pull] (edit) {2. Edit\\\scriptsize save files};
-  \node[stagebox,fill=CodeBG,right=of edit] (test) {3. Test\\\ttfamily\scriptsize python ...};
-  \node[stagebox,fill=LightOrange,right=of test] (inspect) {4. Inspect\\\ttfamily\scriptsize status, diff};
-  \node[stagebox,fill=LightBlue,right=of inspect] (commit) {5. Commit\\\ttfamily\scriptsize add, commit};
-  \node[stagebox,fill=LightGreen,right=of commit] (push) {6. Push\\\ttfamily\scriptsize git push};
-  \foreach \a/\b in {pull/edit,edit/test,test/inspect,inspect/commit,commit/push}
-    \draw[->,thick] (\a) -- (\b);
-\end{tikzpicture}
+\small
+\begin{tabular}{@{}p{0.20\textwidth}p{0.24\textwidth}p{0.26\textwidth}p{0.16\textwidth}@{}}
+\toprule
+\textbf{Command} & \textbf{\texttt{main}} & \textbf{\texttt{origin/main}} & \textbf{Our files} \\
+\midrule
+\texttt{git commit} & to the new commit & --- & --- \\
+\texttt{git push} & --- & up to \texttt{main} & --- \\
+\texttt{git fetch} & --- & up to GitHub & --- \\
+\texttt{git pull} & up to \texttt{origin/main} & up to GitHub & updated \\
+\bottomrule
+\end{tabular}
 \end{center}
 
 \vspace{0.9em}
-\begin{columns}[T,onlytextwidth]
-  \column{0.48\textwidth}
-  Before the commit, ask
-  \begin{itemize}
-    \item does the program run?
-    \item do the tests pass?
-    \item did I inspect every changed line?
-  \end{itemize}
-  \column{0.48\textwidth}
-  After the commit, ask
-  \begin{itemize}
-    \item is the message meaningful?
-    \item did the push succeed?
-    \item can I see the commit on GitHub?
-  \end{itemize}
-\end{columns}
+A dash means unchanged.
+
+\vspace{0.5em}
+Only \texttt{push}, \texttt{fetch} and \texttt{pull} reach GitHub. \texttt{fetch}
+is the safe one: it moves no files.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}[fragile]{Command guide: question first, command second}
+\begin{frame}[fragile]{Reading the state}
+\begin{center}
 \small
-\begin{tabular}{@{}p{0.46\textwidth}p{0.43\textwidth}@{}}
+\begin{tabular}{@{}p{0.30\textwidth}p{0.34\textwidth}p{0.26\textwidth}@{}}
 \toprule
-\textbf{Question} & \textbf{Command} \\
+\textbf{\texttt{git status} says} & \textbf{Meaning} & \textbf{Do} \\
 \midrule
-What is the repository's current state? & \texttt{git status} \\
-What unstaged tracked lines changed? & \texttt{git diff} \\
-What exactly is selected for the next commit? & \texttt{git diff --staged} \\
-Which changes should enter the next commit? & \texttt{git add <file>} \\
-How do I save the staged snapshot? & \texttt{git commit -m "message"} \\
-What commits exist in the history? & \texttt{git log --oneline} \\
-What is on GitHub now? & \texttt{git fetch} \\
-How do I receive GitHub's newer commits? & \texttt{git pull} \\
-How do I send my local commits to GitHub? & \texttt{git push} \\
+up to date & The two agree & Nothing \\
+ahead by \texttt{N} & GitHub lacks our commits & \texttt{git push} \\
+behind by \texttt{N} & We lack GitHub's commits & \texttt{git pull} \\
+diverged & New commits on each side & \texttt{git pull},\newline then \texttt{git push} \\
 \bottomrule
 \end{tabular}
+\end{center}
 
-\vspace{1em}
-\normalsize
-When uncertain, start with \texttt{git status}; read Git's message before acting.
+\vspace{0.9em}
+Measured against \texttt{origin/main}, our last note. \texttt{git fetch} first
+for today's answer.
+
+\vspace{0.5em}
+\texttt{status}: our files, and how we stand. \texttt{log}: the commits
+themselves.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{The one picture to remember}
-\begin{center}
-\begin{tikzpicture}[
-  >=Latex,node distance=1.25cm,
-  box/.style={draw=Rule,rounded corners,minimum width=4.0cm,minimum height=1.35cm,align=center}
-]
-  \node[box,fill=LightBlue] (code) {\textbf{Codespace}\\files + local Git history};
-  \node[box,fill=LightGreen,right=of code] (hub) {\textbf{GitHub}\\shared Git history};
-  \draw[->,very thick,Green,bend left=17] (code.north) to node[above,font=\ttfamily\small]{git push} (hub.north);
-  \draw[->,very thick,Blue,bend left=17] (hub.south) to node[below,font=\ttfamily\small]{git pull} (code.south);
-\end{tikzpicture}
-\end{center}
+\section{Somebody else's code}
 
-\vspace{0.8em}
-\begin{center}
-  \Large\bfseries
-  Pull \(\rightarrow\) Edit \(\rightarrow\) Test \(\rightarrow\) Inspect
-  \(\rightarrow\) Commit \(\rightarrow\) Push
-\end{center}
-
-\vspace{0.6em}
-\begin{center}
-  \color{Muted}Use it on every project until the workflow becomes routine.
-\end{center}
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \begin{frame}{Now: somebody else's code}
 \begin{columns}[T,onlytextwidth]
   \column{0.48\textwidth}
@@ -918,6 +825,97 @@ of them once.
 \begin{center}
   \color{Muted}\small
   Together: the workflow used \emph{inside} a project.
+\end{center}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\section{Summary}
+
+\begin{frame}{The daily workflow}
+\begin{center}
+\begin{tikzpicture}[
+  >=Latex,node distance=0.36cm,
+  every node/.style={font=\small},
+  stagebox/.style={draw=Rule,rounded corners,minimum width=1.85cm,minimum height=0.95cm,align=center}
+]
+  \node[stagebox,fill=LightGreen] (pull) {1. Pull\\\ttfamily\scriptsize git pull};
+  \node[stagebox,fill=CodeBG,right=of pull] (edit) {2. Edit\\\scriptsize save files};
+  \node[stagebox,fill=CodeBG,right=of edit] (test) {3. Test\\\ttfamily\scriptsize python ...};
+  \node[stagebox,fill=LightOrange,right=of test] (inspect) {4. Inspect\\\ttfamily\scriptsize status, diff};
+  \node[stagebox,fill=LightBlue,right=of inspect] (commit) {5. Commit\\\ttfamily\scriptsize add, commit};
+  \node[stagebox,fill=LightGreen,right=of commit] (push) {6. Push\\\ttfamily\scriptsize git push};
+  \foreach \a/\b in {pull/edit,edit/test,test/inspect,inspect/commit,commit/push}
+    \draw[->,thick] (\a) -- (\b);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.9em}
+\begin{columns}[T,onlytextwidth]
+  \column{0.48\textwidth}
+  Before the commit, ask
+  \begin{itemize}
+    \item does the program run?
+    \item do the tests pass?
+    \item did I inspect every changed line?
+  \end{itemize}
+  \column{0.48\textwidth}
+  After the commit, ask
+  \begin{itemize}
+    \item is the message meaningful?
+    \item did the push succeed?
+    \item can I see the commit on GitHub?
+  \end{itemize}
+\end{columns}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Command guide: question first, command second}
+\small
+\begin{tabular}{@{}p{0.46\textwidth}p{0.43\textwidth}@{}}
+\toprule
+\textbf{Question} & \textbf{Command} \\
+\midrule
+What is the repository's current state? & \texttt{git status} \\
+What unstaged tracked lines changed? & \texttt{git diff} \\
+What exactly is selected for the next commit? & \texttt{git diff --staged} \\
+Which changes should enter the next commit? & \texttt{git add <file>} \\
+How do I save the staged snapshot? & \texttt{git commit -m "message"} \\
+What commits exist in the history? & \texttt{git log --oneline} \\
+How do I refresh \texttt{origin/main}? & \texttt{git fetch} \\
+How do I receive GitHub's newer commits? & \texttt{git pull} \\
+How do I send my local commits to GitHub? & \texttt{git push} \\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\normalsize
+When uncertain, start with \texttt{git status}; read Git's message before acting.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{The one picture to remember}
+\begin{center}
+\begin{tikzpicture}[
+  >=Latex,node distance=1.25cm,
+  box/.style={draw=Rule,rounded corners,minimum width=4.0cm,minimum height=1.35cm,align=center}
+]
+  \node[box,fill=LightBlue] (code) {\textbf{Codespace}\\files + local Git history};
+  \node[box,fill=LightGreen,right=of code] (hub) {\textbf{GitHub}\\shared Git history};
+  \draw[->,very thick,Green,bend left=17] (code.north) to node[above,font=\ttfamily\small]{git push} (hub.north);
+  \draw[->,very thick,Blue,bend left=17] (hub.south) to node[below,font=\ttfamily\small]{git pull} (code.south);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.8em}
+\begin{center}
+  \Large\bfseries
+  Pull \(\rightarrow\) Edit \(\rightarrow\) Test \(\rightarrow\) Inspect
+  \(\rightarrow\) Commit \(\rightarrow\) Push
+\end{center}
+
+\vspace{0.6em}
+\begin{center}
+  \color{Muted}Use it on every project until the workflow becomes routine.
 \end{center}
 \end{frame}
 
