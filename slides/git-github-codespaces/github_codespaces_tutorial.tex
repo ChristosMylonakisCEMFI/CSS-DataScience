@@ -173,12 +173,12 @@ Git stores named snapshots of the project and a history connecting them.
 \begin{center}
 \begin{tikzpicture}[
   >=Latex,node distance=1.25cm,
-  box/.style={draw=Rule,rounded corners,minimum width=2.20cm,minimum height=1.12cm,align=center,font=\small}
+  box/.style={draw=Rule,rounded corners,text width=2.05cm,minimum height=1.35cm,align=center,font=\small}
 ]
-  \node[box,fill=CodeBG] (work) {Working files\\\scriptsize edits on disk};
-  \node[box,fill=LightOrange,right=of work] (stage) {Staging area\\\scriptsize selected changes};
-  \node[box,fill=LightBlue,right=of stage] (local) {Local history\\\scriptsize commits in Codespace};
-  \node[box,fill=LightGreen,right=of local] (remote) {GitHub\\\scriptsize shared commits};
+  \node[box,fill=CodeBG] (work) {Working files\\\scriptsize what you edit and save};
+  \node[box,fill=LightOrange,right=of work] (stage) {Staging area\\\scriptsize chosen for the next commit};
+  \node[box,fill=LightBlue,right=of stage] (local) {Saved commits\\\scriptsize kept in the Codespace};
+  \node[box,fill=LightGreen,right=of local] (remote) {GitHub\\\scriptsize the same commits, shared};
   \draw[->,thick] (work) -- node[above,font=\ttfamily\scriptsize]{git add} (stage);
   \draw[->,thick] (stage) -- node[above,font=\ttfamily\scriptsize]{git commit} (local);
   \draw[->,thick] (local) -- node[above,font=\ttfamily\scriptsize]{git push} (remote);
@@ -363,13 +363,74 @@ a1b2c3d (HEAD -> main, origin/main)
   \begin{itemize}
     \item \texttt{a1b2c3d} is the shortened commit identifier;
     \item \texttt{HEAD -> main} is where our Codespace currently points;
-    \item \texttt{origin/main} is where GitHub currently points;
+    \item \texttt{origin/main} is where GitHub stood the last time we asked;
     \item \texttt{Initial commit} is the saved description.
   \end{itemize}
 \end{columns}
 
 \vspace{1em}
 Both labels point to the same commit, so the two copies are synchronized.
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Three labels: \texttt{main}, \texttt{origin/main}, \texttt{HEAD}}
+Commits are the only things Git stores. Each one has an identifier, and each one
+stays exactly as it was written. Everything else is a label that points at a
+commit, and labels move.
+
+\vspace{0.9em}
+\begin{center}
+\begin{tikzpicture}[>=Latex,node distance=2.6cm,
+  commit/.style={draw=Rule,rounded corners,fill=CodeBG,minimum width=2.0cm,
+                 minimum height=0.75cm,font=\ttfamily\small},
+  label/.style={font=\ttfamily\scriptsize,text=Muted}]
+  \node[commit] (old) {a1b2c3d};
+  \node[commit,right=of old] (new) {d4e5f6a};
+  \draw[->,thick,Rule] (old) -- node[above,font=\scriptsize,text=Muted]{later} (new);
+  \node[label,below=0.35cm of old] (o) {origin/main};
+  \node[label,below=0.35cm of new] (m) {main};
+  \node[label,below=0.30cm of m] (h) {HEAD};
+  \draw[->,Muted] (o) -- (old);
+  \draw[->,Muted] (m) -- (new);
+  \draw[->,Muted] (h) -- (m);
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.6em}
+\begin{itemize}
+  \item \texttt{main} is our branch. It moves forward every time we commit.
+  \item \texttt{origin/main} records where GitHub's \texttt{main} stood the last
+        time we asked GitHub. It moves only when we run \texttt{fetch},
+        \texttt{pull}, or \texttt{push}.
+  \item \texttt{HEAD} is where we are working. \texttt{HEAD -> main} means the
+        next commit will move \texttt{main}.
+\end{itemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}[fragile]{Reading the state from the two labels}
+Every question about ``where is my work?'' is answered by the position of
+\texttt{main} against \texttt{origin/main}.
+
+\vspace{0.8em}
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.38\textwidth}p{0.28\textwidth}p{0.26\textwidth}@{}}
+\toprule
+\textbf{In \texttt{git log --oneline}} & \textbf{What it means} & \textbf{What to do} \\
+\midrule
+Both labels on the same commit & The two copies agree & Nothing \\
+\texttt{main} above \texttt{origin/main} & We have work GitHub does not & \texttt{git push} \\
+\texttt{origin/main} above \texttt{main} & GitHub has work we do not & \texttt{git pull} \\
+Both moved since they last agreed & Each side has new work & \texttt{git pull},\newline then \texttt{git push} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{0.9em}
+\texttt{git status} reports the same thing in words. It answers from what we
+learned the last time we asked, because Git never contacts GitHub on its own.
+Run \texttt{git fetch} first and the answer describes GitHub as it is now.
 \end{frame}
 
 % -----------------------------------------------------------------------------
