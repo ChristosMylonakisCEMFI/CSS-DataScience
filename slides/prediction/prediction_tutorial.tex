@@ -295,30 +295,28 @@ not an estimation problem.}
 % -----------------------------------------------------------------------------
 \section{Constructing regressors}
 
-\begin{frame}{Lesson 1: the regressors matter more than the estimator}
+\begin{frame}{Lesson 1: a transformation substitutes for flexibility}
 \simfig{0.92\textwidth}{fig_features}
 \begin{wideitemize}
   \item Same 120 observations and same measure in all three panels.
-  \item Changing the estimator, in the middle, removes part of the error.
-  \item Changing the regressor removes nearly all of it: 0.24, against a noise
-        floor of 0.25.
+  \item Flexibility on the raw regressor reaches 0.30; the right regressor, 0.24.
+  \item The noise fixes a floor of 0.25, so the third panel leaves nothing behind.
 \end{wideitemize}
-\source{Domingos (2012): the features used are the single most important factor
-in whether a prediction succeeds, and where most of the work goes.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Lesson 1, applied: what the estimator cannot build for itself}
+\begin{frame}{Lesson 1, stated exactly}
 \begin{wideitemize}
-  \item A linear model fits curvature and interactions only where you supply them.
-  \item A tree builds both itself, but spends observations on every split it needs.
-  \item Monotone transformations ($\log x$, $\sqrt{x}$, ranks) change a linear fit
-        entirely, and leave a tree's splits unchanged.
-  \item Ratios and differences help both: a tree approximates $a/b$ only with
-        many splits, and never exactly.
+  \item A linear model in $x$ represents affine functions of $x$ and nothing
+        else. Curvature is supplied or it is absent.
+  \item A tree splits on $x \le t$, so it uses the ordering of $x$ and nothing else.
+  \item Hence any increasing transformation --- $\log x$, $\sqrt{x}$, ranks ---
+        leaves a tree's partition of the sample, and its fit, unchanged.
+  \item What a tree cannot do is combine regressors. A ratio $a/b$ is not a step
+        function on rectangles, so no finite tree equals it.
 \end{wideitemize}
-\closingline{A date is the clearest case. As a number it is close to useless;
-as month and day of the week it is often where the signal is.}
+\closingline{So for a tree, and for a forest of them: build ratios, differences
+and shares. Rescaling one regressor at a time has a provably zero return.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -332,29 +330,15 @@ as month and day of the week it is often where the signal is.}
   \vspace{0.4em}
   \begin{wideitemize}
     \item Observations spread over the unit cube in $p$ dimensions.
-    \item A neighbourhood holding a fraction $r$ of them needs edge $r^{1/p}$.
-    \item At $p=10$, holding 1\% takes 63\% of the range of every regressor.
+    \item A cube holding a fraction $r$ has edge $e$ with $e^{p}=r$, so
+          $e = r^{1/p}$.
+    \item At $p=10$ and $r=0.01$, that edge is $0.63$.
   \end{wideitemize}
 \end{columns}
-\closingline{A neighbourhood that wide is not local, and an estimator that
-learns from neighbours has nothing left to learn from. This is what an
-irrelevant regressor costs.}
+\closingline{A neighbourhood holding one observation in a hundred spans 63\% of
+the range of every regressor. Nothing local is left, and this is the cost of a
+regressor before any question of whether its coefficient is zero.}
 \source{Hastie, Tibshirani and Friedman, sec.~2.5.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Lesson 3: bet on sparsity}
-\begin{wideitemize}
-  \item If many regressors each matter a little, no procedure predicts well:
-        the data cannot support that many estimated effects.
-  \item If a few matter a lot, penalized methods find them.
-  \item So act as though few matter. Build the candidates, let the penalty select.
-  \item The bet is not always right. It is that there is nothing better to bet on.
-\end{wideitemize}
-\closingline{The selected set is not a finding: on another sample a different
-set appears, predicting about as well.}
-\source{Hastie, Tibshirani and Friedman, sec.~16.2.2; Mullainathan and Spiess
-(2017) on the instability of the selection.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -406,11 +390,13 @@ same choices to make.}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Penalized regression}
-\simfig{0.73\textwidth}{fig_lasso_path}
+\simfig{0.50\textwidth}{fig_lasso_path}
 \begin{wideitemize}
   \item 70 observations, 40 regressors, 3 with nonzero coefficients.
   \item The penalty shrinks the coefficients, and sets the irrelevant to zero.
   \item Lowest test error at a strictly positive penalty.
+  \item Which regressors survive is not a finding: another sample selects a
+        different set and predicts about as well.
 \end{wideitemize}
 \closingline{The penalty is one more choice, and the folds make it.}
 \end{frame}
@@ -540,6 +526,19 @@ random sample,
   \item Continued far enough, the procedure begins to fit the noise.
   \item The number of trees is itself chosen by cross-validation.
 \end{wideitemize}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Bet on sparsity}
+\begin{wideitemize}
+  \item If many regressors each matter a little, no procedure predicts well:
+        the data cannot support that many estimated effects.
+  \item If a few matter a lot, penalized methods find them.
+  \item So act as though few matter. Build the candidates, let the penalty select.
+  \item The bet is not always right. It is that there is nothing better to bet on.
+\end{wideitemize}
+\source{Hastie, Tibshirani and Friedman, sec.~16.2.2. Stated there as a
+principle, not a theorem.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
