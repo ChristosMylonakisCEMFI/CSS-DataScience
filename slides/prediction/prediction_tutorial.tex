@@ -296,27 +296,13 @@ not an estimation problem.}
 \section{Constructing regressors}
 
 \begin{frame}{An estimator adds or splits; it never combines}
-\simfig{0.86\textwidth}{fig_combine}
+\simfig{0.80\textwidth}{fig_combine}
 \begin{wideitemize}
-  \item Both estimators hold the ingredients, and fifteen irrelevant regressors.
-  \item Neither builds the combination. Both are transformed by receiving it.
-  \item In the second panel the error falls by about 60\% for each of them.
+  \item A linear model is additive; a tree is a step function on rectangles.
+  \item Neither forms a ratio, a group mean, or a rank within a group.
+  \item Both hold the ingredients here, and fifteen irrelevant regressors besides.
+  \item Handed the combination: $-63\%$ for least squares, $-62\%$ for the forest.
 \end{wideitemize}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{What each family can represent}
-\begin{wideitemize}
-  \item A linear model is additive in the regressors it is handed. It can weight
-        them; it cannot multiply or divide them.
-  \item A tree is a step function on rectangles. A ratio is not a step function,
-        so no finite tree equals one.
-  \item A group mean, a rank within a group, a lag: each needs an operation
-        across rows, and neither family performs operations across rows.
-\end{wideitemize}
-\closingline{This is why the combination has to be written down. It is not
-hidden in the data waiting to be found; it is not in the space of functions
-either estimator can represent.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -334,18 +320,28 @@ discover them in any amount of data.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Others, briefly}
+\begin{frame}{Three standard constructions}
 \begin{wideitemize}
-  \item Permutation importance: shuffle a regressor, see how much the
-        cross-validated error worsens. Any estimator.
-  \item Principal components: many correlated regressors replaced by a few,
-        chosen without reference to the outcome.
-  \item Lags, differences and rolling means, where the data have a time dimension.
-  \item The outcome can be transformed too: squared error in logs penalizes
-        relative error.
+  \item Principal components: many correlated regressors replaced by a few.
+        Chosen without reference to the outcome, so the first need not predict.
+  \item Lags, differences and rolling means, where the data have a time
+        dimension --- each dated to exist at the moment of the prediction.
+  \item The outcome itself: fitting to $\log y$ penalizes relative error rather
+        than absolute.
 \end{wideitemize}
-\closingline{Permutation importance doubles as a leakage check. One regressor
-carrying nearly all of the accuracy is the signature.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Did the regressor earn its place?}
+\begin{wideitemize}
+  \item Shuffle one regressor, leave the rest alone, and see how much the
+        cross-validated error worsens.
+  \item Nothing worsens: the regressor carries nothing, whatever its coefficient.
+  \item Almost everything worsens under one regressor: the signature of leakage.
+  \item Any estimator, and it reports on the regressor rather than on a coefficient.
+\end{wideitemize}
+\closingline{This is what the constructions of the last three slides are to be
+put through.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
