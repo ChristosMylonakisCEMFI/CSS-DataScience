@@ -295,50 +295,85 @@ not an estimation problem.}
 % -----------------------------------------------------------------------------
 \section{Constructing regressors}
 
-\begin{frame}{Lesson 1: a transformation substitutes for flexibility}
-\simfig{0.92\textwidth}{fig_features}
+\begin{frame}{Lesson 1: an estimator adds or splits; it never combines}
+\simfig{0.86\textwidth}{fig_combine}
 \begin{wideitemize}
-  \item Same 120 observations and same measure in all three panels.
-  \item Flexibility on the raw regressor reaches 0.30; the right regressor, 0.24.
-  \item The noise fixes a floor of 0.25, so the third panel leaves nothing behind.
+  \item Both estimators hold the ingredients, and fifteen irrelevant regressors.
+  \item Neither builds the combination. Both are transformed by receiving it.
+  \item In the second panel the error falls by about 60\% for each of them.
 \end{wideitemize}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{Lesson 1, stated exactly}
 \begin{wideitemize}
-  \item A linear model in $x$ represents affine functions of $x$ and nothing
-        else. Curvature is supplied or it is absent.
-  \item A tree splits on $x \le t$, so it uses the ordering of $x$ and nothing else.
-  \item Hence any increasing transformation --- $\log x$, $\sqrt{x}$, ranks ---
-        leaves a tree's partition of the sample, and its fit, unchanged.
-  \item What a tree cannot do is combine regressors. A ratio $a/b$ is not a step
-        function on rectangles, so no finite tree equals it.
+  \item A linear model is additive in the regressors it is handed. It can weight
+        them; it cannot multiply or divide them.
+  \item A tree is a step function on rectangles. A ratio is not a step function,
+        so no finite tree equals one.
+  \item A group mean, a rank within a group, a lag: each needs an operation
+        across rows, and neither family performs operations across rows.
 \end{wideitemize}
-\closingline{So for a tree, and for a forest of them: build ratios, differences
-and shares. Rescaling one regressor at a time has a provably zero return.}
+\closingline{This is why the combination has to be written down. It is not
+hidden in the data waiting to be found; it is not in the space of functions
+either estimator can represent.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Lesson 2: every regressor costs data}
-\begin{columns}[T,onlytextwidth]
-  \column{0.46\textwidth}
-  \vspace{0.8em}
-  \includegraphics[width=\linewidth]{fig_dimension}
+\begin{frame}{Which combinations}
+\begin{wideitemize}
+  \item Ratios: debt to assets, price to earnings, output per worker.
+  \item Deflated, real and per-capita terms, so units compare across time and size.
+  \item Differences and growth rates: the level and the change are different
+        regressors.
+  \item Position within a group: size against the industry median, income
+        against the region, a rank within the cohort.
+\end{wideitemize}
+\closingline{An economist can write these down in a morning. No estimator will
+discover them in any amount of data.}
+\end{frame}
 
-  \column{0.50\textwidth}
-  \vspace{0.4em}
-  \begin{wideitemize}
-    \item Observations spread over the unit cube in $p$ dimensions.
-    \item A cube holding a fraction $r$ has edge $e$ with $e^{p}=r$, so
-          $e = r^{1/p}$.
-    \item At $p=10$ and $r=0.01$, that edge is $0.63$.
-  \end{wideitemize}
-\end{columns}
-\closingline{A neighbourhood holding one observation in a hundred spans 63\% of
-the range of every regressor. Nothing local is left, and this is the cost of a
-regressor before any question of whether its coefficient is zero.}
-\source{Hastie, Tibshirani and Friedman, sec.~2.5.}
+% -----------------------------------------------------------------------------
+\begin{frame}{Lesson 2: encoding a category by its mean outcome}
+\begin{wideitemize}
+  \item A category with hundreds of levels --- municipality, product code,
+        four-digit industry --- gives hundreds of indicators, each carried by
+        a handful of observations.
+  \item Target encoding replaces the level by one number: the mean outcome
+        among the observations in it. Madrid becomes $0.34$.
+  \item Rare levels are shrunk towards the overall mean,
+        $(n_\ell \bar y_\ell + m \bar y)/(n_\ell + m)$.
+  \item Hundreds of regressors become one, and it feeds any estimator.
+\end{wideitemize}
+\closingline{The regressor is built out of the outcome, which is what makes it
+strong and what makes it dangerous.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Lesson 2: when the means are computed decides everything}
+\simfig{0.54\textwidth}{fig_encoding}
+\begin{wideitemize}
+  \item 400 levels, five observations each, independent of the outcome.
+  \item Whole sample: every row sits inside its own regressor, weight a fifth.
+  \item Training fold: the training rows still do, and a false slope is learned.
+\end{wideitemize}
+\closingline{Zero is the honest answer, and only the third column gives it.
+Each row needs a mean computed without it.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Others, briefly}
+\begin{wideitemize}
+  \item Permutation importance: shuffle a regressor, see how much the
+        cross-validated error worsens. Any estimator.
+  \item Principal components: many correlated regressors replaced by a few,
+        chosen without reference to the outcome.
+  \item Lags, differences and rolling means, where the data have a time dimension.
+  \item The outcome can be transformed too: squared error in logs penalizes
+        relative error.
+\end{wideitemize}
+\closingline{Permutation importance doubles as a leakage check. One regressor
+carrying nearly all of the accuracy is the signature.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -542,14 +577,27 @@ principle, not a theorem.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{Categorical variables: the encoding is the decision}
+\begin{frame}{Transformations of a single regressor}
+\simfig{0.50\textwidth}{fig_monotone}
+\begin{wideitemize}
+  \item A tree splits on $x \le t$, so it reads the ordering of $x$ and nothing else.
+  \item An increasing transformation leaves its partition, and its fit, unchanged.
+  \item The forest scores 0.30 either way; the same $\log$ is worth 0.15 to
+        least squares.
+\end{wideitemize}
+\closingline{Rescaling one regressor: everything to a linear model, exactly
+nothing to a tree. Combining two regressors: worth doing for both.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
+\begin{frame}{Categorical variables: other encodings}
 \begin{wideitemize}
   \item Few levels: one indicator each, and nothing further is needed.
   \item Many levels: as many regressors as levels, most of them nearly empty,
         and each estimated on a handful of observations.
   \item Group the rare levels together, or replace a level by its frequency.
-  \item Replacing a level by its mean outcome predicts well and leaks: the
-        outcome enters the regressor. Compute it within the fold or not at all.
+  \item The frequency uses no outcome, so it can be computed once, before the
+        split.
 \end{wideitemize}
 \end{frame}
 
