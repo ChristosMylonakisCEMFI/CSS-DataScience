@@ -179,67 +179,6 @@ permanently set aside. The test sample stays outside the rotation, still unused.
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\section{Leakage}
-
-\begin{frame}{What leakage is}
-\begin{wideitemize}
-  \item Leakage: the fit uses information that will not be available when the
-        rule is actually applied.
-  \item The estimate of accuracy is then an estimate of a task that is easier
-        than the real one.
-  \item It shows up as a good cross-validated error and a disappointing one in use.
-\end{wideitemize}
-\closingline{Nothing in the procedure complains. The fold was held out, so the
-arithmetic is correct; it is the data that were contaminated.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Leakage in a cross-validated fit}
-\begin{columns}[T,onlytextwidth]
-  \column{0.44\textwidth}
-  \vspace{0.6em}
-  \includegraphics[width=\linewidth]{fig_leakage}
-
-  \column{0.52\textwidth}
-  \vspace{0.6em}
-  \begin{wideitemize}
-    \item Here one regressor was built from the outcome itself.
-    \item Cross-validation reports an almost perfect fit.
-    \item Remove that regressor and the fit is ordinary.
-  \end{wideitemize}
-\end{columns}
-\closingline{The held-out fold was held out, but its outcome had already
-travelled into the regressors.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Two kinds of leakage}
-\begin{wideitemize}
-  \item Wrong date: a regressor recorded after the outcome, or unknown at the
-        moment the prediction would be made.
-  \item Wrong sample: a quantity computed on the whole data and then used
-        inside the folds.
-  \item The second is the common one: standardization, imputation, category
-        means, the choice of which regressors to keep.
-\end{wideitemize}
-\closingline{Both make the cross-validated error too low, and the error in use
-a surprise.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Keeping the estimate honest}
-\begin{wideitemize}
-  \item Split first, transform afterwards. Never the reverse.
-  \item Means, standard deviations and imputed values are estimated on the
-        training fold, then applied to the held-out one.
-  \item A regressor enters only if it is known before the outcome is realized.
-  \item The test sample is opened once, at the end.
-\end{wideitemize}
-\closingline{In code, this is why the transformations and the estimator are
-fitted together, inside the fold, rather than beforehand.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
 \section{Measures of accuracy}
 
 \begin{frame}{Measuring accuracy: continuous outcomes}
@@ -332,6 +271,20 @@ discover them in any amount of data.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
+\begin{frame}{Leakage}
+\begin{wideitemize}
+  \item Leakage: a regressor carrying information that will not exist when the
+        rule is used.
+  \item Wrong date: the regressor is recorded after the outcome.
+  \item Wrong sample: it is computed outside the training fold ---
+        standardization, imputation, a category's mean outcome.
+  \item The cross-validated error is then too low, and the error in use a surprise.
+\end{wideitemize}
+\closingline{Split first, transform afterwards, and fit every transformation
+inside the fold with the estimator.}
+\end{frame}
+
+% -----------------------------------------------------------------------------
 \begin{frame}{Did the regressor earn its place?}
 \begin{wideitemize}
   \item Shuffle one regressor, leave the rest alone, and see how much the
@@ -340,8 +293,7 @@ discover them in any amount of data.}
   \item Almost everything worsens under one regressor: the signature of leakage.
   \item Any estimator, and it reports on the regressor rather than on a coefficient.
 \end{wideitemize}
-\closingline{This is what the constructions of the last three slides are to be
-put through.}
+\closingline{This is what everything built in this section is to be put through.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -355,39 +307,16 @@ put through.}
   \item When to stop comparing candidates, and which one to report.
 \end{wideitemize}
 \closingline{Least squares is the first entry, as the benchmark the rest have
-to beat.}
+to beat. Between candidates that tie, take the simpler.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
 \begin{frame}{All three are settled by the cross-validated error}
 \begin{wideitemize}
-  \item What we want is error on observations not used in the estimation.
-        Nothing else is the objective.
-  \item Fit in the estimation sample cannot settle anything: it improves with
-        flexibility whatever the truth is.
-  \item Nor can theory. Which family wins depends on the shape of the relation
-        and on how much noise there is, and both are unknown.
-  \item Cross-validation estimates the objective itself, so the comparison is
-        made in the units that matter.
+  \item In-sample fit rises with flexibility, whatever the truth.
+  \item Theory cannot rank the families in advance.
+  \item Same regressors, same folds, one number for each candidate.
 \end{wideitemize}
-\closingline{Same regressors, same folds, one number for each candidate. That
-number decides the family, the penalty, the depth, and the number of trees
-alike.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{When to stop}
-\begin{wideitemize}
-  \item That number is an average over $k$ folds, so it carries a standard
-        error of its own.
-  \item A gap between two candidates smaller than that standard error is not
-        evidence that either is better.
-  \item Every further candidate compared raises the chance that the winner won
-        on the noise of these particular folds.
-  \item So take the simplest candidate within one standard error of the best,
-        and stop there.
-\end{wideitemize}
-\source{The one-standard-error rule; Hastie, Tibshirani and Friedman, sec.~7.10.1.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -423,12 +352,7 @@ families over 121 data sets. The random forests came out best.}
   \foreach \x/\y in {a/b,b/c,c/d,d/e,e/f} \draw[->] (\x) -- (\y);
 \end{tikzpicture}
 \end{center}
-\vspace{0.4em}
-\begin{wideitemize}
-  \item Was every transformation fitted inside the fold?
-  \item Could any regressor contain the outcome?
-  \item Same regressors and same folds across every specification?
-\end{wideitemize}
+\vspace{0.8em}
 \closingline{Step 6 happens once. Anything learned there is not a reason to
 return to step 2.}
 \end{frame}
