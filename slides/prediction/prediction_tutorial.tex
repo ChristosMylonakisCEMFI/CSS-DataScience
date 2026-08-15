@@ -301,7 +301,7 @@ not an estimation problem.}
   \item A linear model is additive; a tree is a step function on rectangles.
   \item Neither forms a ratio, a group mean, or a rank within a group.
   \item Both hold the ingredients here, and fifteen irrelevant regressors besides.
-  \item Handed the combination: $-63\%$ for least squares, $-62\%$ for the forest.
+  \item Handing over the combination is what moves each of them.
 \end{wideitemize}
 \end{frame}
 
@@ -378,30 +378,15 @@ modest signal. Each row is a conjecture, and the folds settle it.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
-\begin{frame}{The second decision: what each estimator asks you to choose}
-\begin{wideitemize}
-  \item Least squares: nothing.
-  \item Ridge and LASSO: one penalty. LASSO also sets coefficients to zero.
-  \item Tree: the depth, or the smallest region allowed.
-  \item Random forest: the number of trees and the regressors per split. Little
-        turns on either.
-  \item Boosting: the rate, the depth, and the number of trees. Much turns on all three.
-\end{wideitemize}
-\closingline{Each estimator has its counterpart for a binary outcome, with the
-same choices to make.}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Penalized regression}
-\simfig{0.50\textwidth}{fig_lasso_path}
+\begin{frame}{The second decision: how flexible}
+\simfig{0.56\textwidth}{fig_lasso_path}
 \begin{wideitemize}
   \item 70 observations, 40 regressors, 3 with nonzero coefficients.
   \item The penalty shrinks the coefficients, and sets the irrelevant to zero.
   \item Lowest test error at a strictly positive penalty.
-  \item Which regressors survive is not a finding: another sample selects a
-        different set and predicts about as well.
+  \item Which regressors survive is not a finding: another sample selects others.
 \end{wideitemize}
-\closingline{The penalty is one more choice, and the folds make it.}
+\closingline{Penalty, depth, number of trees: each is a choice, and the folds make it.}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -412,17 +397,8 @@ same choices to make.}
   \item A forest: many trees on resampled data, averaged.
   \item The flexibility kept, most of the variance gone.
 \end{wideitemize}
-\end{frame}
-
-% -----------------------------------------------------------------------------
-\begin{frame}{Boosting}
-\begin{wideitemize}
-  \item Trees in sequence, not in parallel.
-  \item Each one fitted to the residuals of the current model.
-  \item Each entering with a small weight, so progress is gradual.
-  \item More parameters than a forest, and it overfits when they are careless.
-\end{wideitemize}
-\closingline{A forest asks fewer questions of you, and is the better place to start.}
+\closingline{A forest asks few choices of you, which is what makes it the
+better first flexible estimator.}
 \end{frame}
 
 % -----------------------------------------------------------------------------

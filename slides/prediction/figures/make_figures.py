@@ -688,8 +688,8 @@ def compare():
     # side by side without running into one another
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=sz(10.8, 3.4))
     ax1.bar(list(reg_scores), list(reg_scores.values()), color=BLUE, width=0.6,
-            yerr=list(reg_se.values()), capsize=3,
-            error_kw={"ecolor": BLACK, "elinewidth": 0.8, "capthick": 0.8})
+            yerr=list(reg_se.values()), capsize=4,
+            error_kw={"ecolor": RED, "elinewidth": 1.6, "capthick": 1.6})
     for i, (v, e) in enumerate(zip(reg_scores.values(), reg_se.values())):
         ax1.text(i, v + e + .05, f"{v:.2f}", ha="center", fontsize=9)
     ax1.set_ylim(0, max(reg_scores.values()) * 1.25)
@@ -700,8 +700,8 @@ def compare():
     _clean(ax1)
 
     ax2.bar(list(clf_scores), list(clf_scores.values()), color=BLUE, width=0.6,
-            yerr=list(clf_se.values()), capsize=3,
-            error_kw={"ecolor": BLACK, "elinewidth": 0.8, "capthick": 0.8})
+            yerr=list(clf_se.values()), capsize=4,
+            error_kw={"ecolor": RED, "elinewidth": 1.6, "capthick": 1.6})
     ax2.set_ylim(0.5, 1.09)
     for i, (v, e) in enumerate(zip(clf_scores.values(), clf_se.values())):
         ax2.text(i, v + e + .012, f"{v:.2f}", ha="center", fontsize=9)
